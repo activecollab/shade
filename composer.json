@@ -1,0 +1,14 @@
+{
+  "name" : "activecollab/shade",
+  "description" : "Build help portals with ease",
+  "license" : "MIT",
+  "require" : {
+    "symfony/console" : "~2.3",
+    "herrera-io/phar-update" : "~1.0",
+    "michelf/php-markdown": "1.4.*@dev"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-0": { "ActiveCollab\\Shade" : "src" }
+  }
+}
