@@ -5,7 +5,8 @@
   "require" : {
     "symfony/console" : "~2.3",
     "herrera-io/phar-update" : "~1.0",
-    "michelf/php-markdown": "1.4.*@dev"
+    "michelf/php-markdown": "1.4.*@dev",
+    "razielanarki/hyperlight": "0.1.2"
   },
   "minimum-stability": "dev",
   "autoload": {

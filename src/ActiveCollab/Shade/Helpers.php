@@ -24,7 +24,7 @@
     public static function getCurrentElement()
     {
       return self::$current_element;
-    } // getCurrentElement
+    }
 
     /**
      * Set current element
@@ -34,7 +34,7 @@
     public static function setCurrentElement(HelpElement $element)
     {
       self::$current_element = $element;
-    } // setCurrentElement
+    }
 
     /**
      * Image function
@@ -46,7 +46,7 @@
     public static function function_image($params, &$smarty)
     {
       return AngieApplication::help()->getImageUrl(static::getCurrentElement(), strtolower(array_required_var($params, 'name')));
-    } // function_image
+    }
 
     /**
      * Render related video blokc
@@ -72,18 +72,18 @@
 
           if ($video->getDescription()) {
             $result .= ' &mdash; ' . clean($video->getDescription());
-          } // if
+          }
 
           $result .= '</li>';
-        } // if
-      } // foreach
+        }
+      }
 
       if ($result) {
         return '<div class="related_videos"><h3>' . lang('Related Video') . '</h3><ul>' . $result . '</ul></div>';
-      } // if
+      }
 
       return '';
-    } // function_related_video
+    }
 
     /**
      * Link to a news article
@@ -98,7 +98,7 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $name = array_required_var($params, 'name', true);
 
@@ -110,8 +110,8 @@
         return HTML::openTag('a', $params, $content);
       } else {
         return $content;
-      } // if
-    } // block_news_article
+      }
+    }
 
     /**
      * Link to a help book
@@ -126,7 +126,7 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $name = array_required_var($params, 'name', true);
 
@@ -137,13 +137,13 @@
 
         if ($book->getDescription()) {
           $params['title'] = $book->getDescription();
-        } // if
+        }
 
         return HTML::openTag('a', $params, $content);
       } else {
         return $content;
-      } // if
-    } // block_book
+      }
+    }
 
     /**
      * Link to a help book page
@@ -158,7 +158,7 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $name = array_required_var($params, 'name', true);
       $book_name = array_var($params, 'book', null, true);
@@ -168,8 +168,8 @@
           $book_name = self::$current_element->getShortName();
         } elseif (self::$current_element instanceof HelpBookPage) {
           $book_name = self::$current_element->getBookName();
-        } // if
-      } // if
+        }
+      }
 
       $user = \Angie\Authentication::getLoggedUser();
 
@@ -185,7 +185,7 @@
             $params['class'] = 'link_to_help_book_page';
           } else {
             $params['class'] .= ' link_to_help_book_page';
-          } // if
+          }
 
           $params['data-page-name'] = $page->getShortName();
           $params['data-book-name'] = $book->getShortName();
@@ -193,16 +193,16 @@
           return HTML::openTag('a', $params, $content);
         } else {
           $development_error_message = 'Page not found';
-        } // if
+        }
       } else {
         $development_error_message = 'Book not found';
-      } // if
+      }
 
       if (AngieApplication::isInDevelopment() && isset($development_error_message)) {
         return '<span style="color: red; border-bottom: 1px dotted red; cursor: help;" title="Invalid page link: ' . clean($development_error_message) . '">' . clean($content) . '</span>';
       } else {
         return $content;
-      } // if
+      }
     } // block_page
 
     /**
@@ -218,7 +218,7 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $name = array_required_var($params, 'name', true);
 
@@ -229,12 +229,12 @@
 
         if ($video->getDescription()) {
           $params['title'] = $video->getDescription();
-        } // if
+        }
 
         return HTML::openTag('a', $params, $content);
       } else {
         return $content;
-      } // if
+      }
     } // block_video
 
     /**
@@ -250,7 +250,7 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $class = array_var($params, 'class');
 
@@ -258,7 +258,7 @@
         $params['class'] = 'note';
       } else {
         $params['class'] .= ' note';
-      } // if
+      }
 
       $title = array_var($params, 'title', null, true);
 
@@ -272,7 +272,7 @@
         return HTML::openTag('div', $params, function () use ($content) {
           return HTML::markdownToHtml(trim($content));
         });
-      } // if
+      }
     } // block_note
 
     /**
@@ -288,13 +288,13 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       if (empty($params['class'])) {
         $params['class'] = 'outlined_inline option';
       } else {
         $params['class'] .= ' outlined_inline option';
-      } // if
+      }
 
       return HTML::openTag('span', $params, function () use ($content) {
         return clean(trim($content));
@@ -314,13 +314,13 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       if (empty($params['class'])) {
         $params['class'] = 'outlined_inline term';
       } else {
         $params['class'] .= ' outlined_inline term';
-      } // if
+      }
 
       return HTML::openTag('span', $params, function () use ($content) {
         return clean(trim($content));
@@ -340,13 +340,13 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       if (empty($params['class'])) {
         $params['class'] = 'outlined_inline outlined_inline_mono path';
       } else {
         $params['class'] .= ' outlined_inline outlined_inline_mono path';
-      } // if
+      }
 
       return HTML::openTag('span', $params, function () use ($content) {
         return clean(trim($content));
@@ -366,7 +366,7 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $content = trim($content); // Remove whitespace
 
@@ -374,7 +374,7 @@
         $inline = (boolean) array_var($params, 'inline', false, true);
       } else {
         $inline = strpos($content, "\n") === false;
-      } // if
+      }
 
       if ($inline) {
         if (empty($params['class'])) {
@@ -393,10 +393,10 @@
           $highlight = HyperlightForAngie::SYNTAX_PLAIN;
         } elseif ($highlight == 'php') {
           $highlight = HyperlightForAngie::SYNTAX_PHP;
-        } // if
+        }
 
         return HyperlightForAngie::htmlPreview($content, $highlight);
-      } // if
+      }
     } // block_code
 
     /**
@@ -412,16 +412,16 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $slug = array_var($params, 'slug', null, true);
 
       if (empty($slug)) {
         $slug = Angie\Inflector::slug($content);
-      } // if
+      }
 
       return '<h3 id="s-' . clean($slug) . '" class="sub_header">' . clean($content) . ' <a href="#s-' . clean($slug) . '" title="' . lang('Link to this Section') . '" class="sub_permalink">#</a></h3>';
-    } // block_sub
+    }
 
     /**
      * Render a tutorial step
@@ -436,18 +436,18 @@
     {
       if ($repeat) {
         return null;
-      } // if
+      }
 
       $num = (integer) array_var($params, 'num', null, true);
 
       if (empty($num)) {
         $num = 1;
-      } // if
+      }
 
       return '<div class="step step-' . $num . '">
         <div class="step_num"><span>' . $num . '</span></div>
         <div class="step_content">' . HTML::markdownToHtml(trim($content)) . '</div>
       </div>';
-    } // block_step
+    }
 
   }

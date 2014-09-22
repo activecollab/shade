@@ -1,5 +1,9 @@
 <?php
 
+  namespace ActiveCollab;
+
+  use Exception;
+
   /**
    * Main class for interaction with Shade projects
    */
@@ -51,19 +55,19 @@
                     if ($article->isLoaded()) {
                       if ($user instanceof User && !$article->canView($user)) {
                         continue;
-                      } // if
+                      }
 
                       $articles->add($article->getShortName(), $article);
-                    } // if
-                  } // foreach
-                } // if
-              } // if
-            } // foreach
-          } // if
-        } // foreach
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
 
         $this->whats_new_articles[$key] = $articles;
-      } // if
+      }
 
       return $this->whats_new_articles[$key];
     } // getWhatsNew
@@ -90,14 +94,14 @@
           $this->previous_version = DB::executeFirstCell("SELECT version FROM $update_history_table ORDER BY created_on DESC LIMIT 1, 1");
         } else {
           $this->previous_version = null;
-        } // if
-      } // if
+        }
+      }
 
       if ($this->previous_version) {
         return version_compare($article->getVersionNumber(), $this->previous_version) >= 0;
       } else {
         return true; // Everything is new when you install a fresh copy of the system
-      } // if
+      }
     } // isNewSinceLastUpgrade
 
     /**
@@ -115,16 +119,16 @@
           foreach ($parts as $part) {
             if (!is_numeric($part)) {
               return false;
-            } // if
-          } // foreach
+            }
+          }
 
           return true;
         } else {
           return false;
-        } // if
+        }
       } else {
         return false;
-      } // if
+      }
     } // isValidVersionNumber
 
     /**
@@ -151,11 +155,11 @@
 
         foreach (AngieApplication::getFrameworks() as $framework) {
           $possible_locations[$framework->getName()] = $framework->getPath() . '/help/books';
-        } // foreach
+        }
 
         foreach (AngieApplication::getModules() as $module) {
           $possible_locations[$module->getName()] = $module->getPath() . '/help/books';
-        } // foreach
+        }
 
         foreach ($possible_locations as $module_name => $path) {
           $book_folders = get_folders($path);
@@ -167,13 +171,13 @@
               if ($book->isLoaded()) {
                 if ($user instanceof User && !$book->canView($user)) {
                   continue; // Skip if user can't see this book
-                } // if
+                }
 
                 $books->add($book->getShortName(), $book);
-              } // if
-            } // foreach
-          } // if
-        } // foreach
+              }
+            }
+          }
+        }
 
         $books->sort(function ($a, $b) {
           if ($a instanceof HelpBook && $b instanceof HelpBook) {
@@ -182,16 +186,16 @@
 
             if ($order_a == $order_b) {
               return 0;
-            } // if
+            }
 
             return ($order_a < $order_b) ? -1 : 1;
-          } // if
+          }
 
           return 0;
         });
 
         $this->books[$key] = $books;
-      } // if
+      }
 
       return $this->books[$key];
     } // getBooks
@@ -205,19 +209,19 @@
         $cache_key = $user->getCacheKey('common_help_questions');
       } else {
         $cache_key = 'common_help_questions';
-      } // if
+      }
 
       return AngieApplication::cache()->get($cache_key, function () use ($user) {
         $result = array();
 
         foreach (AngieApplication::help()->getBooks($user) as $book) {
           $book->populateCommonQuestionsList($result, $user);
-        } // foreach
+        }
 
         usort($result, function ($a, $b) {
           if ($a['position'] == $b['position']) {
             return 0;
-          } // if
+          }
 
           return ($a['position'] < $b['position']) ? -1 : 1;
         });
@@ -268,16 +272,16 @@
               if ($video->isLoaded()) {
                 if ($user instanceof User && !$video->canView($user)) {
                   continue;
-                } // if
+                }
 
                 $videos->add($video->getShortName(), $video);
-              } // if
-            } // foreach
-          } // if
-        } // foreach
+              }
+            }
+          }
+        }
 
         $this->videos[$key] = $videos;
-      } // if
+      }
 
       return $this->videos[$key];
     } // getVideos
@@ -294,15 +298,15 @@
 
       if (AngieApplication::isInDevelopment()) {
         $groups[] = 'Developer';
-      } // if
+      }
 
       if (AngieApplication::isOnDemand()) {
         $groups[] = 'On Demand User';
-      } // if
+      }
 
 //      if ($this->user_groups_callback instanceof Closure) {
 //        $this->user_groups_callback->__invoke($user, $groups);
-//      } // if
+//      }
       return $groups;
     } // getUserGroups
 
@@ -325,7 +329,7 @@
         $this->user_groups_callback = $callback;
       } else {
         throw new InvalidInstanceError('callback', $callback, 'Closure');
-      } // if
+      }
     } // setOnUserGroupsCallback
 
     /**
@@ -362,11 +366,11 @@
             $this->smarty->registerPlugin('block', substr($method_name, 6), array('HelpElementHelpers', $method_name));
           } elseif (str_starts_with($method_name, 'function_')) {
             $this->smarty->registerPlugin('function', substr($method_name, 9), array('HelpElementHelpers', $method_name));
-          } // if;
-        } // foreach
+          };
+        }
 
         require_once ANGIE_PATH . '/vendor/markdown/init.php';
-      } // if
+      }
 
       $template = $this->smarty->createTemplate($element->getIndexFilePath());
       $template->assign('user', $user);
@@ -382,39 +386,39 @@
       if ($separator_pos === false) {
         if (substr($content, 0, 1) == '*') {
           $content = '*Content Not Provided*';
-        } // if
+        }
       } else {
         $content = trim(substr($content, $separator_pos + strlen(HelpElement::PROPERTIES_SEPARATOR)));
-      } // if
+      }
 
       return HTML::markdownToHtml($content);
     } // renderBody
 
     // ---------------------------------------------------
-    //  URL
+    //  URL-s
     // ---------------------------------------------------
 
     /**
      * URL generator
      *
-     * @var Closure|null
+     * @var callable|null
      */
-    private $url_generator = null;
+    private static $url_generator = null;
 
     /**
      * Set URL generator
      *
-     * @param  Closure|null      $generator
-     * @throws InvalidParamError
+     * @param callable|null $generator
+     * @throws Exception
      */
-    public function setUrlGenerator($generator)
+    public static function setUrlGenerator($generator)
     {
-      if ($generator instanceof Closure || $generator === null) {
-        $this->url_generator = $generator;
+      if (is_callable($generator) || $generator === null) {
+        self::$url_generator = $generator;
       } else {
-        throw new InvalidParamError('generator', $generator, 'Closure');
-      } // if
-    } // setUrlGenerator
+        throw new Exception('Generator is not callable (or NULL)');
+      }
+    }
 
     /**
      * Return URL of an element
@@ -447,31 +451,29 @@
           ));
         } else {
           throw new InvalidParamError('element', $element, 'HelpElement');
-        } // if
-      } // if
+        }
+      }
     } // getUrl
 
     /**
-     * Image URL generator
-     *
-     * @var Closure|null
+     * @var callable|null
      */
-    private $image_url_generator = null;
+    private static $image_url_generator = null;
 
     /**
      * Set URL generator
      *
-     * @param  Closure|null      $generator
-     * @throws InvalidParamError
+     * @param  callable|null      $generator
+     * @throws \Exception
      */
     public function setImageUrlGenerator($generator)
     {
-      if ($generator instanceof Closure || $generator === null) {
-        $this->image_url_generator = $generator;
+      if (is_callable($generator) || $generator === null) {
+        self::$image_url_generator = $generator;
       } else {
-        throw new InvalidParamError('generator', $generator, 'Closure');
-      } // if
-    } // setImageUrlGenerator
+        throw new Exception('Generator is not callable (or NULL)');
+      }
+    }
 
     /**
      * Return image URL
@@ -482,8 +484,8 @@
      */
     public function getImageUrl($current_element, $name)
     {
-      if ($this->image_url_generator && $this->image_url_generator instanceof Closure) {
-        return $this->image_url_generator->__invoke($current_element, $name);
+      if (self::$image_url_generator) {
+        return call_user_func(self::$image_url_generator, $current_element, $name);
       } else {
         if ($current_element instanceof HelpBookPage) {
           $params['src'] = AngieApplication::getImageUrl('books/' . $current_element->getBookName() . '/' . $name, $current_element->getModuleName(), 'help');
@@ -495,9 +497,77 @@
           $params['src'] = AngieApplication::getImageUrl('whats-new/' . $current_element->getVersionNumber() . '/' . $name, $current_element->getModuleName(), 'help');
         } else {
           return 'Unknown';
-        } // if
+        }
 
-        return '<div class="center">' . HTML::openTag('img', $params) . '</div>';
-      } // if
-    } // getImageUrl
+        return '<div class="center">' . self::htmlTag('img', $params) . '</div>';
+      }
+    }
+
+    // ---------------------------------------------------
+    //  Utilities
+    // ---------------------------------------------------
+
+    /**
+     * Equivalent to htmlspecialchars(), but allows &#[0-9]+ (for unicode)
+     *
+     * @param string $str
+     * @return string
+     * @throws Exception
+     */
+    public static function clean($str)
+    {
+      if (is_scalar($str)) {
+        $str = preg_replace('/&(?!#(?:[0-9]+|x[0-9A-F]+);?)/si', '&amp;', $str);
+        $str = str_replace([ '<', '>', '"' ], [ '&lt;', '&gt;', '&quot;' ], $str);
+
+        return $str;
+      } elseif ($str === null) {
+        return '';
+      } else {
+        throw new Exception('Input needs to be scalar value');
+      }
+    }
+
+    /**
+     * Open HTML tag
+     *
+     * @param  string               $name
+     * @param  array                $attributes
+     * @param  callable|string|null $content
+     * @return string
+     */
+    public static function htmlTag($name, $attributes = null, $content = null)
+    {
+      if ($attributes) {
+        $result = "<$name";
+
+        foreach ($attributes as $k => $v) {
+          if ($k) {
+            if (is_bool($v)) {
+              if ($v) {
+                $result .= " $k";
+              }
+            } else {
+              $result .= ' ' . $k . '="' . ($v ? self::clean($v) : $v) . '"';
+            }
+          }
+        }
+
+        $result .= '>';
+      } else {
+        $result = "<$name>";
+      }
+
+      if ($content) {
+        if (is_callable($content)) {
+          $result .= call_user_func($content);
+        } else {
+          $result .= $content;
+        }
+
+        $result .= "</$name>";
+      }
+
+      return $result;
+    }
   }

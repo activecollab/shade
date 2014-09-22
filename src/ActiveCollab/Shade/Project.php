@@ -52,7 +52,59 @@
      * @return string
      */
     function getName() {
-      return isset($this->configuration['name']) && $this->configuration['name'] ? $this->configuration['name'] : basename($this->path);
+      return $this->getConfigurationOption('name', basename($this->path));
+    }
+
+    /**
+     * Return true if this project is multilingual
+     *
+     * @return bool
+     */
+    function isMultilingual()
+    {
+      return (boolean) $this->getConfigurationOption('is_multilingual');
+    }
+
+    /**
+     * Return default build target
+     *
+     * @return string|null
+     */
+    function getDefaultBuildTarget()
+    {
+      return $this->getConfigurationOption('default_build_target');
+    }
+
+    /**
+     * Return default locale, for multilingual projects
+     *
+     * @return string|null
+     */
+    function getDefaultLocale()
+    {
+      return $this->getConfigurationOption('default_locale');
+    }
+
+    /**
+     * Return name of the default build theme
+     *
+     * @return string
+     */
+    function getDefaultBuildTheme()
+    {
+      return $this->getConfigurationOption('default_build_theme', 'default');
+    }
+
+    /**
+     * Return configuration option
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    private function getConfigurationOption($name, $default = null)
+    {
+      return isset($this->configuration[$name]) && $this->configuration[$name] ? $this->configuration[$name] : $default;
     }
 
     /**
