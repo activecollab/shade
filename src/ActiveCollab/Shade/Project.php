@@ -102,7 +102,7 @@
      * @param mixed $default
      * @return mixed
      */
-    private function getConfigurationOption($name, $default = null)
+    public function getConfigurationOption($name, $default = null)
     {
       return isset($this->configuration[$name]) && $this->configuration[$name] ? $this->configuration[$name] : $default;
     }

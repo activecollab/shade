@@ -6,7 +6,8 @@
     "symfony/console" : "~2.3",
     "herrera-io/phar-update" : "~1.0",
     "michelf/php-markdown": "1.4.*@dev",
-    "razielanarki/hyperlight": "0.1.2"
+    "razielanarki/hyperlight": "0.1.2",
+    "smarty/smarty": "3.1.19"
   },
   "minimum-stability": "dev",
   "autoload": {

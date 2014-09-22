@@ -2,9 +2,10 @@
 
   namespace ActiveCollab;
 
+  use ActiveCollab\Shade\Error\TempNotFoundError;
   use ActiveCollab\Shade\Error\ThemeNotFoundError;
-  use ActiveCollab\Shade\Theme;
-  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator;
+  use ActiveCOllab\Shade\Project, ActiveCollab\Shade\Theme, Shade\Element\Element;
+  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod;
 
   /**
    * Main class for interaction with Shade projects
@@ -204,32 +205,36 @@
 
     /**
      * Return array of common questions
+     *
+     * @return array
      */
-    public function getCommonQuestions(User $user = null)
+    public static function getCommonQuestions()
     {
-      if ($user instanceof User) {
-        $cache_key = $user->getCacheKey('common_help_questions');
-      } else {
-        $cache_key = 'common_help_questions';
-      }
+      return [];
 
-      return AngieApplication::cache()->get($cache_key, function () use ($user) {
-        $result = array();
-
-        foreach (AngieApplication::help()->getBooks($user) as $book) {
-          $book->populateCommonQuestionsList($result, $user);
-        }
-
-        usort($result, function ($a, $b) {
-          if ($a['position'] == $b['position']) {
-            return 0;
-          }
-
-          return ($a['position'] < $b['position']) ? -1 : 1;
-        });
-
-        return $result;
-      });
+//      if ($user instanceof User) {
+//        $cache_key = $user->getCacheKey('common_help_questions');
+//      } else {
+//        $cache_key = 'common_help_questions';
+//      }
+//
+//      return AngieApplication::cache()->get($cache_key, function () use ($user) {
+//        $result = array();
+//
+//        foreach (AngieApplication::help()->getBooks($user) as $book) {
+//          $book->populateCommonQuestionsList($result, $user);
+//        }
+//
+//        usort($result, function ($a, $b) {
+//          if ($a['position'] == $b['position']) {
+//            return 0;
+//          }
+//
+//          return ($a['position'] < $b['position']) ? -1 : 1;
+//        });
+//
+//        return $result;
+//      });
     } // getCommonQuestions
 
     /**
@@ -335,13 +340,6 @@
     } // setOnUserGroupsCallback
 
     /**
-     * Smarty instance that we will use to render content
-     *
-     * @var Smarty
-     */
-    private $smarty;
-
-    /**
      * Render body of a given element
      *
      * @param  HelpElement $element
@@ -350,30 +348,6 @@
      */
     public function renderBody(HelpElement $element, User $user = null)
     {
-      if (empty($this->smarty)) {
-        $this->smarty = new Smarty();
-
-        $this->smarty->setCompileDir(COMPILE_PATH);
-        $this->smarty->setCacheDir(CACHE_PATH);
-        $this->smarty->left_delimiter = '<{';
-        $this->smarty->right_delimiter = '}>';
-        $this->smarty->registerFilter('variable', 'clean'); // {$foo nofilter}
-
-        $helper_class = new ReflectionClass('HelpElementHelpers');
-
-        foreach ($helper_class->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC) as $method) {
-          $method_name = $method->getName();
-
-          if (str_starts_with($method_name, 'block_')) {
-            $this->smarty->registerPlugin('block', substr($method_name, 6), array('HelpElementHelpers', $method_name));
-          } elseif (str_starts_with($method_name, 'function_')) {
-            $this->smarty->registerPlugin('function', substr($method_name, 9), array('HelpElementHelpers', $method_name));
-          };
-        }
-
-        require_once ANGIE_PATH . '/vendor/markdown/init.php';
-      }
-
       $template = $this->smarty->createTemplate($element->getIndexFilePath());
       $template->assign('user', $user);
 
@@ -480,11 +454,11 @@
     /**
      * Return image URL
      *
-     * @param  HelpElement $current_element
-     * @param  string      $name
+     * @param  Element $current_element
+     * @param  string  $name
      * @return string
      */
-    public function getImageUrl($current_element, $name)
+    public static function getImageUrl($current_element, $name)
     {
       if (self::$image_url_generator) {
         return call_user_func(self::$image_url_generator, $current_element, $name);
@@ -519,6 +493,78 @@
       } else {
         throw new ThemeNotFoundError($name, $theme_path);
       }
+    }
+
+    /**
+     * @var Smarty
+     */
+    private static $smarty = false;
+
+    /**
+     * Prepare and return Smarty instance
+     *
+     * @param Theme $theme
+     * @param Project $project
+     * @return Smarty
+     * @throws TempNotFoundError
+     */
+    public static function &getSmarty(Project $project, Theme $theme)
+    {
+      if (self::$smarty === false) {
+        self::$smarty = new Smarty();
+
+        self::$smarty->setCompileDir(self::getTempPath());
+        self::$smarty->setTemplateDir($theme->getPath() . '/templates');
+        self::$smarty->compile_check = true;
+        self::$smarty->left_delimiter = '<{';
+        self::$smarty->right_delimiter = '}>';
+        self::$smarty->registerFilter('variable', '\ActiveCollab\Shade::clean'); // {$foo nofilter}
+
+        $helper_class = new ReflectionClass('\ActiveCollab\Shade\SmartyHelpers');
+
+        foreach ($helper_class->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC) as $method) {
+          $method_name = $method->getName();
+
+          if (substr($method_name, 0, 6) === 'block_') {
+            self::$smarty->registerPlugin('block', substr($method_name, 6), ['\ActiveCollab\Shade\SmartyHelpers', $method_name]);
+          } elseif (substr($method_name, 9) === 'function_') {
+            self::$smarty->registerPlugin('function', substr($method_name, 9), ['\ActiveCollab\Shade\SmartyHelpers', $method_name]);
+          };
+        }
+
+        self::$smarty->assign([
+          'copyright' => $project->getConfigurationOption('copyright', '--UNKNOWN--'),
+          'copyright_since' => $project->getConfigurationOption('copyright_since'),
+        ]);
+      }
+
+      return self::$smarty;
+    }
+
+    /**
+     * @var string
+     */
+    static private $temp_path = false;
+
+    /**
+     * Return temp folder path
+     *
+     * @return string
+     * @throws TempNotFoundError
+     */
+    public static function getTempPath()
+    {
+      if (self::$temp_path === false) {
+        $path = realpath(__DIR__ . "/../../temp");
+
+        if ($path && is_dir($path)) {
+          self::$temp_path = $path;
+        } else {
+          throw new TempNotFoundError($path);
+        }
+      }
+
+      return self::$temp_path;
     }
 
     // ---------------------------------------------------
@@ -622,8 +668,50 @@
       }
     }
 
-    public static function clearDir($path)
+    /**
+     * Clear all files and subfolders from $path
+     *
+     * @param string $path
+     * @param callable|null $on_item_deleted
+     * @param bool $is_subpath
+     */
+    public static function clearDir($path, $on_item_deleted = null, $is_subpath = false)
     {
+      if (is_link($path)) {
+        // Don't follow links
+      } elseif (is_file($path)){
+        if (unlink($path)) {
+          if ($on_item_deleted) {
+            call_user_func($on_item_deleted, $path);
+          }
+        }
+      }  elseif (is_dir($path)) {
+        foreach(glob(rtrim($path, '/') . '/*') as $index => $subdir_path) {
+          Shade::clearDir($subdir_path, $on_item_deleted, true);
+        }
 
+        if ($is_subpath && rmdir($path)) {
+          if ($on_item_deleted) {
+            call_user_func($on_item_deleted, $path);
+          }
+        }
+      }
+    }
+
+    /**
+     * Write a new file with given content
+     *
+     * @param string $path
+     * @param string $content
+     * @param callable|null $on_file_created
+     * @return int
+     */
+    public static function writeFile($path, $content, $on_file_created = null)
+    {
+      $overwrite = file_exists($path);
+
+      if (file_put_contents($path, $content) && $on_file_created) {
+        call_user_func($on_file_created, $path, $overwrite);
+      }
     }
   }

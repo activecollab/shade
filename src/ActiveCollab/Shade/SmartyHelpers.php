@@ -1,25 +1,28 @@
 <?php
 
-  use Angie\HTML;
+  namespace ActiveCollab\Shade;
+
+//  use Angie\HTML;
+  use ActiveCollab\Shade, Shade\Element\Element;
 
   /**
    * Help element text helpers
    *
    * @package Shade
    */
-  class FwHelpElementHelpers
+  class SmartyHelpers
   {
     /**
      * Current help element
      *
-     * @var HelpBook|HelpBookPage|HelpVideo|HelpWhatsNewArticle
+     * @var Element
      */
     private static $current_element;
 
     /**
      * Return current element
      *
-     * @return HelpElement
+     * @return Element
      */
     public static function getCurrentElement()
     {
@@ -29,9 +32,9 @@
     /**
      * Set current element
      *
-     * @param HelpElement $element
+     * @param Element $element
      */
-    public static function setCurrentElement(HelpElement $element)
+    public static function setCurrentElement(Element $element)
     {
       self::$current_element = $element;
     }
@@ -45,7 +48,7 @@
      */
     public static function function_image($params, &$smarty)
     {
-      return AngieApplication::help()->getImageUrl(static::getCurrentElement(), strtolower(array_required_var($params, 'name')));
+      return Shade::getImageUrl(static::getCurrentElement(), strtolower(array_required_var($params, 'name')));
     }
 
     /**
