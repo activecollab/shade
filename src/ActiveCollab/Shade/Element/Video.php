@@ -2,6 +2,8 @@
 
   namespace Shade\Element;
 
+  use ActiveCollab\Shade;
+
   /**
    * Framework level help video class
    *
@@ -94,7 +96,7 @@
         $slug = $this->getProperty('slug');
 
         if (empty($slug)) {
-          $this->slug = Angie\Inflector::slug($this->getTitle());
+          $this->slug = Shade::slug($this->getTitle());
         } else {
           $this->slug = $slug;
         }

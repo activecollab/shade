@@ -2,6 +2,8 @@
 
   namespace Shade\Element;
 
+  use ActiveCollab\Shade;
+
   /**
    * Framework level help book page class
    *
@@ -77,8 +79,8 @@
           $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
         } else {
           $this->title = $title;
-        } // if
-      } // if
+        }
+      }
 
       return $this->title;
     }
@@ -101,26 +103,12 @@
         $slug = $this->getProperty('slug');
 
         if (empty($slug)) {
-          $this->slug = Angie\Inflector::slug($this->getTitle());
+          $this->slug = Shade::slug($this->getTitle());
         } else {
           $this->slug = $slug;
-        } // if
-      } // if
+        }
+      }
 
       return $this->slug;
     }
-
-    /**
-     * Describe parent object to be used in search result
-     *
-     * @return array
-     */
-    public function searchSerialize()
-    {
-      $result = parent::searchSerialize();
-      $result['id'] = $this->getBookName() . '/' . $this->getShortName();
-
-      return $result;
-    }
-
   }

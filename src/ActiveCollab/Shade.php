@@ -5,7 +5,7 @@
   use ActiveCollab\Shade\Error\TempNotFoundError;
   use ActiveCollab\Shade\Error\ThemeNotFoundError;
   use ActiveCOllab\Shade\Project, ActiveCollab\Shade\Theme, Shade\Element\Element;
-  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod;
+  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, Urlify, Hyperlight\Hyperlight;
 
   /**
    * Main class for interaction with Shade projects
@@ -399,37 +399,37 @@
     /**
      * Return URL of an element
      *
-     * @param  HelpElement       $element
+     * @param  Element   $element
      * @return string
-     * @throws InvalidParamError
+     * @throws Exception
      */
-    public function getUrl(HelpElement $element)
+    public static function getUrl(Element $element)
     {
-      if ($this->url_generator && $this->url_generator instanceof Closure) {
-        return $this->url_generator->__invoke($element);
+      if (self::$url_generator && self::$url_generator instanceof Closure) {
+        return call_user_func(self::$url_generator, $element);
       } else {
-        if ($element instanceof HelpBook) {
-          return Router::assemble('help_book', array(
-          'book_name' => $element->getShortName()
-          ));
-        } elseif ($element instanceof HelpBookPage) {
-          return Router::assemble('help_book_page', array(
-          'book_name' => $element->getBookName(),
-          'page_name' => $element->getSlug(),
-          ));
-        } elseif ($element instanceof HelpWhatsNewArticle) {
-          return Router::assemble('help_whats_new_article', array(
-          'article_name' => $element->getSlug(),
-          ));
-        } elseif ($element instanceof HelpVideo) {
-          return Router::assemble('help_video', array(
-          'video_name' => $element->getSlug()
-          ));
-        } else {
-          throw new InvalidParamError('element', $element, 'HelpElement');
-        }
+//        if ($element instanceof HelpBook) {
+//          return Router::assemble('help_book', array(
+//          'book_name' => $element->getShortName()
+//          ));
+//        } elseif ($element instanceof HelpBookPage) {
+//          return Router::assemble('help_book_page', array(
+//          'book_name' => $element->getBookName(),
+//          'page_name' => $element->getSlug(),
+//          ));
+//        } elseif ($element instanceof HelpWhatsNewArticle) {
+//          return Router::assemble('help_whats_new_article', array(
+//          'article_name' => $element->getSlug(),
+//          ));
+//        } elseif ($element instanceof HelpVideo) {
+//          return Router::assemble('help_video', array(
+//          'video_name' => $element->getSlug()
+//          ));
+//        } else {
+//          throw new Exception('Element is expected to be an instance of \ActiveCollab\Shade\Element class');
+//        }
       }
-    } // getUrl
+    }
 
     /**
      * @var callable|null
@@ -593,6 +593,42 @@
     }
 
     /**
+     * Returns an underscore-syntaxed ($like_this_dear_reader) version of the $camel_cased_word.
+     *
+     * @param string $camel_cased_word
+     * @return string
+     */
+    public static function underscore($camel_cased_word)
+    {
+      $camel_cased_word = preg_replace('/([A-Z]+)([A-Z])/','\1_\2', $camel_cased_word);
+
+      return strtolower(preg_replace('/([a-z])([A-Z])/','\1_\2', $camel_cased_word));
+    }
+
+    /**
+     * Return slug from string
+     *
+     * @static
+     * @param $string
+     * @param string $space
+     * @return mixed|string
+     */
+    public static function slug($string, $space = '-')
+    {
+      $string = URLify::transliterate($string);
+
+      $string = preg_replace("/[^a-zA-Z0-9 -]/", '', $string);
+      $string = strtolower($string);
+      $string = str_replace(" ", $space, $string);
+
+      while (strpos($string, '--') !== false) {
+        $string = str_replace('--', '-', $string);
+      }
+
+      return trim($string);
+    }
+
+    /**
      * Open HTML tag
      *
      * @param  string               $name
@@ -633,6 +669,42 @@
       }
 
       return $result;
+    }
+
+    /**
+     * @param string $markdown
+     * @return string
+     */
+    public static function markdownToHtml($markdown)
+    {
+      return MarkdownExtra::defaultTransform($markdown);
+    }
+
+    /**
+     * Renders the full preview with line numbers and all necessary DOM
+     *
+     * @param string $content
+     * @param string $syntax
+     * @return string
+     */
+    public static function highlightCode($content, $syntax) {
+      $content = trim($content);
+
+      if ($syntax) {
+        $hyperlight = new Hyperlight(strtolower($syntax));
+        $content = $hyperlight->render($content);
+      } else {
+        $content = self::clean($content);
+      }
+
+      $number_of_lines = count(explode("\n", $content));
+
+      $output = '<div class="syntax_higlighted source-code">';
+      $output.= 	'<div class="syntax_higlighted_line_numbers lines"><pre>' . implode("\n", range(1, $number_of_lines)) . '</pre></div>';
+      $output.=		'<div class="syntax_higlighted_source"><pre>' . $content . '</pre></div>';
+      $output.= '</div>';
+
+      return $output;
     }
 
     /**

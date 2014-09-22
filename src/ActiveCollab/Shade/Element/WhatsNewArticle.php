@@ -2,6 +2,8 @@
 
   namespace Shade\Element;
 
+  use ActiveCollab\Shade;
+
   /**
    * What's new article element
    *
@@ -103,7 +105,7 @@
         $slug = $this->getProperty('slug');
 
         if (empty($slug)) {
-          $this->slug .= Angie\Inflector::slug($this->getTitle());
+          $this->slug .= Shade::slug($this->getTitle());
         } else {
           $this->slug .= $slug;
         }

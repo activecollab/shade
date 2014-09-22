@@ -2,6 +2,8 @@
 
   namespace Shade\Element;
 
+  use ActiveCollab\Shade, ActiveCollab\Shade\Error\ElementFileNotFoundError;
+
   /**
    * Framework level help element implementation
    *
@@ -94,45 +96,6 @@
     }
 
     /**
-     * Return true if $user can view this element
-     *
-     * @param  User $user
-     * @return bool
-     */
-    public function canView(User $user)
-    {
-      $groups = AngieApplication::help()->getUserGroups($user);
-
-      $show_to = $this->getProperty('show_to');
-
-      if ($show_to) {
-        $show_to_groups = array_map('trim', explode(',', $show_to));
-
-        foreach ($show_to_groups as $show_to_group) {
-          if (in_array($show_to_group, $groups)) {
-            return true;
-          }
-        }
-
-        return false; // Not visible to any of the Show To groups
-      }
-
-      $hide_from = $this->getProperty('hide_from');
-
-      if ($hide_from) {
-        $hide_from_groups = array_map('trim', explode(',', $hide_from));
-
-        foreach ($hide_from_groups as $hide_from_group) {
-          if (in_array($hide_from_group, $groups)) {
-            return false;
-          }
-        }
-      }
-
-      return true;
-    }
-
-    /**
      * Return book's short name
      *
      * @return string
@@ -182,7 +145,7 @@
      */
     public function getUrl()
     {
-      return AngieApplication::help()->getUrl($this);
+      return Shade::getUrl($this);
     }
 
     /**
@@ -208,7 +171,7 @@
     /**
      * Load element's definition
      *
-     * @throws FileDnxError
+     * @throws ElementFileNotFoundError
      */
     public function load()
     {
@@ -252,7 +215,7 @@
 
           $this->body = trim($this->body);
         } else {
-          throw new FileDnxError($index_file);
+          throw new ElementFileNotFoundError($index_file);
         }
 
         $this->is_loaded = true;
@@ -267,7 +230,7 @@
      */
     private function loadProperty($name, $value)
     {
-      $this->properties[Angie\Inflector::underscore(str_replace(' ', '', $name))] = $value;
+      $this->properties[Shade::underscore(str_replace(' ', '', $name))] = $value;
     }
 
     // ---------------------------------------------------

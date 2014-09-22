@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a47d4daf7575f7fbef1f92e8df743baf",
+    "hash": "4b30961d6a1432f2338d8237a5c959c9",
     "packages": [
         {
             "name": "herrera-io/json",
@@ -124,6 +124,61 @@
                 "update"
             ],
             "time": "2013-10-30 17:23:01"
+        },
+        {
+            "name": "jbroadway/urlify",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jbroadway/urlify.git",
+                "reference": "367c8350361a16b3e5d641838202062d41555eea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jbroadway/urlify/zipball/367c8350361a16b3e5d641838202062d41555eea",
+                "reference": "367c8350361a16b3e5d641838202062d41555eea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "URLify": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Johnny Broadway",
+                    "email": "johnny@johnnybroadway.com",
+                    "homepage": "http://www.johnnybroadway.com/",
+                    "role": "Main Developer"
+                }
+            ],
+            "description": "PHP port of URLify.js from the Django project. Transliterates non-ascii characters for use in URLs.",
+            "homepage": "https://github.com/jbroadway/urlify",
+            "keywords": [
+                "encode",
+                "iconv",
+                "link",
+                "slug",
+                "translit",
+                "transliterate",
+                "transliteration",
+                "url",
+                "urlify"
+            ],
+            "time": "2014-04-22 19:36:19"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -431,12 +486,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "0f682ba7bd8102ed9374d247ca9c13236c2f1008"
+                "reference": "3daf10d2a174d8675f305846934fa82ca1f1effc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/0f682ba7bd8102ed9374d247ca9c13236c2f1008",
-                "reference": "0f682ba7bd8102ed9374d247ca9c13236c2f1008",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/3daf10d2a174d8675f305846934fa82ca1f1effc",
+                "reference": "3daf10d2a174d8675f305846934fa82ca1f1effc",
                 "shasum": ""
             },
             "require": {
@@ -479,14 +534,15 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-17 09:54:14"
+            "time": "2014-09-22 11:59:59"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "michelf/php-markdown": 20
+        "michelf/php-markdown": 20,
+        "jbroadway/urlify": 20
     },
     "prefer-stable": false,
     "platform": [],

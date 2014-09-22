@@ -2,8 +2,8 @@
 
   namespace ActiveCollab\Shade;
 
-//  use Angie\HTML;
-  use ActiveCollab\Shade, Shade\Element\Element;
+  use Smarty;
+  use ActiveCollab\Shade, Shade\Element\Element, ActiveCollab\Shade\Error\ParamRequiredError;
 
   /**
    * Help element text helpers
@@ -43,12 +43,16 @@
      * Image function
      *
      * @param  array  $params
-     * @param  Smarty $smarty
      * @return string
+     * @throws ParamRequiredError
      */
-    public static function function_image($params, &$smarty)
+    public static function function_image($params)
     {
-      return Shade::getImageUrl(static::getCurrentElement(), strtolower(array_required_var($params, 'name')));
+      if (isset($params['name']) && $params['name']) {
+        return Shade::getImageUrl(static::getCurrentElement(), strtolower($params['name']));
+      } else {
+        throw new ParamRequiredError('name');
+      }
     }
 
     /**
@@ -71,10 +75,10 @@
 
         // Check if we have a video instance. If not, ignore (don't break the system in case of a missing video)
         if ($video instanceof HelpVideo) {
-          $result .= '<li><a href="' . clean($video->getUrl()) . '">' . clean($video->getTitle()) . '</a> <span class="play_time" title="' . lang('Video Play Time') . '">(' . clean($video->getPlayTime()) . ')</span>';
+          $result .= '<li><a href="' . Shade::clean($video->getUrl()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
 
           if ($video->getDescription()) {
-            $result .= ' &mdash; ' . clean($video->getDescription());
+            $result .= ' &mdash; ' . Shade::clean($video->getDescription());
           }
 
           $result .= '</li>';
@@ -110,7 +114,7 @@
       if ($article instanceof HelpWhatsNewArticle) {
         $params['href'] = $article->getUrl();
 
-        return HTML::openTag('a', $params, $content);
+        return Shade::htmlTag('a', $params, $content);
       } else {
         return $content;
       }
@@ -142,7 +146,7 @@
           $params['title'] = $book->getDescription();
         }
 
-        return HTML::openTag('a', $params, $content);
+        return Shade::htmlTag('a', $params, $content);
       } else {
         return $content;
       }
@@ -193,7 +197,7 @@
           $params['data-page-name'] = $page->getShortName();
           $params['data-book-name'] = $book->getShortName();
 
-          return HTML::openTag('a', $params, $content);
+          return Shade::htmlTag('a', $params, $content);
         } else {
           $development_error_message = 'Page not found';
         }
@@ -202,7 +206,7 @@
       }
 
       if (AngieApplication::isInDevelopment() && isset($development_error_message)) {
-        return '<span style="color: red; border-bottom: 1px dotted red; cursor: help;" title="Invalid page link: ' . clean($development_error_message) . '">' . clean($content) . '</span>';
+        return '<span style="color: red; border-bottom: 1px dotted red; cursor: help;" title="Invalid page link: ' . Shade::clean($development_error_message) . '">' . Shade::clean($content) . '</span>';
       } else {
         return $content;
       }
@@ -234,7 +238,7 @@
           $params['title'] = $video->getDescription();
         }
 
-        return HTML::openTag('a', $params, $content);
+        return Shade::htmlTag('a', $params, $content);
       } else {
         return $content;
       }
@@ -255,7 +259,7 @@
         return null;
       }
 
-      $class = array_var($params, 'class');
+      $class = isset($params['class']) && $params['class'] ? $params['class'] : null;
 
       if (empty($class)) {
         $params['class'] = 'note';
@@ -263,20 +267,20 @@
         $params['class'] .= ' note';
       }
 
-      $title = array_var($params, 'title', null, true);
+      $title = isset($params['title']) && $params['title'] ? $params['title'] : null;
 
       if ($title) {
         $params['class'] .= ' with_title';
 
-        return HTML::openTag('div', $params, function () use ($title, $content) {
-          return '<h3>' . clean($title) . '</h3>' . HTML::markdownToHtml(trim($content));
+        return Shade::htmlTag('div', $params, function () use ($title, $content) {
+          return '<h3>' . Shade::clean($title) . '</h3>' . Shade::markdownToHtml(trim($content));
         });
       } else {
-        return HTML::openTag('div', $params, function () use ($content) {
-          return HTML::markdownToHtml(trim($content));
+        return Shade::htmlTag('div', $params, function () use ($content) {
+          return Shade::markdownToHtml(trim($content));
         });
       }
-    } // block_note
+    }
 
     /**
      * Option block
@@ -299,10 +303,10 @@
         $params['class'] .= ' outlined_inline option';
       }
 
-      return HTML::openTag('span', $params, function () use ($content) {
-        return clean(trim($content));
+      return Shade::htmlTag('span', $params, function () use ($content) {
+        return Shade::clean(trim($content));
       });
-    } // block_option
+    }
 
     /**
      * Term block
@@ -325,10 +329,10 @@
         $params['class'] .= ' outlined_inline term';
       }
 
-      return HTML::openTag('span', $params, function () use ($content) {
-        return clean(trim($content));
+      return Shade::htmlTag('span', $params, function () use ($content) {
+        return Shade::clean(trim($content));
       });
-    } // block_term
+    }
 
     /**
      * Wrap file system paths using this block
@@ -351,10 +355,10 @@
         $params['class'] .= ' outlined_inline outlined_inline_mono path';
       }
 
-      return HTML::openTag('span', $params, function () use ($content) {
-        return clean(trim($content));
+      return Shade::htmlTag('span', $params, function () use ($content) {
+        return Shade::clean(trim($content));
       });
-    } // block_path
+    }
 
     /**
      * Code block
@@ -374,7 +378,7 @@
       $content = trim($content); // Remove whitespace
 
       if (array_key_exists('inline', $params)) {
-        $inline = (boolean) array_var($params, 'inline', false, true);
+        $inline = isset($params['inline']) && $params['inline'];
       } else {
         $inline = strpos($content, "\n") === false;
       }
@@ -386,21 +390,19 @@
           $params['class'] .= ' outlined_inline outlined_inline_mono inline_code';
         }
 
-        return HTML::openTag('span', $params, function () use ($content) {
-          return clean(trim($content));
+        return Shade::htmlTag('span', $params, function () use ($content) {
+          return Shade::clean(trim($content));
         });
       } else {
-        $highlight = array_var($params, 'highlight', null, true);
+        $highlight = isset($params['highlight']) && $params['highlight'] ? $params['highlight'] : null;
 
-        if (empty($highlight)) {
-          $highlight = HyperlightForAngie::SYNTAX_PLAIN;
-        } elseif ($highlight == 'php') {
-          $highlight = HyperlightForAngie::SYNTAX_PHP;
+        if ($highlight === 'php') {
+          $highlight = 'iphp';
         }
 
-        return HyperlightForAngie::htmlPreview($content, $highlight);
+        return Shade::highlightCode($content, $highlight);
       }
-    } // block_code
+    }
 
     /**
      * Render a page sub-header
@@ -417,13 +419,13 @@
         return null;
       }
 
-      $slug = array_var($params, 'slug', null, true);
+      $slug = isset($params['slug']) ? $params['slug'] : null;
 
       if (empty($slug)) {
-        $slug = Angie\Inflector::slug($content);
+        $slug = Shade::slug($content);
       }
 
-      return '<h3 id="s-' . clean($slug) . '" class="sub_header">' . clean($content) . ' <a href="#s-' . clean($slug) . '" title="' . lang('Link to this Section') . '" class="sub_permalink">#</a></h3>';
+      return '<h3 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . lang('Link to this Section') . '" class="sub_permalink">#</a></h3>';
     }
 
     /**
@@ -441,7 +443,7 @@
         return null;
       }
 
-      $num = (integer) array_var($params, 'num', null, true);
+      $num = isset($params['num']) ? (integer) $params['num'] : null;
 
       if (empty($num)) {
         $num = 1;
@@ -449,7 +451,7 @@
 
       return '<div class="step step-' . $num . '">
         <div class="step_num"><span>' . $num . '</span></div>
-        <div class="step_content">' . HTML::markdownToHtml(trim($content)) . '</div>
+        <div class="step_content">' . Shade::markdownToHtml(trim($content)) . '</div>
       </div>';
     }
 
