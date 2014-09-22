@@ -7,4 +7,5 @@
 
   $application = new Application('Shade', '0.1-dev');
   $application->add(new ActiveCollab\Shade\Command\BooksCommand());
+  $application->add(new ActiveCollab\Shade\Command\ProjectCommand());
   $application->run();

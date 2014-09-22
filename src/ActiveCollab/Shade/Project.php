@@ -2,6 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
+  use Shade\Book;
   use ActiveCollab\Shade\Error\ParseJsonError;
 
   /**
@@ -17,8 +18,6 @@
     private $path;
 
     /**
-     * Configuration data
-     *
      * @var array
      */
     private $configuration = [];
@@ -67,9 +66,9 @@
     /**
      * Return all project stories
      *
-     * @return Story[]
+     * @return Book[]
      */
-    function getStories() {
+    function getBooks() {
       $result = [];
 
       if(is_dir("$this->path/stories")) {
@@ -80,8 +79,8 @@
            */
           if(substr($file->getBasename(), 0, 1) != '.' && $file->getExtension() == 'narr') {
             $result[] = new Story($file->getPathname());
-          } // if
-        } // foreach
+          }
+        }
       }
 
       return $result;
@@ -91,11 +90,11 @@
      * Return story by name
      *
      * @param string $name
-     * @return Story|null
+     * @return Book|null
      */
-    function getStory($name) {
-      foreach($this->getStories() as $story) {
-        if($story->getName() === $name) {
+    function getBook($name) {
+      foreach($this->getBooks() as $story) {
+        if($story->getShortName() === $name) {
           return $story;
         }
       }
