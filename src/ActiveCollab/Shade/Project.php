@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use Shade\Element\Book;
+  use Shade\Element\Book, Shade\Element\Video;
   use ActiveCollab\Shade\Error\ParseJsonError;
   use Shade\ElementFinder\DefaultElementFinder;
 
@@ -133,6 +133,25 @@
      */
     function getBook($name) {
       return $this->getFinder()->getBook($name);
+    }
+
+    /**
+     * Return project videos
+     *
+     * @return Video[]
+     */
+    function getVideos()
+    {
+      return $this->getFinder()->getVideos();
+    }
+
+    /**
+     * @param string $name
+     * @return Video|null
+     */
+    function getVideo($name)
+    {
+      return $this->getFinder()->getVideo($name);
     }
 
     /**

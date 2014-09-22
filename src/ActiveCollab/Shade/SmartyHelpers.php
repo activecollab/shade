@@ -3,7 +3,7 @@
   namespace ActiveCollab\Shade;
 
   use Smarty;
-  use ActiveCollab\Shade, Shade\Element\Element, ActiveCollab\Shade\Error\ParamRequiredError;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Project, Shade\Element\Element, ActiveCollab\Shade\Error\ParamRequiredError;
 
   /**
    * Help element text helpers
@@ -13,8 +13,31 @@
   class SmartyHelpers
   {
     /**
-     * Current help element
+     * @var Project
+     */
+    private static $current_project;
+
+    /**
+     * Return current element
      *
+     * @return Project
+     */
+    public static function &getCurrentProject()
+    {
+      return self::$current_project;
+    }
+
+    /**
+     * Set current element
+     *
+     * @param Project $project
+     */
+    public static function setCurrentProject(Project $project)
+    {
+      self::$current_project = $project;
+    }
+
+    /**
      * @var Element
      */
     private static $current_element;
@@ -24,7 +47,7 @@
      *
      * @return Element
      */
-    public static function getCurrentElement()
+    public static function &getCurrentElement()
     {
       return self::$current_element;
     }
@@ -68,7 +91,7 @@
 
       $result = '';
 
-      $all_videos = AngieApplication::help()->getVideos(\Angie\Authentication::getLoggedUser());
+      $all_videos = self::getCurrentProject()->getVideos(\Angie\Authentication::getLoggedUser());
 
       foreach ($names as $name) {
         $video = $all_videos->get($name);
@@ -128,6 +151,7 @@
      * @param  Smarty      $smarty
      * @param  boolean     $repeat
      * @return string|null
+     * @throws ParamRequiredError
      */
     public static function block_book($params, $content, &$smarty, &$repeat)
     {
@@ -135,7 +159,11 @@
         return null;
       }
 
-      $name = array_required_var($params, 'name', true);
+      $name = isset($params['name']) && $params['name'] ? $params['name'] : null;
+
+      if (empty($name)) {
+        throw new ParamRequiredError('name');
+      }
 
       $book = AngieApplication::help()->getBooks(\Angie\Authentication::getLoggedUser())->get($name);
 

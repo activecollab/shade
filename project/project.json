@@ -5,5 +5,13 @@
   "default_locale": "en_US.UTF-8",
   "default_build_target" : "/Users/ilija/Temp/ShadeTarget",
   "copyright" : "A51 doo",
-  "copyright_since" : 2007
+  "copyright_since" : 2007,
+  "social_profiles" : {
+    "twitter" : "activecollab",
+    "facebook" : "activecollab",
+    "google_plus" : "activecollab"
+  },
+  "search" : {
+    "engine" : "elasticsearch"
+  }
 }

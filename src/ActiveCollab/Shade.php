@@ -5,6 +5,7 @@
   use ActiveCollab\Shade\Error\TempNotFoundError;
   use ActiveCollab\Shade\Error\ThemeNotFoundError;
   use ActiveCOllab\Shade\Project, ActiveCollab\Shade\Theme, Shade\Element\Element;
+  use ActiveCollab\Shade\SmartyHelpers;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, Urlify, Hyperlight\Hyperlight;
 
   /**
@@ -342,16 +343,14 @@
     /**
      * Render body of a given element
      *
-     * @param  HelpElement $element
-     * @param  User|null   $user
+     * @param  Element $element
      * @return string
      */
-    public function renderBody(HelpElement $element, User $user = null)
+    public function renderBody(Project $project, Element $element)
     {
-      $template = $this->smarty->createTemplate($element->getIndexFilePath());
-      $template->assign('user', $user);
+      $template = self::$smarty->createTemplate($element->getIndexFilePath());
 
-      HelpElementHelpers::setCurrentElement($element);
+      SmartyHelpers::setCurrentElement($element);
 
       $content = $template->fetch();
 
