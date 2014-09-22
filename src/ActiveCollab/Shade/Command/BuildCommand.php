@@ -41,15 +41,17 @@
 
         if (!$this->isValidTargetPath($target_path)) {
           $output->writeln("Build target '$target_path' not found or not writable");
+          return;
         }
 
         if (!($theme instanceof Theme)) {
           $output->writeln("Theme not found");
+          return;
         }
 
         foreach ([ 'prepareTargetPath', 'buildLandingPage', 'buildWhatsNew', 'buildReleaseNotes', 'buildBooks', 'buildVideos' ] as $build_step) {
-          if (!$theme->$build_step($input, $output, $project, $target_path, $theme)) {
-            $output->writeln("Build process failed at step '$build_step'. Aborting…");
+          if (!$this->$build_step($input, $output, $project, $target_path, $theme)) {
+            $output->writeln("Build process failed at step '$build_step'. Aborting...");
             return;
           }
         }
@@ -103,7 +105,10 @@
 
     private function prepareTargetPath(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
     {
+      Shade::clearDir($target_path);
+      Shade::copyDir($theme->getPath() . '/assets', "$target_path/assets");
 
+      return true;
     }
 
     private function buildLandingPage()
@@ -168,10 +173,10 @@
         $theme_name = $project->getDefaultBuildTheme();
       }
 
-      try {
+//      try {
         return Shade::getBuildTheme($theme_name);
-      } catch(Shade\Error\ThemeNotFoundError $e) {
-        return false;
-      }
+//      } catch(Shade\Error\ThemeNotFoundError $e) {
+//        return false;
+//      }
     }
   }

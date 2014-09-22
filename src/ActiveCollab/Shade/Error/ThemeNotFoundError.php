@@ -11,12 +11,13 @@
   {
     /**
      * @param string $name
+     * @param string $expected_location
      * @param string|null $message
      */
-    function __construct($name, $message = null)
+    function __construct($name, $expected_location, $message = null)
     {
       if (empty($message)) {
-        $message = "Theme '$name' was not found";
+        $message = "Theme '$name' was not found at '$expected_location'";
       }
 
       parent::__construct($message);

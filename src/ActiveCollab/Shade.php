@@ -2,7 +2,9 @@
 
   namespace ActiveCollab;
 
-  use Exception;
+  use ActiveCollab\Shade\Error\ThemeNotFoundError;
+  use ActiveCollab\Shade\Theme;
+  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator;
 
   /**
    * Main class for interaction with Shade projects
@@ -503,6 +505,22 @@
       }
     }
 
+    /**
+     * @param string $name
+     * @return Theme
+     * @throws ThemeNotFoundError
+     */
+    public static function getBuildTheme($name)
+    {
+      $theme_path = realpath(__DIR__ . "/../../themes/$name");
+
+      if ($theme_path && is_dir($theme_path)) {
+        return new Theme($theme_path);
+      } else {
+        throw new ThemeNotFoundError($name, $theme_path);
+      }
+    }
+
     // ---------------------------------------------------
     //  Utilities
     // ---------------------------------------------------
@@ -569,5 +587,43 @@
       }
 
       return $result;
+    }
+
+    /**
+     * @param string $source_path
+     * @param string $target_path
+     * @param callable|null $on_create_dir
+     * @param callable|null $on_copy_file
+     */
+    public static function copyDir($source_path, $target_path, $on_create_dir = null, $on_copy_file = null)
+    {
+      if (!is_dir($target_path)) {
+        mkdir($target_path, 0755);
+      }
+
+      /**
+       * @var RecursiveDirectoryIterator[] $iterator
+       */
+      foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
+
+        if ($item->isDir()) {
+          mkdir($target_path . DIRECTORY_SEPARATOR . $iterator->getSubPathname());
+
+          if ($on_create_dir) {
+            call_user_func($on_create_dir, $target_path . DIRECTORY_SEPARATOR . $iterator->getSubPathname());
+          }
+        } else {
+          copy($item, $target_path . DIRECTORY_SEPARATOR . $iterator->getSubPathname());
+
+          if ($on_copy_file) {
+            call_user_func($on_copy_file, $item->getPath(), $target_path . DIRECTORY_SEPARATOR . $iterator->getSubPathname());
+          }
+        }
+      }
+    }
+
+    public static function clearDir($path)
+    {
+
     }
   }
