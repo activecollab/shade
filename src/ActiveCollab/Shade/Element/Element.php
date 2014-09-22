@@ -1,6 +1,6 @@
 <?php
 
-  namespace Shade;
+  namespace Shade\Element;
 
   /**
    * Framework level help element implementation
@@ -283,34 +283,4 @@
     {
       return $this->getShortName();
     }
-
-    /**
-     * Describe parent object to be used in search result
-     *
-     * @return array
-     */
-    public function searchSerialize()
-    {
-      if ($this instanceof Book) {
-        $verbose_type = lang('Book');
-      } elseif ($this instanceof BookPage) {
-        $verbose_type = lang('Page');
-      } elseif ($this instanceof HelpWhatsNewArticle) {
-        $verbose_type = lang('Article');
-      } elseif ($this instanceof HelpVideo) {
-        $verbose_type = lang('Video');
-      } else {
-        $verbose_type = lang('Help');
-      }
-
-      return [
-        'id' => $this->getShortName(),
-        'type' => get_class($this),
-        'verbose_type' => $verbose_type,
-        'name' => $this->getTitle(),
-        'permalink' => $this->getUrl(),
-        'is_crossed_over' => false,
-      ];
-    }
-
   }

@@ -1,34 +1,44 @@
 <?php
 
-  namespace Shade;
+  namespace Shade\Element;
 
   /**
-   * What's new article element
+   * Framework level help book page class
    *
    * @package Shade
    */
-  abstract class WhatsNewArticle extends Element
+  class BookPage extends Element
   {
     /**
-     * Application version number
+     * Parent book name
      *
      * @var string
      */
-    private $version_number;
+    private $book_name;
 
     /**
      * Construct and load help element
      *
-     * @param string $module
-     * @param string $version_number
-     * @param string $path
-     * @param bool   $load
+     * @param string      $module
+     * @param Book|string $book
+     * @param string      $path
+     * @param bool        $load
      */
-    public function __construct($module, $version_number, $path, $load = true)
+    public function __construct($module, $book, $path, $load = true)
     {
-      $this->version_number = $version_number;
+      $this->book_name = $book instanceof Book ? $book->getShortName() : $book;
 
       parent::__construct($module, $path, $load);
+    }
+
+    /**
+     * Return book name
+     *
+     * @return string
+     */
+    public function getBookName()
+    {
+      return $this->book_name;
     }
 
     /**
@@ -39,16 +49,6 @@
     public function getShortName()
     {
       return $this->getSlug();
-    }
-
-    /**
-     * Return in which version change was introduced
-     *
-     * @return string
-     */
-    public function getVersionNumber()
-    {
-      return $this->version_number;
     }
 
     /**
@@ -77,8 +77,8 @@
           $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
         } else {
           $this->title = $title;
-        }
-      }
+        } // if
+      } // if
 
       return $this->title;
     }
@@ -98,18 +98,29 @@
     public function getSlug()
     {
       if ($this->slug === null) {
-        $this->slug = ''; // str_replace('.', '-', $this->version_number) . '-';
-
         $slug = $this->getProperty('slug');
 
         if (empty($slug)) {
-          $this->slug .= Angie\Inflector::slug($this->getTitle());
+          $this->slug = Angie\Inflector::slug($this->getTitle());
         } else {
-          $this->slug .= $slug;
-        }
-      }
+          $this->slug = $slug;
+        } // if
+      } // if
 
       return $this->slug;
+    }
+
+    /**
+     * Describe parent object to be used in search result
+     *
+     * @return array
+     */
+    public function searchSerialize()
+    {
+      $result = parent::searchSerialize();
+      $result['id'] = $this->getBookName() . '/' . $this->getShortName();
+
+      return $result;
     }
 
   }

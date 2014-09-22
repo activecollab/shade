@@ -1,6 +1,6 @@
 <?php
 
-  namespace Shade;
+  namespace Shade\Element;
 
   /**
    * Framework level help video class

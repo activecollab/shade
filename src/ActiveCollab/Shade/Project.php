@@ -2,8 +2,9 @@
 
   namespace ActiveCollab\Shade;
 
-  use Shade\Book;
+  use Shade\Element\Book;
   use ActiveCollab\Shade\Error\ParseJsonError;
+  use Shade\ElementFinder\DefaultElementFinder;
 
   /**
    * Narrative project
@@ -69,37 +70,17 @@
      * @return Book[]
      */
     function getBooks() {
-      $result = [];
-
-      if(is_dir("$this->path/stories")) {
-        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator("$this->path/stories")) as $file) {
-
-          /**
-           * @var \DirectoryIterator $file
-           */
-          if(substr($file->getBasename(), 0, 1) != '.' && $file->getExtension() == 'narr') {
-            $result[] = new Story($file->getPathname());
-          }
-        }
-      }
-
-      return $result;
+      return $this->getFinder()->getBooks();
     }
 
     /**
-     * Return story by name
+     * Get book by short name
      *
      * @param string $name
      * @return Book|null
      */
     function getBook($name) {
-      foreach($this->getBooks() as $story) {
-        if($story->getShortName() === $name) {
-          return $story;
-        }
-      }
-
-      return null;
+      return $this->getFinder()->getBook($name);
     }
 
     /**
@@ -109,5 +90,22 @@
      */
     function isValid() {
       return is_dir($this->path) && is_file($this->path . '/project.json');
+    }
+
+    /**
+     * @var \Shade\ElementFinder\ElementFinder
+     */
+    private $finder;
+
+    /**
+     * @return \Shade\ElementFinder\ElementFinder
+     */
+    function &getFinder()
+    {
+      if (empty($this->finder)) {
+        $this->finder = new DefaultElementFinder();
+      }
+
+      return $this->finder;
     }
   }
