@@ -238,7 +238,7 @@
       $version_path = dirname($article->getIndexFilePath());
 
       if (is_dir("$version_path/images")) {
-        Shade::copyDir("$version_path/images", "$target_path/assets/images/whats-new/$version_num", function($path) use (&$output) {
+        Shade::copyDir("$version_path/images", "$target_path/assets/images/whats-new/$version_num", null, function($path) use (&$output) {
           $output->writeln("$path copied");
         });
       }
@@ -286,19 +286,278 @@
       return null;
     }
 
-    public function buildReleaseNotes()
+    /**
+     * Build release notes
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param Project $project
+     * @param string $target_path
+     * @param Theme $theme
+     * @return bool
+     * @throws Exception
+     * @throws \SmartyException
+     */
+    public function buildReleaseNotes(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
     {
-
+      return true;
     }
 
-    public function buildBooks()
+    /**
+     * Build books and book pages
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param Project $project
+     * @param string $target_path
+     * @param Theme $theme
+     * @return bool
+     * @throws Exception
+     * @throws \SmartyException
+     */
+    public function buildBooks(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
     {
+      Shade::createDir("$target_path/books", function($path) use (&$output) {
+        $output->writeln("Directory '$path' created");
+      });
 
+      Shade::createDir("$target_path/assets/images/books", function($path) use (&$output) {
+        $output->writeln("Directory '$path' created");
+      });
+
+      $books = $project->getBooks();
+
+      foreach ($books as $book) {
+        $this->copyBookImages($book, $target_path, $output);
+      }
+
+      $this->smarty->assign('books', $books);
+
+      Shade::writeFile("$target_path/books/index.html", $this->smarty->fetch('books.tpl'), function($path) use (&$output) {
+        $output->writeln("File '$path' created");
+      });
+
+      foreach ($books as $book) {
+        Shade::createDir("$target_path/books/" . $book->getShortName(), function($path) use (&$output) {
+          $output->writeln("Directory '$path' created");
+        });
+
+        $pages = $book->getPages();
+
+        $this->smarty->assign([
+          'current_book' => $book,
+          'pages' => $pages,
+          'current_page' => $this->getCurrentPage($pages),
+          'sidebar_image' => '../../assets/images/books/' . $book->getShortName() . '/_cover_small.png'
+        ]);
+
+        Shade::writeFile("$target_path/books/" . $book->getShortName() . "/index.html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
+          $output->writeln("File '$path' created");
+        });
+
+        foreach ($pages as $page) {
+          $this->smarty->assign('current_page', $page);
+
+          Shade::writeFile("$target_path/books/" . $book->getShortName() . "/" . $page->getShortName() . ".html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
+            $output->writeln("File '$path' created");
+          });
+        }
+      }
+
+      return true;
+
+      // Copy images
+      $books_locations = array();
+
+      foreach(AngieApplication::getFrameworks() as $framework) {
+        $books_locations[] = $framework->getPath().'/help/books';
+      } // foreach
+
+      foreach(AngieApplication::getModules() as $module) {
+        $books_locations[] = $module->getPath().'/help/books';
+      } // foreach
+
+      if(is_foreachable($books_locations)) {
+        $this->createDir("$destination_path/assets/images/books", $output);
+
+        foreach($books_locations as $books_location) {
+          $book_folders = get_folders($books_location);
+
+          if($book_folders) {
+            foreach($book_folders as $book_folder) {
+              $book_short_name = basename($book_folder);
+
+              if(in_array(str_replace('_', '-', basename($book_folder)), $ignored_books)) {
+                continue;
+              } // if
+
+              if(is_dir("$books_location/$book_short_name/images")) {
+                $this->copyStructure("$books_location/$book_short_name/images", $destination_path.'/assets/images/books/'.str_replace('_', '-', basename($book_folder)), $output, true);
+              } // if
+            } // foreach
+          } // if
+        } // foreach
+      } // if
+
+      // Build books
+      $books_template = file_get_contents(HelpFramework::PATH . '/static/templates/books.html');
+      $books_list = '';
+
+      $books = AngieApplication::help()->getBooks();
+
+      if(is_foreachable($books)) {
+        foreach($books as $book) {
+          if(in_array($book->getShortName(), $ignored_books)) {
+            continue;
+          } // if
+
+          // Build book pages
+          $page_template = file_get_contents(HelpFramework::PATH . '/static/templates/pages.html');
+
+          $pages = $book->getPages();
+
+          if($pages->count()) {
+            $books_list .= '<li>
+              <a href="'.$book->getShortName().'/index.html">
+                <span class="book_cover"><img src="../assets/book_covers/'.$book->getShortName().'.png"></span>
+                <span class="book_name">'.$book->getTitle().'</span>
+                <span class="book_description">'.$book->getDescription().'</span>
+              </a>
+            </li>';
+
+            $this->createDir($destination_path.'/books/'.$book->getShortName(), $output);
+
+            $sidebar_menu = '<div id="help_book_cover"><img src="../../assets/book_covers/'.$book->getShortName().'.png"></div><ol>';
+
+            foreach($pages as $page) {
+              $sidebar_menu .= '<li><a href="'.$page->getShortName().'.html">'.$page->getTitle().'</a></li>';
+            } // foreach
+
+            $sidebar_menu .= '</ol>';
+
+            $length = $pages->count();
+            $keys = $pages->keys();
+
+            $counter = 0;
+            foreach($pages as $page) {
+              $sidebar_menu_selected = '';
+              if(strpos($sidebar_menu, $page->getShortName())) {
+                $sidebar_menu_selected = str_replace('<li><a href="' . $page->getShortName() . '.html">', '<li class="selected"><a href="' . $page->getShortName() . '.html">', $sidebar_menu);
+              } // if
+
+              $page_page = str_replace('--SIDEBAR-MENU--', $sidebar_menu_selected, $page_template);
+
+              // Generate prev/next links for current book page
+              if(in_array($page->getShortName(), $keys)) {
+
+                // First page
+                if($counter == 0) {
+                  $prev_link = '#';
+                  $next_link = $length == 1 ? '#' : $pages[$keys[$counter + 1]]->getShortName().'.html';
+
+                  // Second page
+                } elseif($counter == $length - 1) {
+                  $prev_link = $pages[$keys[$counter - 1]]->getShortName().'.html';
+                  $next_link = '#';
+
+                  // Other pages
+                } else {
+                  $prev_link = $pages[$keys[$counter - 1]]->getShortName().'.html';
+                  $next_link = $pages[$keys[$counter + 1]]->getShortName().'.html';
+                } // if
+              } // if
+
+              $prev = '<a href="'.$prev_link.'">&laquo; Prev</a>';
+              $next = '<a href="'.$next_link.'">Next &raquo;</a>';
+
+              // First page
+              if($counter == 0) {
+                $prev = '';
+              } // if
+
+              // Last page
+              if($counter == $length - 1) {
+                $next = '';
+              } // if
+
+              $content = '<div class="help_book_page">
+                <h1>'.$page->getTitle().'</h1>
+                <div class="help_book_page_content">'.AngieApplication::help()->renderBody($page).'</div>
+                <div class="help_book_footer">
+                  <div class="help_book_footer_inner">
+                    <div class="help_book_footer_prev">'.$prev.'</div>
+                    <div class="help_book_footer_top"><a href="#" onclick="window.scrollTo(0, 0); return false;">Back to the Top</a></div>
+                    <div class="help_book_footer_next">'.$next.'</div>
+                  </div>
+                </div>
+              </div>';
+
+              $page_page = str_replace('--CONTENT--', $content, $page_page);
+
+              // Make main book's page of the first one
+              if($counter == 0) {
+                $this->createFile($destination_path.'/books/'.$book->getShortName().'/index.html', $page_page, $output, true);
+              } // if
+
+              $this->createFile($destination_path.'/books/'.$book->getShortName().'/'.$page->getShortName().'.html', $page_page, $output, true);
+
+              $counter++;
+            } // foreach
+          } // if
+        } // foreach
+      } // if
+
+      $books_page = str_replace('--BOOKS-LIST--', $books_list, $books_template);
+      $this->createFile("$destination_path/books/index.html", $books_page, $output, true);
+
+      return true;
     }
 
-    public function buildVideos()
+    /**
+     * @param Book $book
+     * @param string $target_path
+     * @param OutputInterface $output
+     */
+    private function copyBookImages(Book $book, $target_path, OutputInterface $output)
     {
+      $book_path = $book->getPath();
+      $book_name = $book->getShortName();
 
+      if (is_dir("$book_path/images")) {
+        Shade::copyDir("$book_path/images", "$target_path/assets/images/books/$book_name", null, function($path) use (&$output) {
+          $output->writeln("$path copied");
+        });
+      }
+    }
+
+    /**
+     * @param BookPage[] $pages
+     * @return BookPage
+     */
+    private function getCurrentPage($pages)
+    {
+      foreach ($pages as $page) {
+        return $page;
+      }
+
+      return null;
+    }
+
+    /**
+     * Build videos
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param Project $project
+     * @param string $target_path
+     * @param Theme $theme
+     * @return bool
+     * @throws Exception
+     * @throws \SmartyException
+     */
+    public function buildVideos(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    {
+      return true;
     }
 
     /**

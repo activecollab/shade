@@ -59,35 +59,20 @@
   <div id="content">
     <div id="help_books">
       <ul>
-        --BOOKS-LIST--
+      <{foreach $books as $book}>
+        <li>
+          <a href="<{$book->getShortName()}>/index.html">
+            <span class="book_cover"><img src="../assets/images/books/<{$book->getShortName()}>/_cover_small.png"></span>
+            <span class="book_name"><{$book->getTitle()}></span>
+            <span class="book_description"><{$book->getDescription()}></span>
+          </a>
+        </li>
+      <{/foreach}>
       </ul>
     </div>
   </div>
 
-  <div id="footer">
-    <div class="footer_space"></div>
-    <div class="rights"><p>&copy; 2013 &middot; A51, All rights reserved</p></div>
-
-    <div class="social">
-      <p>Stay up to date with all new features:</p>
-      <ul class="links">
-        <li><a href="https://twitter.com/activecollab" target="_blank"><img title="Twitter" alt="Twitter" src="../assets/images/icon_twitter.png"></a></li>
-        <li><a href="https://www.facebook.com/activecollab" target="_blank"><img title="Facebook" alt="Facebook" src="../assets/images/icon_facebook.png"></a></li>
-        <li><a href="https://plus.google.com/+activecollab" target="_blank"><img title="Google+" alt="Google+" src="../assets/images/icon_google.png"></a></li>
-      </ul>
-    </div>
-  </div>
+  <{include "footer.tpl"}>
 </div>
-
-<script type="text/javascript">
-  var __lc = {};
-  __lc.license = 1038879;
-
-  (function() {
-    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-  })();
-</script>
 </body>
 </html>
