@@ -43,22 +43,22 @@
     <{include "whats_new_sidebar.tpl"}>
 
     <div id="help_book_pages">
-    <{foreach $whats_new_articles as $article}>
+      <{if $current_whats_new_article}>
       <div class="help_book_page">
-        <h1><{$article->getTitle()}></h1>
-        <div class="help_book_page_content"><{$article->renderBody() nofilter}></div>
+        <h1><{$current_whats_new_article->getTitle()}></h1>
+        <div class="help_book_page_content"><{$current_whats_new_article->renderBody() nofilter}></div>
         <div class="help_book_page_comments">
           <div id="disqus_thread"></div>
         </div>
         <div class="help_book_footer">
           <div class="help_book_footer_inner">
-            <div class="help_book_footer_prev">PREV</div>
+            <div class="help_book_footer_prev"><a href="#">&laquo; Pref</a></div>
             <div class="help_book_footer_top"><a href="#" onclick="window.scrollTo(0, 0); return false;">Back to the Top</a></div>
-            <div class="help_book_footer_next">NEXT</div>
+            <div class="help_book_footer_next"><a href="#">Next &raquo;</a></div>
           </div>
         </div>
       </div>
-    <{/foreach}>
+      <{/if}>
     </div>
     <div class="clear"></div>
   </div>
