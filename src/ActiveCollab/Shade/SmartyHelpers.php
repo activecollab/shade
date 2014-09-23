@@ -64,6 +64,14 @@
     }
 
     /**
+     * Reset current element and project
+     */
+    public static function resetCurrentElementAndProject()
+    {
+      self::$current_element = self::$current_project = null;
+    }
+
+    /**
      * Image function
      *
      * @param  array  $params
@@ -104,7 +112,7 @@
 
         // Check if we have a video instance. If not, ignore (don't break the system in case of a missing video)
         if ($video instanceof Video) {
-          $result .= '<li><a href="' . Shade::clean($video->getUrl()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . gettext('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
+          $result .= '<li><a href="' . Shade::clean($video->getUrl()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . Shade::lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
 
           if ($video->getDescription()) {
             $result .= ' &mdash; ' . Shade::clean($video->getDescription());
@@ -115,7 +123,7 @@
       }
 
       if ($result) {
-        return '<div class="related_videos"><h3>' . gettext('Related Video') . '</h3><ul>' . $result . '</ul></div>';
+        return '<div class="related_videos"><h3>' . Shade::lang('Related Video') . '</h3><ul>' . $result . '</ul></div>';
       }
 
       return '';
@@ -473,7 +481,7 @@
         $slug = Shade::slug($content);
       }
 
-      return '<h3 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . gettext('Link to this Section') . '" class="sub_permalink">#</a></h3>';
+      return '<h3 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . Shade::lang('Link to this Section') . '" class="sub_permalink">#</a></h3>';
     }
 
     /**

@@ -40,43 +40,30 @@
   </div>
 
   <div id="content">
-    <div id="sidebar">
-      --SIDEBAR-MENU--
-      <div id="release_notes">
-        <a href="./../release-notes/index.html">activeCollab Release Notes</a>
-      </div>
-    </div>
+    <{include "whats_new_sidebar.tpl"}>
 
     <div id="help_book_pages">
-      --CONTENT--
+    <{foreach $whats_new_articles as $article}>
+      <div class="help_book_page">
+        <h1><{$article->getTitle()}></h1>
+        <div class="help_book_page_content"><{$article->renderBody() nofilter}></div>
+        <div class="help_book_page_comments">
+          <div id="disqus_thread"></div>
+        </div>
+        <div class="help_book_footer">
+          <div class="help_book_footer_inner">
+            <div class="help_book_footer_prev">PREV</div>
+            <div class="help_book_footer_top"><a href="#" onclick="window.scrollTo(0, 0); return false;">Back to the Top</a></div>
+            <div class="help_book_footer_next">NEXT</div>
+          </div>
+        </div>
+      </div>
+    <{/foreach}>
     </div>
     <div class="clear"></div>
   </div>
 
-  <div id="footer">
-    <div class="footer_space"></div>
-    <div class="rights"><p>&copy; 2013 &middot; A51, All rights reserved</p></div>
-
-    <div class="social">
-      <p>Stay up to date with all new features:</p>
-      <ul class="links">
-        <li><a href="https://twitter.com/activecollab" target="_blank"><img title="Twitter" alt="Twitter" src="../assets/images/icon_twitter.png"></a></li>
-        <li><a href="https://www.facebook.com/activecollab" target="_blank"><img title="Facebook" alt="Facebook" src="../assets/images/icon_facebook.png"></a></li>
-        <li><a href="https://plus.google.com/+activecollab" target="_blank"><img title="Google+" alt="Google+" src="../assets/images/icon_google.png"></a></li>
-      </ul>
-    </div>
-  </div>
+  <{include "footer.tpl"}>
 </div>
-
-<script type="text/javascript">
-  var __lc = {};
-  __lc.license = 1038879;
-
-  (function() {
-    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-  })();
-</script>
 </body>
 </html>

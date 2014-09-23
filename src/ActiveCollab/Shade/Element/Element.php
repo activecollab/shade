@@ -137,19 +137,20 @@
     /**
      * Render body of a given element
      *
-     * @param  Smarty  $smarty
-     * @param  Element $element
      * @return string
      */
-    public function renderBody(Smarty &$smarty, Element $element)
+    public function renderBody()
     {
-      $template = $smarty->createTemplate($element->getIndexFilePath());
+      $smarty =& Shade::getSmarty();
 
-      SmartyHelpers::setCurrentElement($element);
+      $template = $smarty->createTemplate($this->getIndexFilePath());
+
+      SmartyHelpers::setCurrentElement($this);
+      SmartyHelpers::setCurrentProject($this->project);
 
       $content = $template->fetch();
 
-      SmartyHelpers::setCurrentElement(null);
+      SmartyHelpers::resetCurrentElementAndProject();
 
       $separator_pos = strpos($content, self::PROPERTIES_SEPARATOR);
 

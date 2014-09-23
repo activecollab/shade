@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
   use ActiveCollab\Shade\Error\ParseJsonError;
   use ActiveCollab\Shade\ElementFinder\DefaultElementFinder;
 
@@ -246,7 +246,7 @@
 
         if (!is_array($this->video_groups)) {
           $this->video_groups = [
-            Video::GETTING_STARTED => gettext('Getting Started'),
+            Video::GETTING_STARTED => Shade::lang('Getting Started'),
           ];
         }
       }

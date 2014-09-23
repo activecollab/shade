@@ -6,7 +6,7 @@
   use ActiveCollab\Shade\Error\ThemeNotFoundError;
   use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\NamedList;
   use ActiveCollab\Shade\SmartyHelpers;
-  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, Urlify, Hyperlight\Hyperlight;
+  use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
   /**
    * Main class for interaction with Shade projects
@@ -44,7 +44,7 @@
     /**
      * Return URL of an element
      *
-     * @param  Element   $element
+     * @param  Element $element
      * @return string
      * @throws Exception
      */
@@ -84,7 +84,7 @@
     /**
      * Set URL generator
      *
-     * @param  callable|null      $generator
+     * @param  callable|null $generator
      * @throws \Exception
      */
     public function setImageUrlGenerator($generator)
@@ -100,7 +100,7 @@
      * Return image URL
      *
      * @param  Element $current_element
-     * @param  string  $name
+     * @param  string $name
      * @return string
      */
     public static function getImageUrl($current_element, $name)
@@ -146,14 +146,15 @@
     private static $smarty = false;
 
     /**
-     * Prepare and return Smarty instance
+     * Initialize Smarty
      *
-     * @param Theme $theme
      * @param Project $project
+     * @param Theme $theme
      * @return Smarty
      * @throws TempNotFoundError
+     * @throws \SmartyException
      */
-    public static function &getSmarty(Project $project, Theme $theme)
+    public static function &initSmarty(Project $project, Theme $theme)
     {
       if (self::$smarty === false) {
         self::$smarty = new Smarty();
@@ -172,7 +173,7 @@
 
           if (substr($method_name, 0, 6) === 'block_') {
             self::$smarty->registerPlugin('block', substr($method_name, 6), ['\ActiveCollab\Shade\SmartyHelpers', $method_name]);
-          } elseif (substr($method_name, 9) === 'function_') {
+          } elseif (substr($method_name, 0, 9) === 'function_') {
             self::$smarty->registerPlugin('function', substr($method_name, 9), ['\ActiveCollab\Shade\SmartyHelpers', $method_name]);
           };
         }
@@ -183,6 +184,16 @@
         ]);
       }
 
+      return self::$smarty;
+    }
+
+    /**
+     * Return prepared Smarty instance
+     *
+     * @return Smarty
+     */
+    public static function &getSmarty()
+    {
       return self::$smarty;
     }
 
@@ -229,7 +240,7 @@
     /**
      * Returns true if $version is a valid angie application version number
      *
-     * @param  string  $version
+     * @param  string $version
      * @return boolean
      */
     public static function isValidVersionNumber($version)
@@ -254,6 +265,17 @@
     }
 
     /**
+     * Return a message
+     *
+     * @param string $message
+     * @return string
+     */
+    public static function lang($message)
+    {
+      return function_exists('gettext') ? gettext($message) : $message;
+    }
+
+    /**
      * Equivalent to htmlspecialchars(), but allows &#[0-9]+ (for unicode)
      *
      * @param string $str
@@ -264,7 +286,7 @@
     {
       if (is_scalar($str)) {
         $str = preg_replace('/&(?!#(?:[0-9]+|x[0-9A-F]+);?)/si', '&amp;', $str);
-        $str = str_replace([ '<', '>', '"' ], [ '&lt;', '&gt;', '&quot;' ], $str);
+        $str = str_replace(['<', '>', '"'], ['&lt;', '&gt;', '&quot;'], $str);
 
         return $str;
       } elseif ($str === null) {
@@ -282,9 +304,9 @@
      */
     public static function underscore($camel_cased_word)
     {
-      $camel_cased_word = preg_replace('/([A-Z]+)([A-Z])/','\1_\2', $camel_cased_word);
+      $camel_cased_word = preg_replace('/([A-Z]+)([A-Z])/', '\1_\2', $camel_cased_word);
 
-      return strtolower(preg_replace('/([a-z])([A-Z])/','\1_\2', $camel_cased_word));
+      return strtolower(preg_replace('/([a-z])([A-Z])/', '\1_\2', $camel_cased_word));
     }
 
     /**
@@ -313,8 +335,8 @@
     /**
      * Open HTML tag
      *
-     * @param  string               $name
-     * @param  array                $attributes
+     * @param  string $name
+     * @param  array $attributes
      * @param  callable|string|null $content
      * @return string
      */
@@ -369,7 +391,8 @@
      * @param string $syntax
      * @return string
      */
-    public static function highlightCode($content, $syntax) {
+    public static function highlightCode($content, $syntax)
+    {
       $content = trim($content);
 
       if ($syntax) {
@@ -382,9 +405,9 @@
       $number_of_lines = count(explode("\n", $content));
 
       $output = '<div class="syntax_higlighted source-code">';
-      $output.= 	'<div class="syntax_higlighted_line_numbers lines"><pre>' . implode("\n", range(1, $number_of_lines)) . '</pre></div>';
-      $output.=		'<div class="syntax_higlighted_source"><pre>' . $content . '</pre></div>';
-      $output.= '</div>';
+      $output .= '<div class="syntax_higlighted_line_numbers lines"><pre>' . implode("\n", range(1, $number_of_lines)) . '</pre></div>';
+      $output .= '<div class="syntax_higlighted_source"><pre>' . $content . '</pre></div>';
+      $output .= '</div>';
 
       return $output;
     }
@@ -418,6 +441,21 @@
           if ($on_copy_file) {
             call_user_func($on_copy_file, $item->getPath(), $target_path . DIRECTORY_SEPARATOR . $iterator->getSubPathname());
           }
+        }
+      }
+    }
+
+    /**
+     * Create a new directory at $path
+     *
+     * @param string $path
+     * @param callable|null $on_item_created
+     */
+    public static function createDir($path, $on_item_created)
+    {
+      if (mkdir($path)) {
+        if ($on_item_created) {
+          call_user_func($on_item_created, $path);
         }
       }
     }
