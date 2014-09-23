@@ -9,6 +9,6 @@
 <{/foreach}>
 
   <div id="release_notes">
-    <a href="./../release-notes/index.html">activeCollab Release Notes</a>
+    <a href="./../release-notes/index.html">Release Notes</a>
   </div>
 </div>
