@@ -95,7 +95,8 @@
         if ($answers_common_question) {
           $common_questions[] = [
             'question' => $answers_common_question,
-            'page_url' => $page->getUrl(),
+            'book' => $this->getShortName(),
+            'page' => $page->getShortName(),
             'position' => (integer) $page->getProperty('answer_position'),
           ];
         }

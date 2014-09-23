@@ -116,6 +116,10 @@
       return $this->path;
     }
 
+    // ---------------------------------------------------
+    //  Books
+    // ---------------------------------------------------
+
     /**
      * Get path of books folder
      *
@@ -152,6 +156,30 @@
     function getBookPages(Book $book)
     {
       return $this->getFinder()->getBookPages($book);
+    }
+
+    /**
+     * Return array of common questions
+     *
+     * @return array
+     */
+    public function getCommonQuestions()
+    {
+      $result = [];
+
+      foreach ($this->getBooks() as $book) {
+        $book->populateCommonQuestionsList($result);
+      }
+
+      usort($result, function ($a, $b) {
+        if ($a['position'] == $b['position']) {
+          return 0;
+        }
+
+        return ($a['position'] < $b['position']) ? -1 : 1;
+      });
+
+      return $result;
     }
 
     // ---------------------------------------------------

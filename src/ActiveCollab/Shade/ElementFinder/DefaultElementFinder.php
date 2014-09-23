@@ -121,8 +121,6 @@
         }
       }
 
-
-
       $result = new NamedList();
 
       foreach ($files as $version_num => $version_files) {

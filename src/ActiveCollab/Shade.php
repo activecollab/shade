@@ -16,165 +16,6 @@
     const VERSION = '1.0.0';
 
     /**
-     * Name of the default video group
-     */
-    const GETTING_STARTED_VIDEO_GROUP = 'getting-started';
-
-    /**
-     * Cached array of articles
-     *
-     * @var array
-     */
-    private $whats_new_articles = [];
-
-    /**
-     * Return list of articles that $user can see
-     *
-     * @param  User|null                       $user
-     * @return HelpWhatsNewArticle[]|NamedList
-     */
-    public function getWhatsNew(User $user = null)
-    {
-      $key = $user instanceof User ? $user->getId() : 'all';
-
-      if (empty($this->whats_new_articles[$key])) {
-        $articles = new NamedList();
-
-        foreach (AngieApplication::getModules() as $module) {
-          $whats_new_folders = get_folders($module->getPath() . '/help/whats_new');
-
-          if ($whats_new_folders) {
-            rsort($whats_new_folders);
-
-            foreach ($whats_new_folders as $whats_new_folder) {
-              $version_number = basename($whats_new_folder);
-
-              if ($this->isValidVersionNumber($version_number)) {
-                $whats_new_files = get_files($whats_new_folder, 'md');
-
-                if ($whats_new_files) {
-                  sort($whats_new_files);
-
-                  foreach ($whats_new_files as $whats_new_file) {
-                    $article = new HelpWhatsNewArticle($module->getName(), $version_number, $whats_new_file);
-
-                    if ($article->isLoaded()) {
-                      if ($user instanceof User && !$article->canView($user)) {
-                        continue;
-                      }
-
-                      $articles->add($article->getShortName(), $article);
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        $this->whats_new_articles[$key] = $articles;
-      }
-
-      return $this->whats_new_articles[$key];
-    }
-
-    /**
-     * Returns true if $version is a valid angie application version number
-     *
-     * @param  string  $version
-     * @return boolean
-     */
-    public static function isValidVersionNumber($version)
-    {
-      if (strpos($version, '.') !== false) {
-        $parts = explode('.', $version);
-
-        if (count($parts) == 3) {
-          foreach ($parts as $part) {
-            if (!is_numeric($part)) {
-              return false;
-            }
-          }
-
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    }
-
-    /**
-     * Cached list of books
-     *
-     * @var array
-     */
-    private $books = [];
-
-    /**
-     * Return books that $user can access
-     *
-     * @param  User                 $user
-     * @return HelpBook[]|NamedList
-     */
-    public function getBooks(User $user = null)
-    {
-      $key = $user instanceof User ? $user->getId() : 'all';
-
-      if (empty($this->books[$key])) {
-        $books = new NamedList();
-
-        $possible_locations = array();
-
-        foreach (AngieApplication::getFrameworks() as $framework) {
-          $possible_locations[$framework->getName()] = $framework->getPath() . '/help/books';
-        }
-
-        foreach (AngieApplication::getModules() as $module) {
-          $possible_locations[$module->getName()] = $module->getPath() . '/help/books';
-        }
-
-        foreach ($possible_locations as $module_name => $path) {
-          $book_folders = get_folders($path);
-
-          if ($book_folders) {
-            foreach ($book_folders as $book_folder) {
-              $book = new HelpBook($module_name, $book_folder);
-
-              if ($book->isLoaded()) {
-                if ($user instanceof User && !$book->canView($user)) {
-                  continue; // Skip if user can't see this book
-                }
-
-                $books->add($book->getShortName(), $book);
-              }
-            }
-          }
-        }
-
-        $books->sort(function ($a, $b) {
-          if ($a instanceof HelpBook && $b instanceof HelpBook) {
-            $order_a = (integer) $a->getProperty('position');
-            $order_b = (integer) $b->getProperty('position');
-
-            if ($order_a == $order_b) {
-              return 0;
-            }
-
-            return ($order_a < $order_b) ? -1 : 1;
-          }
-
-          return 0;
-        });
-
-        $this->books[$key] = $books;
-      }
-
-      return $this->books[$key];
-    }
-
-    /**
      * Return array of common questions
      *
      * @return array
@@ -207,18 +48,6 @@
 //        return $result;
 //      });
     } // getCommonQuestions
-
-    /**
-     * Return array of video groups
-     *
-     * @return NamedList
-     */
-    public function getVideoGroups()
-    {
-      return new NamedList(array(
-      AngieHelpDelegate::GETTING_STARTED_VIDEO_GROUP => gettext('Getting Started'),
-      ));
-    } // getVideoGroups
 
     /**
      * Cached array of videos
@@ -549,6 +378,33 @@
     // ---------------------------------------------------
     //  Utilities
     // ---------------------------------------------------
+
+    /**
+     * Returns true if $version is a valid angie application version number
+     *
+     * @param  string  $version
+     * @return boolean
+     */
+    public static function isValidVersionNumber($version)
+    {
+      if (strpos($version, '.') !== false) {
+        $parts = explode('.', $version);
+
+        if (count($parts) == 3) {
+          foreach ($parts as $part) {
+            if (!is_numeric($part)) {
+              return false;
+            }
+          }
+
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
 
     /**
      * Equivalent to htmlspecialchars(), but allows &#[0-9]+ (for unicode)

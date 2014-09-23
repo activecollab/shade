@@ -41,7 +41,7 @@
         $this->group_name = $this->getProperty('group');
 
         if (empty($this->group_name)) {
-          $this->group_name = AngieHelpDelegate::GETTING_STARTED_VIDEO_GROUP;
+          $this->group_name = self::GETTING_STARTED;
         }
       }
 
