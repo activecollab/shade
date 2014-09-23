@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video;
+  use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
   use ActiveCollab\Shade\Error\ParseJsonError;
   use ActiveCollab\Shade\ElementFinder\DefaultElementFinder;
 
@@ -116,10 +116,15 @@
       return $this->path;
     }
 
+    function getBooksPath()
+    {
+      return $this->getPath() . '/en_US.UTF-8/books';
+    }
+
     /**
      * Return all project stories
      *
-     * @return Book[]
+     * @return Book[]|NamedList
      */
     function getBooks() {
       return $this->getFinder()->getBooks();
@@ -137,7 +142,7 @@
 
     /**
      * @param Book $book
-     * @return BookPage[]|null
+     * @return BookPage[]|NamedList
      */
     function getBookPages(Book $book)
     {
@@ -145,7 +150,7 @@
     }
 
     /**
-     * @return \ActiveCollab\Shade\Element\WhatsNewArticle[]|null
+     * @return WhatsNewArticle[]|NamedList
      */
     function getWhatsNewArticles()
     {
@@ -156,7 +161,7 @@
      * Return what's new article
      *
      * @param string $name
-     * @return \ActiveCollab\Shade\Element\WhatsNewArticle[]|null
+     * @return WhatsNewArticle|null
      */
     function getWhatsNewArticle($name)
     {
@@ -166,7 +171,7 @@
     /**
      * Return project videos
      *
-     * @return Video[]
+     * @return Video[]|NamedList
      */
     function getVideos()
     {
@@ -202,7 +207,7 @@
     function &getFinder()
     {
       if (empty($this->finder)) {
-        $this->finder = new DefaultElementFinder();
+        $this->finder = new DefaultElementFinder($this);
       }
 
       return $this->finder;

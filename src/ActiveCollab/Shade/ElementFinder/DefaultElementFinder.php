@@ -16,7 +16,21 @@
      */
     function getBooks()
     {
+      $result = new NamedList();
 
+      if (is_dir($this->project->getBooksPath())) {
+        foreach (new DirectoryIterator($this->project->getBooksPath()) as $file) {
+          if (!$file->isDot() && $file->isDir()) {
+            $book = new Book($this->project, $file->getPathname());
+
+            if ($book->isLoaded()) {
+              $result->add($book->getShortName(), $book);
+            }
+          }
+        }
+      }
+
+      return $result;
     }
 
     /**

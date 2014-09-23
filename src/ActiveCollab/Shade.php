@@ -13,6 +13,8 @@
    */
   final class Shade
   {
+    const VERSION = '1.0.0';
+
     /**
      * Name of the default video group
      */
