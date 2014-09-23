@@ -1,8 +1,8 @@
 <?php
 
-  namespace Shade\Element;
+  namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Error\ElementFileNotFoundError;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Error\ElementFileNotFoundError;
 
   /**
    * Framework level help element implementation
@@ -17,11 +17,9 @@
     const PROPERTIES_SEPARATOR = '================================================================';
 
     /**
-     * Name of the module or framework that this book belongs to
-     *
-     * @var string
+     * @var Project
      */
-    protected $module;
+    private $project;
 
     /**
      * Book's path
@@ -61,13 +59,13 @@
     /**
      * Construct and load help element
      *
-     * @param string $module
-     * @param string $path
-     * @param bool   $load
+     * @param Project $project
+     * @param string  $path
+     * @param bool    $load
      */
-    public function __construct($module, $path, $load = true)
+    public function __construct(Project $project, $path, $load = true)
     {
-      $this->module = $module;
+      $this->project = $project;
       $this->path = $path;
 
       if ($load) {
@@ -86,13 +84,11 @@
     }
 
     /**
-     * Return module name
-     *
-     * @return string
+     * @return Project
      */
-    public function getModuleName()
+    public function getProject()
     {
-      return $this->module;
+      return $this->project;
     }
 
     /**
@@ -156,6 +152,14 @@
     public function isLoaded()
     {
       return $this->is_loaded;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+      return $this->path;
     }
 
     /**
@@ -231,19 +235,5 @@
     private function loadProperty($name, $value)
     {
       $this->properties[Shade::underscore(str_replace(' ', '', $name))] = $value;
-    }
-
-    // ---------------------------------------------------
-    //  Interfaces
-    // ---------------------------------------------------
-
-    /**
-     * Return object ID
-     *
-     * @return int|string
-     */
-    public function getId()
-    {
-      return $this->getShortName();
     }
   }

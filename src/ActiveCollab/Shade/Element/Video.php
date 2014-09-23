@@ -1,6 +1,6 @@
 <?php
 
-  namespace Shade\Element;
+  namespace ActiveCollab\Shade\Element;
 
   use ActiveCollab\Shade;
 

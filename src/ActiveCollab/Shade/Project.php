@@ -2,9 +2,9 @@
 
   namespace ActiveCollab\Shade;
 
-  use Shade\Element\Book, Shade\Element\Video;
+  use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video;
   use ActiveCollab\Shade\Error\ParseJsonError;
-  use Shade\ElementFinder\DefaultElementFinder;
+  use ActiveCollab\Shade\ElementFinder\DefaultElementFinder;
 
   /**
    * Narrative project
@@ -136,6 +136,34 @@
     }
 
     /**
+     * @param Book $book
+     * @return BookPage[]|null
+     */
+    function getBookPages(Book $book)
+    {
+      return $this->getFinder()->getBookPages($book);
+    }
+
+    /**
+     * @return \ActiveCollab\Shade\Element\WhatsNewArticle[]|null
+     */
+    function getWhatsNewArticles()
+    {
+      return $this->getFinder()->getWhatsNewArticles();
+    }
+
+    /**
+     * Return what's new article
+     *
+     * @param string $name
+     * @return \ActiveCollab\Shade\Element\WhatsNewArticle[]|null
+     */
+    function getWhatsNewArticle($name)
+    {
+      return $this->getFinder()->getWhatsNewArticle($name);
+    }
+
+    /**
      * Return project videos
      *
      * @return Video[]
@@ -164,12 +192,12 @@
     }
 
     /**
-     * @var \Shade\ElementFinder\ElementFinder
+     * @var \ActiveCollab\Shade\ElementFinder\ElementFinder
      */
     private $finder;
 
     /**
-     * @return \Shade\ElementFinder\ElementFinder
+     * @return \ActiveCollab\Shade\ElementFinder\ElementFinder
      */
     function &getFinder()
     {

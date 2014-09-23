@@ -4,7 +4,7 @@
 
   use ActiveCollab\Shade\Error\TempNotFoundError;
   use ActiveCollab\Shade\Error\ThemeNotFoundError;
-  use ActiveCOllab\Shade\Project, ActiveCollab\Shade\Theme, Shade\Element\Element;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\NamedList;
   use ActiveCollab\Shade\SmartyHelpers;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, Urlify, Hyperlight\Hyperlight;
 
@@ -74,7 +74,7 @@
       }
 
       return $this->whats_new_articles[$key];
-    } // getWhatsNew
+    }
 
     /**
      * Cached previous version number
@@ -106,7 +106,7 @@
       } else {
         return true; // Everything is new when you install a fresh copy of the system
       }
-    } // isNewSinceLastUpgrade
+    }
 
     /**
      * Returns true if $version is a valid angie application version number
@@ -133,14 +133,14 @@
       } else {
         return false;
       }
-    } // isValidVersionNumber
+    }
 
     /**
      * Cached list of books
      *
      * @var array
      */
-    private $books = array();
+    private $books = [];
 
     /**
      * Return books that $user can access
@@ -202,7 +202,7 @@
       }
 
       return $this->books[$key];
-    } // getBooks
+    }
 
     /**
      * Return array of common questions
@@ -246,7 +246,7 @@
     public function getVideoGroups()
     {
       return new NamedList(array(
-      AngieHelpDelegate::GETTING_STARTED_VIDEO_GROUP => lang('Getting Started'),
+      AngieHelpDelegate::GETTING_STARTED_VIDEO_GROUP => gettext('Getting Started'),
       ));
     } // getVideoGroups
 
@@ -564,6 +564,16 @@
       }
 
       return self::$temp_path;
+    }
+
+    /**
+     * Check if we are in testing mode
+     *
+     * @return bool
+     */
+    public static function isTesting()
+    {
+      return true;
     }
 
     // ---------------------------------------------------

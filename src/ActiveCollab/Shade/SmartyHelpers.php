@@ -2,8 +2,9 @@
 
   namespace ActiveCollab\Shade;
 
+  use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
   use Smarty;
-  use ActiveCollab\Shade, ActiveCollab\Shade\Project, Shade\Element\Element, ActiveCollab\Shade\Error\ParamRequiredError;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Error\ParamRequiredError;
 
   /**
    * Help element text helpers
@@ -84,21 +85,26 @@
      * @param  array  $params
      * @param  Smarty $smarty
      * @return string
+     * @throws ParamRequiredError
      */
     public static function function_related_video($params, &$smarty)
     {
-      $names = explode(',', array_required_var($params, 'name'));
+      $names = isset($params['name']) ? explode(',', $params['name']) : null;
+
+      if (empty($names)) {
+        throw new ParamRequiredError('name parameter is required');
+      }
 
       $result = '';
 
-      $all_videos = self::getCurrentProject()->getVideos(\Angie\Authentication::getLoggedUser());
+      $all_videos = self::getCurrentProject()->getVideos();
 
       foreach ($names as $name) {
         $video = $all_videos->get($name);
 
         // Check if we have a video instance. If not, ignore (don't break the system in case of a missing video)
-        if ($video instanceof HelpVideo) {
-          $result .= '<li><a href="' . Shade::clean($video->getUrl()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
+        if ($video instanceof Video) {
+          $result .= '<li><a href="' . Shade::clean($video->getUrl()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . gettext('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
 
           if ($video->getDescription()) {
             $result .= ' &mdash; ' . Shade::clean($video->getDescription());
@@ -109,7 +115,7 @@
       }
 
       if ($result) {
-        return '<div class="related_videos"><h3>' . lang('Related Video') . '</h3><ul>' . $result . '</ul></div>';
+        return '<div class="related_videos"><h3>' . gettext('Related Video') . '</h3><ul>' . $result . '</ul></div>';
       }
 
       return '';
@@ -123,6 +129,7 @@
      * @param  Smarty      $smarty
      * @param  boolean     $repeat
      * @return string|null
+     * @throws ParamRequiredError
      */
     public static function block_news_article($params, $content, &$smarty, &$repeat)
     {
@@ -130,11 +137,15 @@
         return null;
       }
 
-      $name = array_required_var($params, 'name', true);
+      $name = isset($params['name']) ? $params['name'] : null;
 
-      $article = AngieApplication::help()->getWhatsNew(\Angie\Authentication::getLoggedUser())->get($name);
+      if (empty($name)) {
+        throw new ParamRequiredError('name is required');
+      }
 
-      if ($article instanceof HelpWhatsNewArticle) {
+      $article = self::getCurrentProject()->getWhatsNewArticle($name);
+
+      if ($article instanceof WhatsNewArticle) {
         $params['href'] = $article->getUrl();
 
         return Shade::htmlTag('a', $params, $content);
@@ -165,9 +176,9 @@
         throw new ParamRequiredError('name');
       }
 
-      $book = AngieApplication::help()->getBooks(\Angie\Authentication::getLoggedUser())->get($name);
+      $book = self::getCurrentProject()->getBook($name);
 
-      if ($book instanceof HelpBook) {
+      if ($book instanceof Book) {
         $params['href'] = $book->getUrl();
 
         if ($book->getDescription()) {
@@ -188,6 +199,7 @@
      * @param  Smarty      $smarty
      * @param  boolean     $repeat
      * @return string|null
+     * @throws ParamRequiredError
      */
     public static function block_page($params, $content, &$smarty, &$repeat)
     {
@@ -195,25 +207,28 @@
         return null;
       }
 
-      $name = array_required_var($params, 'name', true);
-      $book_name = array_var($params, 'book', null, true);
+      $name = isset($params['name']) && $params['name'] ? $params['name'] : null;
+
+      if (empty($name)) {
+        throw new ParamRequiredError('name');
+      }
+
+      $book_name = isset($params['book']) ? $params['book'] : null;
 
       if (empty($book_name)) {
-        if (self::$current_element instanceof HelpBook) {
+        if (self::$current_element instanceof Book) {
           $book_name = self::$current_element->getShortName();
-        } elseif (self::$current_element instanceof HelpBookPage) {
+        } elseif (self::$current_element instanceof BookPage) {
           $book_name = self::$current_element->getBookName();
         }
       }
 
-      $user = \Angie\Authentication::getLoggedUser();
+      $book = $book_name ? self::getCurrentProject()->getBook($book_name) : null;
 
-      $book = $book_name ? AngieApplication::help()->getBooks($user)->get($book_name) : null;
+      if ($book instanceof Book) {
+        $page = $book->getPage($name);
 
-      if ($book instanceof HelpBook) {
-        $page = $book->getPages($user)->get($name);
-
-        if ($page instanceof HelpBookPage) {
+        if ($page instanceof BookPage) {
           $params['href'] = $page->getUrl();
 
           if (empty($params['class'])) {
@@ -233,12 +248,12 @@
         $development_error_message = 'Book not found';
       }
 
-      if (AngieApplication::isInDevelopment() && isset($development_error_message)) {
+      if (Shade::isTesting() && isset($development_error_message)) {
         return '<span style="color: red; border-bottom: 1px dotted red; cursor: help;" title="Invalid page link: ' . Shade::clean($development_error_message) . '">' . Shade::clean($content) . '</span>';
       } else {
         return $content;
       }
-    } // block_page
+    }
 
     /**
      * Link to a video
@@ -248,6 +263,7 @@
      * @param  Smarty      $smarty
      * @param  boolean     $repeat
      * @return string|null
+     * @throws ParamRequiredError
      */
     public static function block_video($params, $content, &$smarty, &$repeat)
     {
@@ -255,11 +271,15 @@
         return null;
       }
 
-      $name = array_required_var($params, 'name', true);
+      $name = isset($params['name']) && $params['name'] ? $params['name'] : null;
 
-      $video = AngieApplication::help()->getVideos(\Angie\Authentication::getLoggedUser())->get($name);
+      if (empty($name)) {
+        throw new ParamRequiredError('name');
+      }
 
-      if ($video instanceof HelpVideo) {
+      $video = self::getCurrentProject()->getVideo($name);
+
+      if ($video instanceof Video) {
         $params['href'] = $video->getUrl();
 
         if ($video->getDescription()) {
@@ -270,7 +290,7 @@
       } else {
         return $content;
       }
-    } // block_video
+    }
 
     /**
      * Note block
@@ -453,7 +473,7 @@
         $slug = Shade::slug($content);
       }
 
-      return '<h3 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . lang('Link to this Section') . '" class="sub_permalink">#</a></h3>';
+      return '<h3 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . gettext('Link to this Section') . '" class="sub_permalink">#</a></h3>';
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-  namespace Shade\ElementFinder;
+  namespace ActiveCollab\Shade\ElementFinder;
 
-  use Shade\Element\Book;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
 
   /**
    * Element finder definition
@@ -12,10 +12,22 @@
   abstract class ElementFinder
   {
     /**
-     * @return \Shade\Element\Book[]
+     * @var Project
+     */
+    protected $project;
+
+    /**
+     * @param Project $project
+     */
+    function __construct(Project &$project)
+    {
+      $this->project = $project;
+    }
+
+    /**
+     * @return Book[]
      */
     abstract function getBooks();
-
 
     /**
      * Get book by short name
@@ -36,12 +48,12 @@
 
     /**
      * @param Book $book
-     * @return \Shade\Element\BookPage[]|null
+     * @return BookPage[]|null
      */
     abstract function getBookPages(Book $book);
 
     /**
-     * @return \Shade\Element\Video[]|null
+     * @return Video[]|null
      */
     abstract function getVideos();
 
@@ -49,7 +61,7 @@
      * Return a video
      *
      * @param string $name
-     * @return \Shade\Element\Video|null
+     * @return Video|null
      */
     function getVideo($name)
     {
@@ -63,13 +75,13 @@
     }
 
     /**
-     * @return \Shade\Element\WhatsNewArticle[]|null
+     * @return WhatsNewArticle[]|null
      */
     abstract function getWhatsNewArticles();
 
     /**
      * @param string $name
-     * @return \Shade\Element\WhatsNewArticle[]|null
+     * @return WhatsNewArticle[]|null
      */
     function getWhatsNewArticle($name)
     {

@@ -1,6 +1,8 @@
 <?php
 
-  namespace Shade\Element;
+  namespace ActiveCollab\Shade\Element;
+
+  use ActiveCollab\Shade\NamedList;
 
   /**
    * Framework level help book implementation
@@ -53,20 +55,19 @@
      *
      * @var array
      */
-    private $pages = [];
+    private $pages = false;
 
     /**
      * Show pages that $user can see
      *
-     * @param  User                     $user
-     * @return HelpBookPage[]|Angie\NamedList
+     * @return BookPage[]|NamedList
      */
-    public function getPages(User $user = null)
+    public function getPages()
     {
-      $key = $user instanceof User ? $user->getId() : 'all';
+      if (empty($this->pages)) {
+        $this->pages = $this->getProject()->getBookPages($this);
 
-      if (empty($this->pages[$key])) {
-        $pages = new Angie\NamedList();
+        $this->pages = new NamedList();
 
         $files = get_files($this->path . '/pages', 'md', false);
 
@@ -74,37 +75,45 @@
           sort($files); // Make sure that files are properly sorted
 
           foreach ($files as $file) {
-            $page = new HelpBookPage($this->module, $this, $file, true);
+            $page = new BookPage($this->module, $this, $file, true);
 
             if ($page->isLoaded()) {
-              $pages->add($page->getShortName(), $page);
+              $this->pages->add($page->getShortName(), $page);
             }
           }
         }
-
-        $this->pages[$key] = $pages;
       }
 
-      return $this->pages[$key];
+      return $this->pages;
+    }
+
+    /**
+     * Return a book page
+     *
+     * @param string $name
+     * @return BookPage
+     */
+    public function getPage($name)
+    {
+      return $this->getPages()->get($name);
     }
 
     /**
      * Populate list of common questions
      *
      * @param array $common_questions
-     * @param User  $user
      */
-    public function populateCommonQuestionsList(&$common_questions, User $user = null)
+    public function populateCommonQuestionsList(array &$common_questions)
     {
-      foreach ($this->getPages($user) as $page) {
+      foreach ($this->getPages() as $page) {
         $answers_common_question = $page->getProperty('answers_common_question');
 
         if ($answers_common_question) {
-          $common_questions[] = array(
+          $common_questions[] = [
             'question' => $answers_common_question,
             'page_url' => $page->getUrl(),
             'position' => (integer) $page->getProperty('answer_position'),
-          );
+          ];
         }
       }
     }
