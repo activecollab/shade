@@ -13,5 +13,8 @@
   },
   "search" : {
     "engine" : "elasticsearch"
+  },
+  "video_groups" : {
+    "getting-started" : "Getting Started"
   }
 }

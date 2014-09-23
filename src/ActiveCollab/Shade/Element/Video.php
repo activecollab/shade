@@ -11,6 +11,8 @@
    */
   class Video extends Element
   {
+    const GETTING_STARTED = 'getting-started';
+
     /**
      * Return book's short name
      *

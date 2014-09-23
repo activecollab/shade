@@ -116,6 +116,11 @@
       return $this->path;
     }
 
+    /**
+     * Get path of books folder
+     *
+     * @return string
+     */
     function getBooksPath()
     {
       return $this->getPath() . '/en_US.UTF-8/books';
@@ -149,6 +154,20 @@
       return $this->getFinder()->getBookPages($book);
     }
 
+    // ---------------------------------------------------
+    //  What's New Articles
+    // ---------------------------------------------------
+
+    /**
+     * Return path to the folder where we expect to find what's new articles
+     *
+     * @return string
+     */
+    function getWhatsNewArticlesPath()
+    {
+      return $this->getPath() . '/en_US.UTF-8/whats_new';
+    }
+
     /**
      * @return WhatsNewArticle[]|NamedList
      */
@@ -166,6 +185,45 @@
     function getWhatsNewArticle($name)
     {
       return $this->getFinder()->getWhatsNewArticle($name);
+    }
+
+    // ---------------------------------------------------
+    //  Video
+    // ---------------------------------------------------
+
+    /**
+     * Return path to the folder where we expect to find videos
+     *
+     * @return string
+     */
+    function getVideosPath()
+    {
+      return $this->getPath() . '/en_US.UTF-8/videos';
+    }
+
+    /**
+     * @var array
+     */
+    private $video_groups = false;
+
+    /**
+     * Return array of video groups
+     *
+     * @return array
+     */
+    public function getVideoGroups()
+    {
+      if ($this->video_groups === false) {
+        $this->video_groups = $this->getConfigurationOption('video_groups');
+
+        if (!is_array($this->video_groups)) {
+          $this->video_groups = [
+            Video::GETTING_STARTED => gettext('Getting Started'),
+          ];
+        }
+      }
+
+      return $this->video_groups;
     }
 
     /**

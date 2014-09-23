@@ -79,44 +79,12 @@
     }
 
     /**
-     * Cached previous version number
-     *
-     * @var bool
-     */
-    private $previous_version = false;
-
-    /**
-     * Returns true if this article is new since last upgrade
-     *
-     * @param  HelpWhatsNewArticle $article
-     * @return bool
-     */
-    public function isNewSinceLastUpgrade(HelpWhatsNewArticle $article)
-    {
-      if ($this->previous_version === false) {
-        $update_history_table = TABLE_PREFIX . 'update_history';
-
-        if (DB::executeFirstCell("SELECT COUNT(id) FROM $update_history_table") > 1) {
-          $this->previous_version = DB::executeFirstCell("SELECT version FROM $update_history_table ORDER BY created_on DESC LIMIT 1, 1");
-        } else {
-          $this->previous_version = null;
-        }
-      }
-
-      if ($this->previous_version) {
-        return version_compare($article->getVersionNumber(), $this->previous_version) >= 0;
-      } else {
-        return true; // Everything is new when you install a fresh copy of the system
-      }
-    }
-
-    /**
      * Returns true if $version is a valid angie application version number
      *
      * @param  string  $version
      * @return boolean
      */
-    private function isValidVersionNumber($version)
+    public static function isValidVersionNumber($version)
     {
       if (strpos($version, '.') !== false) {
         $parts = explode('.', $version);

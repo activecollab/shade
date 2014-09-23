@@ -9,7 +9,7 @@
    *
    * @package Shade
    */
-  abstract class WhatsNewArticle extends Element
+  class WhatsNewArticle extends Element
   {
     /**
      * Application version number

@@ -9,6 +9,8 @@
 
   $application->add(new ActiveCollab\Shade\Command\BooksCommand());
   $application->add(new ActiveCollab\Shade\Command\BookCommand());
+  $application->add(new ActiveCollab\Shade\Command\VideosCommand());
+  $application->add(new ActiveCollab\Shade\Command\WhatsNewArticlesCommand());
   $application->add(new ActiveCollab\Shade\Command\ProjectCommand());
   $application->add(new ActiveCollab\Shade\Command\BuildCommand());
 

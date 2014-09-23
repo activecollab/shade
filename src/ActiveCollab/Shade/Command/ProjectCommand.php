@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use ActiveCollab\Shade\Project;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Video;
   use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
 
   /**
@@ -34,6 +34,9 @@
       } else {
         $configuration = [
           'name' => $input->getArgument('name'),
+          'video_groups' => [
+            Video::GETTING_STARTED => 'Getting Started',
+          ]
         ];
 
         if (empty($configuration['name'])) {
