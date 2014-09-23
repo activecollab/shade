@@ -197,7 +197,6 @@
 
       $whats_new_articles_by_version = $this->getWhatsNewArticlesByVersion($whats_new_articles);
 
-
       $this->smarty->assign([
         'whats_new_articles' => $whats_new_articles,
         'whats_new_articles_by_version' => $whats_new_articles_by_version,
