@@ -66,22 +66,6 @@
     {
       if (empty($this->pages)) {
         $this->pages = $this->getProject()->getBookPages($this);
-
-        $this->pages = new NamedList();
-
-        $files = get_files($this->path . '/pages', 'md', false);
-
-        if ($files && is_foreachable($files)) {
-          sort($files); // Make sure that files are properly sorted
-
-          foreach ($files as $file) {
-            $page = new BookPage($this->module, $this, $file, true);
-
-            if ($page->isLoaded()) {
-              $this->pages->add($page->getShortName(), $page);
-            }
-          }
-        }
       }
 
       return $this->pages;

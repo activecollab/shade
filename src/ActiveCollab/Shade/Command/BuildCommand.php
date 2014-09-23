@@ -114,7 +114,7 @@
 //        $this->build_books($destination_path, $ignored_books, $output);
 //        $this->build_videos($destination_path, $output);
       } else {
-        $output->writeln('This is not a valid Shade project');
+        $output->writeln('<error>This is not a valid Shade project</error>');
       }
     }
 

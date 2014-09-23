@@ -2,8 +2,8 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Book;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use ActiveCollab\Shade\Project;
 
   /**
    * List books
@@ -33,9 +33,14 @@
         $books = $project->getBooks();
 
         if ($books->count()) {
+          $table = new Table($output);
+          $table->setHeaders([ 'Name', 'Title', 'Pages' ]);
+
           foreach ($books as $book) {
-            $output->writeln($book->getTitle() . ' [' . $book->getShortName() . ']');
+            $table->addRow([ $book->getShortName(), $book->getTitle(), $book->getPages()->count() ]);
           }
+
+          $table->render();
 
           $output->writeln('');
 
@@ -48,7 +53,7 @@
           $output->writeln('0 books found');
         }
       } else {
-        $output->writeln('This is not a valid Shade project');
+        $output->writeln('<error>This is not a valid Shade project</error>');
       }
     }
   }

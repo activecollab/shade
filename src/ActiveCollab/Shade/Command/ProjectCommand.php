@@ -43,7 +43,7 @@
         if (file_put_contents($project->getPath() . '/project.json', json_encode($configuration, JSON_PRETTY_PRINT))) {
           $output->writeln('Project initialized');
         } else {
-          $output->writeln('Failed to create a project configuration file');
+          $output->writeln('<error>Failed to create a project configuration file</error>');
         }
       }
     }
