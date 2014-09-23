@@ -6,15 +6,17 @@
   "default_build_target" : "/Users/ilija/Temp/ShadeTarget",
   "copyright" : "A51 doo",
   "copyright_since" : 2007,
-  "social_profiles" : {
-    "twitter" : "activecollab",
-    "facebook" : "activecollab",
-    "google_plus" : "activecollab"
-  },
   "search" : {
     "engine" : "elasticsearch"
   },
   "video_groups" : {
     "getting-started" : "Getting Started"
+  },
+  "theme_settings" : {
+    "social_profiles" : {
+      "twitter" : "activecollab",
+      "facebook" : "activecollab",
+      "google_plus" : "activecollab"
+    }
   }
 }

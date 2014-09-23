@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Error\ElementFileNotFoundError;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Error\ElementFileNotFoundError, Smarty, ActiveCollab\Shade\SmartyHelpers;
 
   /**
    * Framework level help element implementation
@@ -132,6 +132,36 @@
     public function getBody()
     {
       return $this->body;
+    }
+
+    /**
+     * Render body of a given element
+     *
+     * @param  Smarty  $smarty
+     * @param  Element $element
+     * @return string
+     */
+    public function renderBody(Smarty &$smarty, Element $element)
+    {
+      $template = $smarty->createTemplate($element->getIndexFilePath());
+
+      SmartyHelpers::setCurrentElement($element);
+
+      $content = $template->fetch();
+
+      SmartyHelpers::setCurrentElement(null);
+
+      $separator_pos = strpos($content, self::PROPERTIES_SEPARATOR);
+
+      if ($separator_pos === false) {
+        if (substr($content, 0, 1) == '*') {
+          $content = '*Content Not Provided*';
+        }
+      } else {
+        $content = trim(substr($content, $separator_pos + strlen(self::PROPERTIES_SEPARATOR)));
+      }
+
+      return Shade::markdownToHtml($content);
     }
 
     /**

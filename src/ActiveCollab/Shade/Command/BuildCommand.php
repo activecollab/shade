@@ -150,7 +150,7 @@
      */
     public function buildLandingPage(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
     {
-      $this->smarty->assign('common_questions', Shade::getCommonQuestions());
+      $this->smarty->assign('common_questions', $project->getCommonQuestions());
 
       Shade::writeFile("$target_path/index.html", $this->smarty->fetch('index.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
