@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
   use ActiveCollab\Shade\Error\ParseJsonError;
   use ActiveCollab\Shade\ElementFinder\DefaultElementFinder;
 
@@ -121,16 +121,6 @@
     // ---------------------------------------------------
 
     /**
-     * Get path of books folder
-     *
-     * @return string
-     */
-    function getBooksPath()
-    {
-      return $this->getPath() . '/en_US.UTF-8/books';
-    }
-
-    /**
      * Return all project stories
      *
      * @return Book[]|NamedList
@@ -187,16 +177,6 @@
     // ---------------------------------------------------
 
     /**
-     * Return path to the folder where we expect to find what's new articles
-     *
-     * @return string
-     */
-    function getWhatsNewArticlesPath()
-    {
-      return $this->getPath() . '/en_US.UTF-8/whats_new';
-    }
-
-    /**
      * @return WhatsNewArticle[]|NamedList
      */
     function getWhatsNewArticles()
@@ -216,18 +196,23 @@
     }
 
     // ---------------------------------------------------
-    //  Video
+    //  Releases
     // ---------------------------------------------------
 
+
     /**
-     * Return path to the folder where we expect to find videos
+     * Return releases
      *
-     * @return string
+     * @return Release[]
      */
-    function getVideosPath()
+    function getReleases()
     {
-      return $this->getPath() . '/en_US.UTF-8/videos';
+      return $this->getFinder()->getReleases();
     }
+
+    // ---------------------------------------------------
+    //  Video
+    // ---------------------------------------------------
 
     /**
      * @var array

@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\ElementFinder;
 
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
 
   /**
    * Element finder definition
@@ -93,4 +93,9 @@
 
       return null;
     }
+
+    /**
+     * @return Release[]
+     */
+    abstract function getReleases();
   }

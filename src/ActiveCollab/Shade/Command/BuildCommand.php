@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Video;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\Release;
   use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
   use Symfony\Component\Console\Input\InputOption, Smarty, Exception;
 
@@ -142,12 +142,7 @@
 
       $whats_new_articles = $project->getWhatsNewArticles();
 
-
       foreach ($whats_new_articles as $whats_new_article) {
-        if (empty($current_whats_new_article)) {
-          $current_whats_new_article = $whats_new_article; // First article is current article
-        }
-
         $this->copyVersionImages($whats_new_article, $target_path, $output);
       }
 
@@ -256,7 +251,77 @@
      */
     public function buildReleaseNotes(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
     {
+      Shade::createDir("$target_path/release-notes", function($path) use (&$output) {
+        $output->writeln("Directory '$path' created");
+      });
+
+      $releases = $project->getReleases();
+      $releases_by_major_version = $this->getReleasesByMajorVersion($releases);
+
+      $this->smarty->assign([
+        'releases_by_major_version' => $releases_by_major_version,
+        'current_release' => $this->getCurrentReleaseFromSortedReleases($releases_by_major_version),
+      ]);
+
+      Shade::writeFile("$target_path/release-notes/index.html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
+        $output->writeln("File '$path' created");
+      });
+
+      foreach ($releases as $release) {
+        $this->smarty->assign([
+          'current_release' => $release
+        ]);
+
+        Shade::writeFile("$target_path/release-notes/" . $release->getSlug() . ".html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
+          $output->writeln("File '$path' created");
+        });
+      }
+
       return true;
+    }
+
+    /**
+     * Return releases by major version
+     *
+     * @param Release[] $releases
+     * @return array
+     */
+    private function getReleasesByMajorVersion($releases)
+    {
+      $result = [];
+
+      foreach ($releases as $release) {
+        $bits = explode('.', $release->getVersionNumber());
+
+        while (count($bits) > 2) {
+          array_pop($bits);
+        }
+
+        $major_version = implode('.', $bits);
+
+        if (empty($result[$major_version])) {
+          $result[$major_version] = [];
+        }
+
+        $result[$major_version][] = $release;
+      }
+
+      return $result;
+    }
+
+    /**
+     * @param array $sorted_releases
+     * @return Release|null
+     */
+    private function getCurrentReleaseFromSortedReleases($sorted_releases)
+    {
+      foreach ($sorted_releases as $releases) {
+        foreach ($releases as $release) {
+          return $release;
+        }
+      }
+
+      return null;
     }
 
     /**
@@ -381,53 +446,6 @@
       });
 
       return true;
-
-      $this->createDir("$destination_path/videos", $output);
-
-      $videos_template = file_get_contents(HelpFramework::PATH . '/static/templates/videos.html');
-
-      $video_groups = AngieApplication::help()->getVideoGroups();
-      $videos = AngieApplication::help()->getVideos();
-
-      $content = '';
-
-      $counter = 0;
-      $length = $video_groups->count();
-
-      if(is_foreachable($video_groups)) {
-        foreach($video_groups as $video_group_name => $video_group) {
-          $video_group_icon = 'starting';
-          if($counter == 1) {
-            $video_group_icon = 'invoicing';
-          } elseif($counter == 2) {
-            $video_group_icon = 'advanced';
-          } // if
-
-          $last_class = '';
-          if($counter == $length - 1) {
-            $last_class = 'last';
-          } // if
-
-          $content .= '<div class="help_video_group '.$last_class.'">
-            <h3>'.$video_group.'</h3>
-            <div class="help_video_icon"><img src="../assets/images/circle-'.$video_group_icon.'.png" alt=""></div>
-            <ul>';
-
-          if(is_foreachable($videos)) {
-            foreach($videos as $video) {
-              if($video->getGroupName() == $video_group_name) {
-                $content .= '<li data-source-url="'.$video->getSourceUrl().'" data-source-high-res-url="'.$video->getSourceUrl('2X').'" data-slug="'.$video->getSlug().'">'.$video->getTitle().'</li>';
-              } // if
-            } // foreach
-          } // if
-
-          $content .= "</ul></div>\n";
-          $counter++;
-        } // foreach
-      } // if
-
-      $videos_page = str_replace('--CONTENT--', $content, $videos_template);
-      $this->createFile("$destination_path/videos/index.html", $videos_page, $output, true);
     }
 
     /**
