@@ -2,9 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
-  use ActiveCollab\Shade\Error\ParseJsonError;
-  use ActiveCollab\Shade\ElementFinder\DefaultElementFinder;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\ElementFinder;
 
   /**
    * Narrative project
@@ -278,7 +276,15 @@
     function &getFinder()
     {
       if (empty($this->finder)) {
-        $this->finder = new DefaultElementFinder($this);
+        $this->finder = new ElementFinder($this);
+
+        if (is_file($this->getPath() . '/finders.php')) {
+          $finders = require $this->getPath() . '/finders.php';
+
+          if (is_array($finders)) {
+            var_dump($finders);
+          }
+        }
       }
 
       return $this->finder;
