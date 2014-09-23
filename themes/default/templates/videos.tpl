@@ -43,36 +43,27 @@
 
   <div id="content">
     <div id="help_video_groups">
-      --CONTENT--
+      <{foreach $video_groups as $video_group => $video_group_caption}>
+        <div class="help_video_group">
+          <h3><{$video_group_caption}></h3>
+          <div class="help_video_icon"><img src="../assets/images/circle-starting.png" alt=""></div>
+          <ul>
+          <{foreach $videos as $video}>
+            <{if $video->getGroupName() == $video_group}>
+              <li data-source-url="<{$video->getSourceUrl()}>" data-source-high-res-url="<{$video->getSourceUrl('2X')}>" data-slug="<{$video->getSlug()}>"><{$video->getTitle()}></li>
+            <{/if}>
+          <{/foreach}>
+          </ul>
+        </div>
+      <{/foreach}>
       <div class="clear"></div>
     </div>
   </div>
 
-  <div id="footer">
-    <div class="footer_space"></div>
-    <div class="rights"><p>&copy; 2013 &middot; A51, All rights reserved</p></div>
-
-    <div class="social">
-      <p>Stay up to date with all new features:</p>
-      <ul class="links">
-        <li><a href="https://twitter.com/activecollab" target="_blank"><img title="Twitter" alt="Twitter" src="../assets/images/icon_twitter.png"></a></li>
-        <li><a href="https://www.facebook.com/activecollab" target="_blank"><img title="Facebook" alt="Facebook" src="../assets/images/icon_facebook.png"></a></li>
-        <li><a href="https://plus.google.com/+activecollab" target="_blank"><img title="Google+" alt="Google+" src="../assets/images/icon_google.png"></a></li>
-      </ul>
-    </div>
-  </div>
+  <{include "footer.tpl"}>
 </div>
 
 <script type="text/javascript">
-  var __lc = {};
-  __lc.license = 1038879;
-
-  (function() {
-    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-  })();
-
   $('#wrapper_videos').each(function() {
     var wrapper = $(this);
 
