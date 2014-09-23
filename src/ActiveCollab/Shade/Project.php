@@ -266,12 +266,12 @@
     }
 
     /**
-     * @var \ActiveCollab\Shade\ElementFinder\ElementFinder
+     * @var ElementFinder
      */
     private $finder;
 
     /**
-     * @return \ActiveCollab\Shade\ElementFinder\ElementFinder
+     * @return ElementFinder
      */
     function &getFinder()
     {
@@ -282,7 +282,9 @@
           $finders = require $this->getPath() . '/finders.php';
 
           if (is_array($finders)) {
-            var_dump($finders);
+            foreach ($finders as $finder_name => $callback) {
+              $this->finder->setCustomFinder($finder_name, $callback);
+            }
           }
         }
       }

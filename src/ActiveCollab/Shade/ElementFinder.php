@@ -3,7 +3,7 @@
   namespace ActiveCollab\Shade;
 
   use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
-  use DirectoryIterator;
+  use DirectoryIterator, Exception;
 
   /**
    * Element finder definition
@@ -36,18 +36,18 @@
          *
          * @param string $books_path
          */
-        'findBookFiles' => function($books_path) {
-          $files = [];
+        'findBookDirs' => function($books_path) {
+          $dirs = [];
 
           if (is_dir($books_path)) {
-            foreach (new DirectoryIterator($books_path) as $file) {
-              if (!$file->isDot() && $file->isDir()) {
-                $files[] = $file->getPathname();
+            foreach (new DirectoryIterator($books_path) as $dir) {
+              if (!$dir->isDot() && $dir->isDir()) {
+                $dirs[] = $dir->getPathname();
               }
             }
           }
 
-          return $files;
+          return $dirs;
         },
 
         /**
@@ -154,6 +154,26 @@
     }
 
     /**
+     * Set a custom finder
+     *
+     * @param string $name
+     * @param callable $callback
+     * @throws Exception
+     */
+    public function setCustomFinder($name, $callback)
+    {
+      if (empty($this->finders[$name])) {
+        throw new Exception("Unknown finder '$name'");
+      }
+
+      if (!is_callable($callback)) {
+        throw new Exception("Callback needs to be callable");
+      }
+
+      $this->finders[$name] = $callback;
+    }
+
+    /**
      * Get path of books folder
      *
      * @return string
@@ -168,12 +188,12 @@
      */
     function getBooks()
     {
-      $files = call_user_func($this->finders['findBookFiles'], $this->getBooksPath());
+      $dirs = call_user_func($this->finders['findBookDirs'], $this->getBooksPath());
 
       $result = new NamedList();
 
-      foreach ($files as $file) {
-        $book = new Book($this->project, $file);
+      foreach ($dirs as $dir) {
+        $book = new Book($this->project, $dir);
 
         if ($book->isLoaded()) {
           $result->add($book->getShortName(), $book);
