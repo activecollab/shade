@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\ElementFinder;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\VideoPlayer\VideoPlayer, ActiveCollab\Shade\VideoPlayer\WistiaVideoPlayer;
 
   /**
    * Narrative project
@@ -290,5 +290,24 @@
       }
 
       return $this->finder;
+    }
+
+    /**
+     * @var VideoPlayer
+     */
+    private $video_player;
+
+    /**
+     * Return instance that will be used to render videos
+     *
+     * @return VideoPlayer
+     */
+    public function getVideoPlayer()
+    {
+      if (empty($this->video_player)) {
+        $this->video_player = new Shade\VideoPlayer\WistiaVideoPlayer($this);
+      }
+
+      return $this->video_player;
     }
   }

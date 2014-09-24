@@ -447,17 +447,49 @@
         $output->writeln("Directory '$path' created");
       });
 
+      $videos = $project->getVideos();
+      $video_groups = $project->getVideoGroups();
+
       $this->smarty->assign([
-        'video_groups' => $project->getVideoGroups(),
-        'videos' => $project->getVideos(),
+        'video_groups' => $video_groups,
+        'videos' => $videos,
         'page_level' => 1,
+        'video_player' => $project->getVideoPlayer(),
+        'current_video' => $this->getCurrentVideo($video_groups, $videos),
       ]);
 
       Shade::writeFile("$target_path/videos/index.html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
+      foreach ($videos as $video) {
+        $this->smarty->assign([
+          'current_video' => $video,
+        ]);
+
+        Shade::writeFile("$target_path/videos/" . $video->getSlug() . ".html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
+          $output->writeln("File '$path' created");
+        });
+      }
+
       return true;
+    }
+
+    /**
+     * @param Video[] $videos
+     * @return Video|null
+     */
+    private function getCurrentVideo($video_groups, $videos)
+    {
+      foreach ($video_groups as $video_group => $video_group_caption) {
+        foreach ($videos as $video) {
+          if ($video->getGroupName() === $video_group) {
+            return $video;
+          }
+        }
+      }
+
+      return null;
     }
 
     /**

@@ -34,10 +34,10 @@
 
         if ($videos->count()) {
           $table = new Table($output);
-          $table->setHeaders([ 'Name', 'Group', 'Title', 'Play Time' ]);
+          $table->setHeaders([ 'Name', 'Group', 'Title', 'Play Time', 'Wistia Code' ]);
 
           foreach ($videos as $video) {
-            $table->addRow([ $video->getShortName(), $video->getGroupName(), $video->getTitle(), $video->getPlayTime() ]);
+            $table->addRow([ $video->getShortName(), $video->getGroupName(), $video->getTitle(), $video->getPlayTime(), $video->getProperty('wistia_code') ]);
           }
 
           $table->render();

@@ -854,11 +854,7 @@ h3 {
   color: #333;
   font-weight: 400;
   padding: 10px 0;
-}
-
-#help_video_groups .help_video_group .help_video_icon {
-  height: 92px;
-  padding: 10px 0 25px;
+  margin-bottom: 16px;
 }
 
 #help_video_groups .help_video_group ul {
@@ -874,7 +870,6 @@ h3 {
   background-repeat: no-repeat;
   border-radius: 3px;
   color: #4D4D4D;
-  cursor: pointer;
   display: block;
   line-height: 150%;
   margin: 2px 0 7px;
@@ -895,6 +890,17 @@ h3 {
 #help_video_groups .help_video_group ul li.playing.paused {
   background-image: url('../images/pause_icon.png') !important;
 }
+
+#help_video_groups .help_video_group ul li a {
+  color: #4D4D4D;
+  text-decoration: none;
+}
+
+#help_video_groups .help_video_group ul li a:hover {
+  text-decoration: underline;
+}
+
+
 
 /**********************************************************************************
     FOOTER

@@ -219,7 +219,7 @@
      */
     private static function getVideoUrl($slug)
     {
-      return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'videos/index.html#' . $slug;
+      return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'videos/' . $slug . '.html';
     }
 
     /**
