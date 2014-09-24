@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="<{$project->getShortLocale()}>">
 <head>
   <title>activeCollab Help Center</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8"/>

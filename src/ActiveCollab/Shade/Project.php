@@ -64,6 +64,45 @@
     }
 
     /**
+     * @var string
+     */
+    private $locale = false;
+
+    /**
+     * @return string
+     */
+    function getLocale()
+    {
+      if (empty($this->locale)) {
+        $this->locale = $this->getDefaultLocale();
+
+        if (empty($this->locale)) {
+          $this->locale = 'en_US.UTF-8';
+        }
+      }
+
+      return $this->locale;
+    }
+
+    /**
+     * Return short locale code
+     *
+     * @return string
+     */
+    function getShortLocale()
+    {
+      return array_shift(explode('_', $this->getLocale()));
+    }
+
+    /**
+     * @param string $value
+     */
+    function setLocale($value)
+    {
+      $this->locale = $value;
+    }
+
+    /**
      * Return default build target
      *
      * @return string|null

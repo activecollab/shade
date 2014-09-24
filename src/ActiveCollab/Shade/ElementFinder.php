@@ -191,6 +191,9 @@
     {
       $dirs = call_user_func($this->finders['findBookDirs'], $this->getBooksPath());
 
+//      var_dump($dirs);
+//      die();
+
       $result = new NamedList();
 
       foreach ($dirs as $dir) {

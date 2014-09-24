@@ -180,6 +180,7 @@
         }
 
         self::$smarty->assign([
+          'project' => $project,
           'copyright' => $project->getConfigurationOption('copyright', '--UNKNOWN--'),
           'copyright_since' => $project->getConfigurationOption('copyright_since'),
           'page_level' => 0,
