@@ -2,9 +2,9 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
-  use Smarty;
-  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\Error\ParamRequiredError;
+  use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
+  use Smarty, Smarty_Internal_Template;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Error\ParamRequiredError;
 
   /**
    * Help element text helpers
@@ -39,7 +39,7 @@
     }
 
     /**
-     * @var Element
+     * @var Element|Book|BookPage|WhatsNewArticle|Release|Video
      */
     private static $current_element;
 
@@ -75,13 +75,36 @@
      * Image function
      *
      * @param  array  $params
+     * @param   Smarty_Internal_Template $smarty
      * @return string
      * @throws ParamRequiredError
      */
-    public static function function_image($params)
+    public static function function_image($params, Smarty_Internal_Template &$smarty)
     {
       if (isset($params['name']) && $params['name']) {
-        return Shade::getImageUrl(static::getCurrentElement(), strtolower($params['name']));
+        $page_level = self::$current_element->getPageLevel();
+
+        $prefix = '';
+
+        if ($page_level > 0) {
+          $prefix = './';
+
+          for ($i = 0; $i < $page_level; $i++) {
+            $prefix .= '../';
+          }
+        }
+
+        if (self::$current_element instanceof BookPage) {
+          $params = [ 'src' => "{$prefix}assets/images/books/" . self::$current_element->getBookName() . '/' . $params['name'] ];
+        } elseif (self::$current_element instanceof WhatsNewArticle) {
+          $params = [ 'src' => "{$prefix}assets/images/whats-new/" . self::$current_element->getVersionNumber() . '/' . $params['name'] ];
+        } else {
+          return '#';
+        }
+
+        return '<div class="center">' . Shade::htmlTag('img', $params) . '</div>';
+
+//        return Shade::getImageUrl(static::getCurrentElement(), strtolower($params['name']));
       } else {
         throw new ParamRequiredError('name');
       }
@@ -98,12 +121,7 @@
     public static function function_theme_asset($params, &$smarty)
     {
       $name = isset($params['name']) && $params['name'] ? ltrim($params['name'], '/') : null;
-
-      if (array_key_exists('page_level', $params)) {
-        $page_level = (integer) $params['page_level'];
-      } else {
-        $page_level = $smarty->getVariable('page_level');
-      }
+      $page_level = isset($params['page_level']) ? (integer) $params['page_level'] : 0;
 
       if (empty($name)) {
         throw new ParamRequiredError('name parameter is required');
@@ -112,13 +130,13 @@
       if (empty($page_level)) {
         return "assets/$name";
       } else {
-        $result = './';
+        $prefix = './';
 
         for ($i = 0; $i < $page_level; $i++) {
-          $result .= '../';
+          $prefix .= '../';
         }
 
-        return "$result/assets/$name";
+        return "{$prefix}assets/$name";
       }
     }
 
@@ -126,11 +144,11 @@
      * Render related video blokc
      *
      * @param  array  $params
-     * @param  Smarty $smarty
+     * @param  Smarty_Internal_Template $smarty
      * @return string
      * @throws ParamRequiredError
      */
-    public static function function_related_video($params, &$smarty)
+    public static function function_related_video($params, Smarty_Internal_Template &$smarty)
     {
       $names = isset($params['name']) ? explode(',', $params['name']) : null;
 

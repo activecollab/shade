@@ -111,4 +111,14 @@
 
       return $this->slug;
     }
+
+    /**
+     * Return page level in the build structure
+     *
+     * @return int
+     */
+    public function getPageLevel()
+    {
+      return 2;
+    }
   }

@@ -267,4 +267,14 @@
     {
       $this->properties[Shade::underscore(str_replace(' ', '', $name))] = $value;
     }
+
+    /**
+     * Return page level in the build structure
+     *
+     * @return int
+     */
+    public function getPageLevel()
+    {
+      return 1;
+    }
   }

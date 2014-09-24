@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <{assign var="page_level" value=0}>
-
   <title>activeCollab Help Center</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
@@ -78,7 +76,7 @@
 
       <ul>
       <{foreach $common_questions as $common_question}>
-        <li><a href="<{$common_question.page_url}>"><{$common_question.question}></a></li>
+        <li><a href="books/<{$common_question.book}>/<{$common_question.page}>.html"><{$common_question.question}></a></li>
       <{/foreach}>
       </ul>
     </div>

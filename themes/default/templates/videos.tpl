@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <{assign var="page_level" value=1}>
-
   <title>activeCollab Help Center</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>

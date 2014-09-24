@@ -109,7 +109,10 @@
      */
     public function buildLandingPage(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
     {
-      $this->smarty->assign('common_questions', $project->getCommonQuestions());
+      $this->smarty->assign([
+        'common_questions' => $project->getCommonQuestions(),
+        'page_level' => 0,
+      ]);
 
       Shade::writeFile("$target_path/index.html", $this->smarty->fetch('index.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
@@ -152,6 +155,7 @@
         'whats_new_articles' => $whats_new_articles,
         'whats_new_articles_by_version' => $whats_new_articles_by_version,
         'current_whats_new_article' => $this->getCurrentArticleFromSortedArticles($whats_new_articles_by_version),
+        'page_level' => 1,
       ]);
 
       Shade::writeFile("$target_path/whats-new/index.html", $this->smarty->fetch('whats_new_article.tpl'), function($path) use (&$output) {
@@ -261,6 +265,7 @@
       $this->smarty->assign([
         'releases_by_major_version' => $releases_by_major_version,
         'current_release' => $this->getCurrentReleaseFromSortedReleases($releases_by_major_version),
+        'page_level' => 1,
       ]);
 
       Shade::writeFile("$target_path/release-notes/index.html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
@@ -352,7 +357,10 @@
         $this->copyBookImages($book, $target_path, $output);
       }
 
-      $this->smarty->assign('books', $books);
+      $this->smarty->assign([
+        'books' => $books,
+        'page_level' => 1,
+      ]);
 
       Shade::writeFile("$target_path/books/index.html", $this->smarty->fetch('books.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
@@ -367,6 +375,7 @@
 
         $this->smarty->assign([
           'current_book' => $book,
+          'page_level' => 2,
           'pages' => $pages,
           'current_page' => $this->getCurrentPage($pages),
           'sidebar_image' => '../../assets/images/books/' . $book->getShortName() . '/_cover_small.png'
@@ -377,7 +386,9 @@
         });
 
         foreach ($pages as $page) {
-          $this->smarty->assign('current_page', $page);
+          $this->smarty->assign([
+            'current_page' => $page,
+          ]);
 
           Shade::writeFile("$target_path/books/" . $book->getShortName() . "/" . $page->getShortName() . ".html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
             $output->writeln("File '$path' created");
@@ -439,6 +450,7 @@
       $this->smarty->assign([
         'video_groups' => $project->getVideoGroups(),
         'videos' => $project->getVideos(),
+        'page_level' => 1,
       ]);
 
       Shade::writeFile("$target_path/videos/index.html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
