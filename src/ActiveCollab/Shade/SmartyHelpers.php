@@ -84,27 +84,15 @@
       if (isset($params['name']) && $params['name']) {
         $page_level = self::$current_element->getPageLevel();
 
-        $prefix = '';
-
-        if ($page_level > 0) {
-          $prefix = './';
-
-          for ($i = 0; $i < $page_level; $i++) {
-            $prefix .= '../';
-          }
-        }
-
         if (self::$current_element instanceof BookPage) {
-          $params = [ 'src' => "{$prefix}assets/images/books/" . self::$current_element->getBookName() . '/' . $params['name'] ];
+          $params = [ 'src' => self::pageLevelToPrefix($page_level) . "assets/images/books/" . self::$current_element->getBookName() . '/' . $params['name'] ];
         } elseif (self::$current_element instanceof WhatsNewArticle) {
-          $params = [ 'src' => "{$prefix}assets/images/whats-new/" . self::$current_element->getVersionNumber() . '/' . $params['name'] ];
+          $params = [ 'src' => self::pageLevelToPrefix($page_level) . "assets/images/whats-new/" . self::$current_element->getVersionNumber() . '/' . $params['name'] ];
         } else {
           return '#';
         }
 
         return '<div class="center">' . Shade::htmlTag('img', $params) . '</div>';
-
-//        return Shade::getImageUrl(static::getCurrentElement(), strtolower($params['name']));
       } else {
         throw new ParamRequiredError('name');
       }
@@ -114,11 +102,10 @@
      * Return theme param URl
      *
      * @param array $params
-     * @param Smarty $smarty
      * @return string
      * @throws ParamRequiredError
      */
-    public static function function_theme_asset($params, &$smarty)
+    public static function function_theme_asset($params)
     {
       $name = isset($params['name']) && $params['name'] ? ltrim($params['name'], '/') : null;
       $page_level = isset($params['page_level']) ? (integer) $params['page_level'] : 0;
@@ -127,16 +114,25 @@
         throw new ParamRequiredError('name parameter is required');
       }
 
-      if (empty($page_level)) {
-        return "assets/$name";
-      } else {
+      return self::pageLevelToPrefix($page_level) . "assets/$name";
+    }
+
+    /**
+     * @param $page_level
+     * @return string
+     */
+    private static function pageLevelToPrefix($page_level)
+    {
+      if ($page_level > 0) {
         $prefix = './';
 
         for ($i = 0; $i < $page_level; $i++) {
           $prefix .= '../';
         }
 
-        return "{$prefix}assets/$name";
+        return $prefix;
+      } else {
+        return '';
       }
     }
 
