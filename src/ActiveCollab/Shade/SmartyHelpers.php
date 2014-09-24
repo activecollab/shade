@@ -140,11 +140,10 @@
      * Render related video blokc
      *
      * @param  array  $params
-     * @param  Smarty_Internal_Template $smarty
      * @return string
      * @throws ParamRequiredError
      */
-    public static function function_related_video($params, Smarty_Internal_Template &$smarty)
+    public static function function_related_video($params)
     {
       $names = isset($params['name']) ? explode(',', $params['name']) : null;
 
@@ -153,7 +152,7 @@
       }
 
       $result = '';
-
+      
       $all_videos = self::getCurrentProject()->getVideos();
 
       foreach ($names as $name) {
@@ -161,7 +160,7 @@
 
         // Check if we have a video instance. If not, ignore (don't break the system in case of a missing video)
         if ($video instanceof Video) {
-          $result .= '<li><a href="' . Shade::clean($video->getUrl()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . Shade::lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
+          $result .= '<li><a href="' . self::function_video([ 'name' => $video->getShortName() ]) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . Shade::lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
 
           if ($video->getDescription()) {
             $result .= ' &mdash; ' . Shade::clean($video->getDescription());
@@ -176,6 +175,15 @@
       }
 
       return '';
+    }
+    
+    public static function function_video($params)
+    {
+      if (isset($params['name']) && $params['name']) {
+        return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'videos/index.html#' . $params['name'];
+      } else {
+        throw new ParamRequiredError('name is required');
+      }
     }
 
     /**
