@@ -2,6 +2,7 @@
 
   namespace ActiveCollab;
 
+  use ActiveCollab\Shade\Error\ParamRequiredError;
   use ActiveCollab\Shade\Error\TempNotFoundError;
   use ActiveCollab\Shade\Error\ThemeNotFoundError;
   use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\NamedList;
@@ -256,12 +257,10 @@
           }
 
           return true;
-        } else {
-          return false;
         }
-      } else {
-        return false;
       }
+
+      return false;
     }
 
     /**

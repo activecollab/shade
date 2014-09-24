@@ -534,6 +534,7 @@ h3 {
   background: #f8f8f8;
   padding: 1px 4px;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .help_book_page .help_book_page_content span.outlined_inline.outlined_inline_mono {

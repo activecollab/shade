@@ -10,7 +10,9 @@
     "engine" : "elasticsearch"
   },
   "video_groups" : {
-    "getting-started" : "Getting Started"
+    "getting-started" : "Getting Started",
+    "invoicing" : "Invoicing",
+    "advanced" : "Advanced Topics"
   },
   "theme_settings" : {
     "social_profiles" : {

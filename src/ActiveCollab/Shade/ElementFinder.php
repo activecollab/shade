@@ -100,7 +100,7 @@
         'findReleaseFiles' => function($releases_path) {
           $files = [];
 
-          if (is_dir($releases_path))
+          if (is_dir($releases_path)) {
             foreach (new DirectoryIterator($releases_path) as $file) {
               if ($file->isFile() && $file->getExtension() == 'md') {
                 $version_number = substr($file->getFilename(), 0, strlen($file->getFilename()) - 3);
@@ -111,9 +111,10 @@
               }
             }
 
-          uksort($files, function($a, $b) {
-            return version_compare($b, $a);
-          });
+            uksort($files, function ($a, $b) {
+              return version_compare($b, $a);
+            });
+          }
 
           return $files;
         },

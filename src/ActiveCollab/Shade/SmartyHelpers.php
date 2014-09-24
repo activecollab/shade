@@ -88,6 +88,41 @@
     }
 
     /**
+     * Return theme param URl
+     *
+     * @param array $params
+     * @param Smarty $smarty
+     * @return string
+     * @throws ParamRequiredError
+     */
+    public static function function_theme_asset($params, &$smarty)
+    {
+      $name = isset($params['name']) && $params['name'] ? ltrim($params['name'], '/') : null;
+
+      if (array_key_exists('page_level', $params)) {
+        $page_level = (integer) $params['page_level'];
+      } else {
+        $page_level = $smarty->getVariable('page_level');
+      }
+
+      if (empty($name)) {
+        throw new ParamRequiredError('name parameter is required');
+      }
+
+      if (empty($page_level)) {
+        return "assets/$name";
+      } else {
+        $result = './';
+
+        for ($i = 0; $i < $page_level; $i++) {
+          $result .= '../';
+        }
+
+        return "$result/assets/$name";
+      }
+    }
+
+    /**
      * Render related video blokc
      *
      * @param  array  $params
@@ -454,6 +489,10 @@
 
         if ($highlight === 'php') {
           $highlight = 'iphp';
+        }
+
+        if ($highlight === 'html' || $highlight === 'xhtml') {
+          $highlight = 'xml';
         }
 
         return Shade::highlightCode($content, $highlight);
