@@ -51,9 +51,9 @@
         </div>
         <div class="help_book_footer">
           <div class="help_book_footer_inner">
-            <div class="help_book_footer_prev"><a href="#">&laquo; Pref</a></div>
+            <div class="help_book_footer_prev"><a href="#">&laquo; Newer</a></div>
             <div class="help_book_footer_top"><a href="#" onclick="window.scrollTo(0, 0); return false;">Back to the Top</a></div>
-            <div class="help_book_footer_next"><a href="#">Next &raquo;</a></div>
+            <div class="help_book_footer_next"><a href="#">Older &raquo;</a></div>
           </div>
         </div>
       </div>

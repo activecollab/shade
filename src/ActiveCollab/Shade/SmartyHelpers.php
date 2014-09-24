@@ -152,7 +152,7 @@
       }
 
       $result = '';
-      
+
       $all_videos = self::getCurrentProject()->getVideos();
 
       foreach ($names as $name) {
@@ -160,7 +160,7 @@
 
         // Check if we have a video instance. If not, ignore (don't break the system in case of a missing video)
         if ($video instanceof Video) {
-          $result .= '<li><a href="' . self::function_video([ 'name' => $video->getShortName() ]) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . Shade::lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
+          $result .= '<li><a href="' . self::getVideoUrl($video->getShortName()) . '">' . Shade::clean($video->getTitle()) . '</a> <span class="play_time" title="' . Shade::lang('Video Play Time') . '">(' . Shade::clean($video->getPlayTime()) . ')</span>';
 
           if ($video->getDescription()) {
             $result .= ' &mdash; ' . Shade::clean($video->getDescription());
@@ -176,14 +176,50 @@
 
       return '';
     }
-    
-    public static function function_video($params)
+
+    /**
+     * Link to a video
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|null
+     * @throws ParamRequiredError
+     */
+    public static function block_video($params, $content, &$smarty, &$repeat)
     {
-      if (isset($params['name']) && $params['name']) {
-        return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'videos/index.html#' . $params['name'];
-      } else {
+      if ($repeat) {
+        return null;
+      }
+
+      $name = isset($params['name']) ? $params['name'] : null;
+
+      if (empty($name)) {
         throw new ParamRequiredError('name is required');
       }
+
+      $video = self::getCurrentProject()->getVideo($name);
+
+      if ($video instanceof Video) {
+        return Shade::htmlTag('a', [
+          'href' => self::getVideoUrl($video->getSlug()),
+          'title' => $video->getDescription() ? $video->getDescription() : null,
+        ], $content);
+      } else {
+        return $content;
+      }
+    }
+
+    /**
+     * Return video URL
+     *
+     * @param string $slug
+     * @return string
+     */
+    private static function getVideoUrl($slug)
+    {
+      return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'videos/index.html#' . $slug;
     }
 
     /**
@@ -211,12 +247,23 @@
       $article = self::getCurrentProject()->getWhatsNewArticle($name);
 
       if ($article instanceof WhatsNewArticle) {
-        $params['href'] = $article->getUrl();
-
-        return Shade::htmlTag('a', $params, $content);
+        return Shade::htmlTag('a', [
+          'href' => self::getWhatsNewArticleUrl($article->getSlug()),
+        ], $content);
       } else {
         return $content;
       }
+    }
+
+    /**
+     * Return what's new article URL
+     *
+     * @param string $slug
+     * @return string
+     */
+    private static function getWhatsNewArticleUrl($slug)
+    {
+      return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'whats-new/' . $slug . '.html';
     }
 
     /**
@@ -244,7 +291,7 @@
       $book = self::getCurrentProject()->getBook($name);
 
       if ($book instanceof Book) {
-        $params['href'] = $book->getUrl();
+        $params['href'] = self::getBookUrl($book->getShortName());
 
         if ($book->getDescription()) {
           $params['title'] = $book->getDescription();
@@ -254,6 +301,17 @@
       } else {
         return $content;
       }
+    }
+
+    /**
+     * Return book URL
+     *
+     * @param string $short_name
+     * @return string
+     */
+    private static function getBookUrl($short_name)
+    {
+      return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'books/' . $short_name . '/index.html';
     }
 
     /**
@@ -294,7 +352,7 @@
         $page = $book->getPage($name);
 
         if ($page instanceof BookPage) {
-          $params['href'] = $page->getUrl();
+          $params['href'] = self::getBookPageUrl($book->getShortName(), $page->getShortName());
 
           if (empty($params['class'])) {
             $params['class'] = 'link_to_help_book_page';
@@ -321,40 +379,15 @@
     }
 
     /**
-     * Link to a video
+     * Return book page URL
      *
-     * @param  array       $params
-     * @param  string      $content
-     * @param  Smarty      $smarty
-     * @param  boolean     $repeat
-     * @return string|null
-     * @throws ParamRequiredError
+     * @param string $book_name
+     * @param string $page_slug
+     * @return string
      */
-    public static function block_video($params, $content, &$smarty, &$repeat)
+    private static function getBookPageUrl($book_name, $page_slug)
     {
-      if ($repeat) {
-        return null;
-      }
-
-      $name = isset($params['name']) && $params['name'] ? $params['name'] : null;
-
-      if (empty($name)) {
-        throw new ParamRequiredError('name');
-      }
-
-      $video = self::getCurrentProject()->getVideo($name);
-
-      if ($video instanceof Video) {
-        $params['href'] = $video->getUrl();
-
-        if ($video->getDescription()) {
-          $params['title'] = $video->getDescription();
-        }
-
-        return Shade::htmlTag('a', $params, $content);
-      } else {
-        return $content;
-      }
+      return self::pageLevelToPrefix(self::$current_element->getPageLevel()) . 'books/' . $book_name . '/' . $page_slug . '.html';
     }
 
     /**

@@ -37,25 +37,6 @@
     </div>
   </div>
 
-  <div id="search_results" style="display: none;">
-    <div id="no_results">
-      <span class="no_results_image"><img src="assets/images/circle_warning.png" alt="" /></span>
-      <span class="no_results_title">Sorry, no results for:</span>
-      <span class="no_results_query">Setting for the remote update of the server</span>
-    </div>
-
-    <div id="returned_results">
-      <h3>Search returned <b>6</b> results:</h3>
-      <ol>
-        <li><a href="#">How do I add new people to my activeCollab account?</a></li>
-        <li><a href="#">Is there a way i can see what are my employees working on?</a></li>
-        <li><a href="#">What is fastest way to add many tasks to project?</a></li>
-        <li><a href="#">Will my password expire?</a></li>
-        <li><a href="#">Will i be able to replace user on a project with another one?</a></li>
-      </ol>
-    </div>
-  </div>
-
   <div id="content">
     <div id="help_books">
       <ul>
