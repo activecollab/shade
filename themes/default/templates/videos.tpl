@@ -4,9 +4,9 @@
   <{assign var="page_level" value=1}>
 
   <title>activeCollab Help Center</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="../assets/stylesheets/main.css" />
+  <link rel="stylesheet" type="text/css" href="../assets/stylesheets/main.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script type="text/javascript" src="../assets/javascript/jwplayer/jwplayer.js" ></script>
   <script type="text/javascript">
@@ -46,9 +46,9 @@
   <div id="content">
     <div id="help_video_groups">
       <{foreach $video_groups as $video_group => $video_group_caption}>
-        <div class="help_video_group">
+        <div class="help_video_group<{if $video_group_caption@last}> last<{/if}>">
           <h3><{$video_group_caption}></h3>
-          <div class="help_video_icon"><img src="../assets/images/circle-starting.png" alt=""></div>
+          <div class="help_video_icon"><img src="../assets/images/circle-starting.png"></div>
           <ul>
           <{foreach $videos as $video}>
             <{if $video->getGroupName() == $video_group}>
