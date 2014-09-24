@@ -43,7 +43,7 @@
       <{foreach $books as $book}>
         <li>
           <a href="<{$book->getShortName()}>/index.html">
-            <span class="book_cover"><img src="../assets/images/books/<{$book->getShortName()}>/_cover_small.png"></span>
+            <span class="book_cover"><img src="../assets/images/books/<{$book->getShortName()}>/_cover_dot.png"></span>
             <span class="book_name"><{$book->getTitle()}></span>
             <span class="book_description"><{$book->getDescription()}></span>
           </a>
