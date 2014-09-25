@@ -48,6 +48,10 @@
         } else {
           $output->writeln('<error>Failed to create a project configuration file</error>');
         }
+
+        if (!mkdir($project->getPath() . '/temp')) {
+          $output->writeln('<error>Failed to create temp folder</error>');
+        }
       }
     }
   }
