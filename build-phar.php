@@ -22,7 +22,7 @@
 
   $builder->addFile(__DIR__ . '/LICENSE', 'LICENESE');
 
-  foreach ([ 'bin', 'src', 'vendor' ] as $dir_to_add) {
+  foreach ([ 'bin', 'src', 'themes', 'vendor' ] as $dir_to_add) {
     /**
      * @var RecursiveDirectoryIterator[] $iterator
      */

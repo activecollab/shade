@@ -1,11 +1,10 @@
-#!/usr/bin/env php
 <?php
 
-  require __DIR__.'/../vendor/autoload.php';
+  require __DIR__ . '/../vendor/autoload.php';
 
   use Symfony\Component\Console\Application;
 
-  $application = new Application('Shade', '@package_version@');
+  $application = new Application('Shade', ActiveCollab\Shade::VERSION);
 
   $application->add(new ActiveCollab\Shade\Command\BooksCommand());
   $application->add(new ActiveCollab\Shade\Command\BookCommand());
