@@ -1,14 +1,29 @@
-#!/usr/bin/env php
 <?php
 
   if (php_sapi_name() != 'cli') {
-    die('Please use CLI to run this script');
+    die("Please use CLI to run this script");
   }
 
-  if (isset($argv[1]) && $argv[1]) {
-    $phar_path = rtrim($argv[1], '/') . '/shade.phar';
+  $version = isset($argv[1]) && $argv[1] ? $argv[1] : null;
+
+  if (empty($version)) {
+    die("Version number is required\n");
+  }
+
+  if (isset($argv[2]) && $argv[2]) {
+    $phar_path = rtrim($argv[1], '/') . "/shade-{$version}.phar";
   } else {
-    $phar_path = __DIR__ . '/shade.phar';
+    $phar_path = __DIR__ . "/dist/shade-{$version}.phar";
+  }
+
+  if (is_file($phar_path)) {
+    print "File '$phar_path' exists. Overwrite (y/n)?\n";
+
+    if (strtolower(trim(fgets(STDIN))) === 'y') {
+      unlink($phar_path);
+    } else {
+      die("Done, file kept...\n");
+    }
   }
 
   require 'vendor/autoload.php';
@@ -108,4 +123,6 @@
       ->addRequire('bin/shade')
       ->getStub()
   );
+
+  die("\n" . basename($phar_path) . ' created. SHA1 checksum: ' . sha1_file($phar_path) . "\n");
 
