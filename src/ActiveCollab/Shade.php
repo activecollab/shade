@@ -157,7 +157,7 @@
       if (self::$smarty === false) {
         self::$smarty = new Smarty();
 
-        self::$smarty->setCompileDir(self::getTempPath());
+        self::$smarty->setCompileDir($project->getTempPath());
         self::$smarty->setTemplateDir($theme->getPath() . '/templates');
         self::$smarty->compile_check = true;
         self::$smarty->left_delimiter = '<{';
@@ -195,32 +195,6 @@
     public static function &getSmarty()
     {
       return self::$smarty;
-    }
-
-    /**
-     * @var string
-     */
-    static private $temp_path = false;
-
-    /**
-     * Return temp folder path
-     *
-     * @return string
-     * @throws TempNotFoundError
-     */
-    public static function getTempPath()
-    {
-      if (self::$temp_path === false) {
-        $path = realpath(__DIR__ . "/../../temp");
-
-        if ($path && is_dir($path)) {
-          self::$temp_path = $path;
-        } else {
-          throw new TempNotFoundError($path);
-        }
-      }
-
-      return self::$temp_path;
     }
 
     /**

@@ -349,4 +349,14 @@
 
       return $this->video_player;
     }
+
+    /**
+     * Return temp path
+     *
+     * @return string
+     */
+    public function getTempPath()
+    {
+      return $this->path . '/temp';
+    }
   }
