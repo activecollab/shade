@@ -118,6 +118,17 @@
     }
 
     /**
+     * @param array $params
+     * @return string
+     */
+    public static function function_stylesheet_url($params)
+    {
+      $page_level = isset($params['page_level']) ? (integer) $params['page_level'] : 0;
+
+      return '<link rel="stylesheet" type="text/css" href="' . self::pageLevelToPrefix($page_level) . "assets/stylesheets/main.css?timestamp=" . time() . '">';
+    }
+
+    /**
      * @param $page_level
      * @return string
      */

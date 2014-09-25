@@ -1,6 +1,4 @@
 <{include "header.tpl"}>
-
-<body>
 <div id="wrapper_pages">
   <div id="header_pages">
     <div class="logo">
@@ -25,6 +23,11 @@
       <div class="help_book_page">
         <h1><{$current_page->getTitle()}></h1>
         <div class="help_book_page_content"><{$current_page->renderBody() nofilter}></div>
+        <div class="help_book_page_comments">
+          <{foreach $plugins as $plugin}>
+            <{$plugin->renderComments($current_page) nofilter}>
+          <{/foreach}>
+        </div>
         <div class="help_book_footer">
           <div class="help_book_footer_inner">
             <div class="help_book_footer_prev"><a href="#">&laquo; Prev</a></div>

@@ -10,6 +10,14 @@
   class PrevNextPlugin extends Plugin
   {
     /**
+     * @return bool
+     */
+    function isEnabled()
+    {
+      return true;
+    }
+
+    /**
      * Returns in <head> tag
      *
      * @return string

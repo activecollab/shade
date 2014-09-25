@@ -2,9 +2,8 @@
 
   namespace ActiveCollab;
 
-  use ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin;
-  use ActiveCollab\Shade\Plugin\PrevNextPlugin;
   use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError, ActiveCollab\Shade\SmartyHelpers;
+  use ActiveCollab\Shade\Plugin\Plugin, ActiveCollab\Shade\Plugin\DisqusPlugin, ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin, ActiveCollab\Shade\Plugin\GoogleTagManagerPlugin, ActiveCollab\Shade\Plugin\LiveChatPlugin, ActiveCollab\Shade\Plugin\PrevNextPlugin;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
   /**
@@ -80,14 +79,28 @@
           'copyright' => $project->getConfigurationOption('copyright', '--UNKNOWN--'),
           'copyright_since' => $project->getConfigurationOption('copyright_since'),
           'page_level' => 0,
-          'plugins' => [
-            new GoogleAnalyticsPlugin($project),
-            new PrevNextPlugin($project),
-          ]
+          'plugins' => self::getPlugins($project),
         ]);
       }
 
       return self::$smarty;
+    }
+
+    /**
+     * Return available plugins
+     *
+     * @param Project $project
+     * @return Plugin[]
+     */
+    public static function getPlugins(Project &$project)
+    {
+      return [
+        new DisqusPlugin($project),
+        new GoogleAnalyticsPlugin($project),
+        new GoogleTagManagerPlugin($project),
+        new LiveChatPlugin($project),
+        new PrevNextPlugin($project),
+      ];
     }
 
     /**

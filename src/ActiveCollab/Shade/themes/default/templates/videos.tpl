@@ -1,6 +1,4 @@
 <{include "header.tpl"}>
-
-<body>
 <div id="wrapper_videos">
   <div id="header_videos">
     <div class="navigation">

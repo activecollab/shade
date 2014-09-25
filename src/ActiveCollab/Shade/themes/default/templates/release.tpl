@@ -1,6 +1,4 @@
 <{include "header.tpl"}>
-
-<body>
 <div id="wrapper_pages">
   <div id="header_pages">
     <div class="logo">

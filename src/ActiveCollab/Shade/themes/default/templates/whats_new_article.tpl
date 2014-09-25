@@ -1,6 +1,4 @@
 <{include "header.tpl"}>
-
-<body>
 <div id="wrapper_pages">
   <div id="header_pages">
     <div class="logo">
@@ -22,12 +20,13 @@
     <{include "whats_new_sidebar.tpl"}>
 
     <div id="help_book_pages">
-      <{if $current_whats_new_article}>
       <div class="help_book_page">
         <h1><{$current_whats_new_article->getTitle()}></h1>
         <div class="help_book_page_content"><{$current_whats_new_article->renderBody() nofilter}></div>
         <div class="help_book_page_comments">
-          <div id="disqus_thread"></div>
+          <{foreach $plugins as $plugin}>
+            <{$plugin->renderComments($current_whats_new_article) nofilter}>
+          <{/foreach}>
         </div>
         <div class="help_book_footer">
           <div class="help_book_footer_inner">
@@ -37,7 +36,6 @@
           </div>
         </div>
       </div>
-      <{/if}>
     </div>
     <div class="clear"></div>
   </div>
