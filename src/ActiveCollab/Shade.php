@@ -19,7 +19,7 @@
      */
     public static function getBuildTheme($name)
     {
-      $theme_path = __DIR__ . "/Themes/$name";
+      $theme_path = __DIR__ . "/Shade/Themes/$name";
 
       if ($theme_path && is_dir($theme_path)) {
         return new Theme($theme_path);
