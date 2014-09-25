@@ -353,6 +353,8 @@
 
       $books = $project->getBooks();
 
+      $this->skipBooks($input, $books);
+
       foreach ($books as $book) {
         $this->copyBookImages($book, $target_path, $output);
       }
@@ -397,6 +399,23 @@
       }
 
       return true;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param array $books
+     */
+    private function skipBooks(InputInterface $input, array &$books)
+    {
+      $skip_books = $input->getOption('skip-books');
+
+      if ($skip_books) {
+        foreach (explode(',', $skip_books) as $book_to_skip) {
+          if (isset($books[$book_to_skip])) {
+            unset($books[$book_to_skip]);
+          }
+        }
+      }
     }
 
     /**

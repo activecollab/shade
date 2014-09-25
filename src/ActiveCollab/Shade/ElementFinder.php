@@ -202,7 +202,7 @@
       }
 
       if (count($result)) {
-        usort($result, function(Book $a, Book $b) {
+        uasort($result, function(Book $a, Book $b) {
           if ($a->getPosition() == $b->getPosition()) {
             return 0;
           } else {
