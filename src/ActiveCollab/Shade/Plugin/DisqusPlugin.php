@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Plugin;
 
-  use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\WhatsNewArticle;
+  use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
 
   /**
    * Add Disqus comments to the generated pages
@@ -47,7 +47,7 @@
      * @param Element $element
      * @return string
      */
-    function renderComents(Element $element)
+    function renderComments(Element $element)
     {
       list($disqus_account_id, $disqus_url_prefix, $disqus_identifier_prefix) = $this->getSettings();
 
@@ -59,12 +59,13 @@
           $url = $disqus_url_prefix . '/whats-new/' . $element->getShortName() . '.html';
           $identifier = $disqus_identifier_prefix . '/whats-new/' . $element->getShortName();
         } else {
-          return get_class($element);
+          return '';
         }
 
         $title = var_export($element->getTitle(), true);
 
         return <<<EOS
+<div id="disqus_thread"></div>
 <script type="text/javascript">
   var disqus_shortname = "$disqus_account_id";
   var disqus_identifier = "$identifier";

@@ -24,9 +24,6 @@
       <div class="help_book_page">
         <h1><{$current_release->getTitle()}></h1>
         <div class="help_book_page_content"><{$current_release->renderBody() nofilter}></div>
-        <div class="help_book_page_comments">
-          <div id="disqus_thread"></div>
-        </div>
         <div class="help_book_footer">
           <div class="help_book_footer_inner">
             <div class="help_book_footer_prev"><a href="#">&laquo; Newer</a></div>

@@ -32,7 +32,7 @@
 
       if($project->isValid()) {
         $table = new Table($output);
-        $table->setHeaders([ 'Plugin', 'Is Enabled' ]);
+        $table->setHeaders([ 'Plugin', 'Enabled?' ]);
 
         foreach (Shade::getPlugins($project) as $plugin) {
           $is_enabled = $plugin->isEnabled();

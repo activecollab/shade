@@ -10,13 +10,33 @@
   class GoogleAnalyticsPlugin extends Plugin
   {
     /**
+     * @return bool|string
+     */
+    function isEnabled()
+    {
+      if ($google_tag_manager_id = $this->getAccountId()) {
+        return 'Yes, Account ID: ' . $google_tag_manager_id;
+      } else {
+        return false;
+      }
+    }
+
+    /**
+     * @return string
+     */
+    private function getAccountId()
+    {
+      return $this->project->getConfigurationOption('google_analytics_account_id');
+    }
+
+    /**
      * Returns in <head> tag
      *
      * @return string
      */
     function renderHead()
     {
-      if ($google_analytics_account_id = $this->project->getConfigurationOption('google_analytics_account_id')) {
+      if ($google_analytics_account_id = $this->getAccountId()) {
         return "<script type=\"text/javascript\">
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', '" . $google_analytics_account_id . "']);
