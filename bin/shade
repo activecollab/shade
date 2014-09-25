@@ -5,7 +5,7 @@
 
   use Symfony\Component\Console\Application;
 
-  $application = new Application('Shade', '1.0.0');
+  $application = new Application('Shade', '@package_version@');
 
   $application->add(new ActiveCollab\Shade\Command\BooksCommand());
   $application->add(new ActiveCollab\Shade\Command\BookCommand());

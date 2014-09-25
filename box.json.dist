@@ -18,7 +18,7 @@
             "in": "temp"
         }
     ],
-    "git-version": "1.0.0",
+    "git-version": "package_version",
     "main": "bin/shade",
     "output": "shade.phar",
     "stub": true
