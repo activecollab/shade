@@ -11,7 +11,6 @@
    */
   abstract class VideoPlayer
   {
-
     /**
      * @var Project
      */

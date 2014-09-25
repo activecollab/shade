@@ -85,3 +85,7 @@
     }
   });
 </script>
+
+<{foreach $plugins as $plugin}>
+  <{$plugin->renderFoot() nofilter}>
+<{/foreach}>

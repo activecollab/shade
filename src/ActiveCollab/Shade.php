@@ -2,6 +2,8 @@
 
   namespace ActiveCollab;
 
+  use ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin;
+  use ActiveCollab\Shade\Plugin\PrevNextPlugin;
   use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError, ActiveCollab\Shade\SmartyHelpers;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
@@ -42,7 +44,7 @@
      * @throws TempNotFoundError
      * @throws \SmartyException
      */
-    public static function &initSmarty(Project $project, Theme $theme)
+    public static function &initSmarty(Project &$project, Theme $theme)
     {
       if (self::$smarty === false) {
         self::$smarty = new Smarty();
@@ -78,6 +80,10 @@
           'copyright' => $project->getConfigurationOption('copyright', '--UNKNOWN--'),
           'copyright_since' => $project->getConfigurationOption('copyright_since'),
           'page_level' => 0,
+          'plugins' => [
+            new GoogleAnalyticsPlugin($project),
+            new PrevNextPlugin($project),
+          ]
         ]);
       }
 
