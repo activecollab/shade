@@ -32,22 +32,22 @@
       if($project->isValid()) {
         $books = $project->getBooks();
 
-        if ($books->count()) {
+        if (count($books)) {
           $table = new Table($output);
-          $table->setHeaders([ 'Name', 'Title', 'Pages' ]);
+          $table->setHeaders([ 'Name', 'Title', 'Pages', 'Position' ]);
 
           foreach ($books as $book) {
-            $table->addRow([ $book->getShortName(), $book->getTitle(), $book->getPages()->count() ]);
+            $table->addRow([ $book->getShortName(), $book->getTitle(), $book->getPages()->count(), $book->getPosition() ]);
           }
 
           $table->render();
 
           $output->writeln('');
 
-          if ($books->count() === 1) {
+          if (count($books) === 1) {
             $output->writeln('1 book found');
           } else {
-            $output->writeln($books->count() . ' books found');
+            $output->writeln(count($books) . ' books found');
           }
         } else {
           $output->writeln('0 books found');

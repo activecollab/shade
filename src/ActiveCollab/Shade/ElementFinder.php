@@ -185,23 +185,30 @@
     }
 
     /**
-     * @return Book[]|void
+     * @return Book[]
      */
     function getBooks()
     {
       $dirs = call_user_func($this->finders['findBookDirs'], $this->getBooksPath());
 
-//      var_dump($dirs);
-//      die();
-
-      $result = new NamedList();
+      $result = [];
 
       foreach ($dirs as $dir) {
         $book = new Book($this->project, $dir);
 
         if ($book->isLoaded()) {
-          $result->add($book->getShortName(), $book);
+          $result[$book->getShortName()] = $book;
         }
+      }
+
+      if (count($result)) {
+        usort($result, function(Book $a, Book $b) {
+          if ($a->getPosition() == $b->getPosition()) {
+            return 0;
+          } else {
+            return $a->getPosition() > $b->getPosition() ? 1 : -1;
+          }
+        });
       }
 
       return $result;

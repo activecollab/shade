@@ -64,6 +64,25 @@
     }
 
     /**
+     * @var integer
+     */
+    private $position = false;
+
+    /**
+     * Return book position
+     *
+     * @return integer
+     */
+    public function getPosition()
+    {
+      if ($this->position === false) {
+        $this->position = (integer) $this->getProperty('position');
+      }
+
+      return $this->position;
+    }
+
+    /**
      * Populate list of common questions
      *
      * @param array $common_questions
