@@ -166,16 +166,6 @@
     }
 
     /**
-     * Return book URL
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-      return Shade::getUrl($this);
-    }
-
-    /**
      * Return true if we loaded element's definition
      *
      * @return bool

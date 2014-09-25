@@ -32,25 +32,6 @@
     }
 
     /**
-     * Return book cover URL
-     *
-     * @param  bool   $small
-     * @return string
-     */
-    public function getCoverUrl($small = true)
-    {
-      $size_suffix = $small ? 'small' : 'large';
-      $cover_image_file = "/_cover_$size_suffix.png";
-      $image_relative_path = "books/" . str_replace('_', '-', $this->getFolderName()) . $cover_image_file;
-
-      if (is_file($this->path . '/images' . $cover_image_file)) {
-        return AngieApplication::getImageUrl($image_relative_path, $this->getModuleName(), 'help');
-      } else {
-        return AngieApplication::getImageUrl('book.png', HelpFramework::NAME);
-      }
-    }
-
-    /**
      * Cached pages, per user
      *
      * @var array

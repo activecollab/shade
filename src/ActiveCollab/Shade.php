@@ -2,8 +2,7 @@
 
   namespace ActiveCollab;
 
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError;
-  use ActiveCollab\Shade\SmartyHelpers;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError, ActiveCollab\Shade\SmartyHelpers;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
   /**
@@ -12,115 +11,6 @@
   final class Shade
   {
     const VERSION = '1.0.0';
-
-    // ---------------------------------------------------
-    //  URL-s
-    // ---------------------------------------------------
-
-    /**
-     * URL generator
-     *
-     * @var callable|null
-     */
-    private static $url_generator = null;
-
-    /**
-     * Set URL generator
-     *
-     * @param callable|null $generator
-     * @throws Exception
-     */
-    public static function setUrlGenerator($generator)
-    {
-      if (is_callable($generator) || $generator === null) {
-        self::$url_generator = $generator;
-      } else {
-        throw new Exception('Generator is not callable (or NULL)');
-      }
-    }
-
-    /**
-     * Return URL of an element
-     *
-     * @param  Element $element
-     * @return string
-     * @throws Exception
-     */
-    public static function getUrl(Element $element)
-    {
-      if (self::$url_generator && self::$url_generator instanceof Closure) {
-        return call_user_func(self::$url_generator, $element);
-      } else {
-//        if ($element instanceof HelpBook) {
-//          return Router::assemble('help_book', array(
-//          'book_name' => $element->getShortName()
-//          ));
-//        } elseif ($element instanceof HelpBookPage) {
-//          return Router::assemble('help_book_page', array(
-//          'book_name' => $element->getBookName(),
-//          'page_name' => $element->getSlug(),
-//          ));
-//        } elseif ($element instanceof HelpWhatsNewArticle) {
-//          return Router::assemble('help_whats_new_article', array(
-//          'article_name' => $element->getSlug(),
-//          ));
-//        } elseif ($element instanceof HelpVideo) {
-//          return Router::assemble('help_video', array(
-//          'video_name' => $element->getSlug()
-//          ));
-//        } else {
-//          throw new Exception('Element is expected to be an instance of \ActiveCollab\Shade\Element class');
-//        }
-      }
-    }
-
-    /**
-     * @var callable|null
-     */
-    private static $image_url_generator = null;
-
-    /**
-     * Set URL generator
-     *
-     * @param  callable|null $generator
-     * @throws \Exception
-     */
-    public function setImageUrlGenerator($generator)
-    {
-      if (is_callable($generator) || $generator === null) {
-        self::$image_url_generator = $generator;
-      } else {
-        throw new Exception('Generator is not callable (or NULL)');
-      }
-    }
-
-    /**
-     * Return image URL
-     *
-     * @param  Element $current_element
-     * @param  string $name
-     * @return string
-     */
-    public static function getImageUrl($current_element, $name)
-    {
-      if (self::$image_url_generator) {
-        return call_user_func(self::$image_url_generator, $current_element, $name);
-      } else {
-        if ($current_element instanceof HelpBookPage) {
-          $params['src'] = AngieApplication::getImageUrl('books/' . $current_element->getBookName() . '/' . $name, $current_element->getModuleName(), 'help');
-        } elseif ($current_element instanceof HelpBook) {
-          $params['src'] = AngieApplication::getImageUrl('books/' . $current_element->getShortName() . '/' . $name, $current_element->getModuleName(), 'help');
-        } elseif ($current_element instanceof HelpVideo) {
-          $params['src'] = AngieApplication::getImageUrl('videos/' . $name, $current_element->getModuleName(), 'help');
-        } elseif ($current_element instanceof HelpWhatsNewArticle) {
-          $params['src'] = AngieApplication::getImageUrl('whats-new/' . $current_element->getVersionNumber() . '/' . $name, $current_element->getModuleName(), 'help');
-        } else {
-          return 'Unknown';
-        }
-
-        return '<div class="center">' . self::htmlTag('img', $params) . '</div>';
-      }
-    }
 
     /**
      * @param string $name
@@ -157,7 +47,14 @@
       if (self::$smarty === false) {
         self::$smarty = new Smarty();
 
-        self::$smarty->setCompileDir($project->getTempPath());
+        $temp_path = $project->getTempPath();
+
+        if (is_dir($temp_path)) {
+          self::$smarty->setCompileDir($temp_path);
+        } else {
+          throw new TempNotFoundError($temp_path);
+        }
+
         self::$smarty->setTemplateDir($theme->getPath() . '/templates');
         self::$smarty->compile_check = true;
         self::$smarty->left_delimiter = '<{';
