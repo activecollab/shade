@@ -1,0 +1,25 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src",
+        "temp",
+        "themes",
+        "vendor"
+    ],
+    "files": [
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [ "Tests" ],
+            "in": "vendor",
+            "exclude": "*.php",
+            "in": "temp"
+        }
+    ],
+    "git-version": "1.0.0",
+    "main": "bin/shade",
+    "output": "shade.phar",
+    "stub": true
+}

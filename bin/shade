@@ -5,7 +5,7 @@
 
   use Symfony\Component\Console\Application;
 
-  $application = new Application('Shade', '1.0-dev');
+  $application = new Application('Shade', '1.0.0');
 
   $application->add(new ActiveCollab\Shade\Command\BooksCommand());
   $application->add(new ActiveCollab\Shade\Command\BookCommand());
@@ -15,5 +15,6 @@
   $application->add(new ActiveCollab\Shade\Command\ReleasesCommand());
   $application->add(new ActiveCollab\Shade\Command\ProjectCommand());
   $application->add(new ActiveCollab\Shade\Command\BuildCommand());
+  $application->add(new ActiveCollab\Shade\Command\UpdateCommand());
 
   $application->run();
