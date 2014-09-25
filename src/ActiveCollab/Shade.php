@@ -2,10 +2,7 @@
 
   namespace ActiveCollab;
 
-  use ActiveCollab\Shade\Error\ParamRequiredError;
-  use ActiveCollab\Shade\Error\TempNotFoundError;
-  use ActiveCollab\Shade\Error\ThemeNotFoundError;
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\NamedList;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError;
   use ActiveCollab\Shade\SmartyHelpers;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
