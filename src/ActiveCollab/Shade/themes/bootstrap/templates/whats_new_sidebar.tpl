@@ -1,6 +1,6 @@
 <div id="sidebar">
 <{foreach $whats_new_articles_by_version as $version => $articles}>
-  <p><{$version}></p>
+  <h3>New in <{$version}></h3>
   <ol>
   <{foreach $articles as $article}>
     <li class="<{if $current_whats_new_article && $current_whats_new_article->getShortName() == $article->getShortName()}>selected<{/if}>"><a href="<{$article->getShortName()}>.html"><{$article->getTitle()}></a></li>
@@ -8,7 +8,7 @@
   </ol>
 <{/foreach}>
 
-  <div id="release_notes">
+  <div class="text-center">
     <a href="./../release-notes/index.html">Release Notes</a>
   </div>
 </div>

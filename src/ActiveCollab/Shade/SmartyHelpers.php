@@ -421,27 +421,13 @@
         return null;
       }
 
-      $class = isset($params['class']) && $params['class'] ? $params['class'] : null;
-
-      if (empty($class)) {
-        $params['class'] = 'note';
-      } else {
-        $params['class'] .= ' note';
-      }
-
       $title = isset($params['title']) && $params['title'] ? $params['title'] : null;
 
-      if ($title) {
-        $params['class'] .= ' with_title';
-
-        return Shade::htmlTag('div', $params, function () use ($title, $content) {
-          return '<h3>' . Shade::clean($title) . '</h3>' . Shade::markdownToHtml(trim($content));
-        });
-      } else {
-        return Shade::htmlTag('div', $params, function () use ($content) {
-          return Shade::markdownToHtml(trim($content));
-        });
+      if (empty($title)) {
+        $title = 'Note';
       }
+
+      return '<div class="panel panel-warning"><div class="panel-heading">' . Shade::clean($title) . '</div><div class="panel-body">' . Shade::markdownToHtml(trim($content)) . '</div></div>';
     }
 
     /**
@@ -619,6 +605,25 @@
         <div class="step_num"><span>' . $num . '</span></div>
         <div class="step_content">' . Shade::markdownToHtml(trim($content)) . '</div>
       </div>';
+    }
+
+    public static function function_navigation_link($params)
+    {
+      $page_level = isset($params['page_level']) && (integer) $params['page_level'] > 0 ? (integer) $params['page_level'] : 0;
+      $section = isset($params['section']) ? $params['section'] : null;
+
+      switch ($section) {
+        case 'books':
+          return self::pageLevelToPrefix($page_level) . 'books/index.html';
+        case 'releases':
+          return self::pageLevelToPrefix($page_level) . 'release-notes/index.html';
+        case 'whats_new':
+          return self::pageLevelToPrefix($page_level) . 'whats-new/index.html';
+        case 'videos':
+          return self::pageLevelToPrefix($page_level) . 'videos/index.html';
+        default:
+          return self::pageLevelToPrefix($page_level) . 'index.html';
+      }
     }
 
   }

@@ -3,7 +3,7 @@
   namespace ActiveCollab;
 
   use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError, ActiveCollab\Shade\SmartyHelpers;
-  use ActiveCollab\Shade\Plugin\Plugin, ActiveCollab\Shade\Plugin\DisqusPlugin, ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin, ActiveCollab\Shade\Plugin\GoogleTagManagerPlugin, ActiveCollab\Shade\Plugin\LiveChatPlugin, ActiveCollab\Shade\Plugin\PrevNextPlugin;
+  use ActiveCollab\Shade\Plugin\Plugin, ActiveCollab\Shade\Plugin\DisqusPlugin, ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin, ActiveCollab\Shade\Plugin\GoogleTagManagerPlugin, ActiveCollab\Shade\Plugin\LiveChatPlugin;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
   /**
@@ -99,7 +99,6 @@
         new GoogleAnalyticsPlugin($project),
         new GoogleTagManagerPlugin($project),
         new LiveChatPlugin($project),
-        new PrevNextPlugin($project),
       ];
     }
 

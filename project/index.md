@@ -1,12 +1,12 @@
-Shade builds help portals from static files. Write a couple of Markdown files, put them in folders and let the Shade build a website just like this one. If you are interested in learning why is Shade the way it is, check out <{page name="principles" book="shade"}>the Principles Page<{/page}> (it's an interesting read if you are working on a complex software project). Or dive right in…
+Shade builds help portals from Markdown files. Write a couple of Markdown files, put them in folders and let the Shade build a website just like this one. If you are interested in learning why is Shade the way it is, check out <{page name="principles" book="shade"}>the Principles Page<{/page}> (it's an interesting read if you are working on a complex software project). Or dive right in…
 
 <{sub}>Installing Shade<{/sub}>
 
 Are you on a Unix type of an operating system? Mac or Linux? Than it's easy opening a terminal and doing this:
 
-<{code}>curl -O https://www.activecollab.com/labs/shade/downloads/shade-1.0.0.phar
-chmod +x shade-1.0.0.phar
-sudo mv shade-1.0.0.phar /usr/local/bin/shade<{/code}>
+<{code}>curl -O https://www.activecollab.com/labs/shade/downloads/shade-latest.phar
+chmod +x shade-latest.phar
+sudo mv shade-latest.phar /usr/local/bin/shade<{/code}>
 
 Now run:
 
@@ -20,25 +20,30 @@ to confirm that you got it installed correctly. If all is good, you should get t
 
 All Shade projects have a simple folder structure for regular, single language projects:
 
-<{code}>/books
+<{code}>/build
+/books
 /releases
 /videos
 /whats_new
 /temp
-index.md<{/code}>
+index.md
+project.json<{/code}>
 
 or a bit more complex structure for multilingual projects:
 
-<{code}>/en_US.UTF-8/books
+<{code}>/build
+/en_US.UTF-8/books
 /en_US.UTF-8/releases
 /en_US.UTF-8/videos
 /en_US.UTF-8/whats_new
+/en_US.UTF-8/index.md
 /sr_RS.UTF-8/books
 /sr_RS.UTF-8/releases
 /sr_RS.UTF-8/videos
 /sr_RS.UTF-8/whats_new
+/sr_RS.UTF-8/index.md
 /temp
-index.md<{/code}>
+project.md<{/code}>
 
 To create a project, navigate to a folder where you want to set up a project structure and execute:
 
@@ -66,7 +71,7 @@ Now that you have wrote your documentation, you can simply run:
 
 <{code inline=false}>shade build<{/code}>
 
-to have the system build a static website from the help elements. This pages goes into details about build command and all of its various options.
+to have the system build a static website from the help elements. <{page name="command-build" book="shade"}>This page<{/page}> goes into details about build command and all of its various options.
 
 <{sub}>Advanced Topics<{/sub}>
 

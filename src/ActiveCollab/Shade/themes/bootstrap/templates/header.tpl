@@ -13,15 +13,8 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
   <![endif]-->
 
-  <{*<title>activeCollab Help Center</title>*}>
-  <{*<meta http-equiv="content-type" content="text/html; charset=utf-8">*}>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-  <{*<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>*}>
-  <{*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>*}>
-
-  <{*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">*}>
-
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
   <{stylesheet_url page_level=$page_level}>
 
   <{foreach $plugins as $plugin}>
@@ -43,16 +36,15 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><{$project->getName()}></a>
+        <a class="navbar-brand" href="<{navigation_link page_level=$page_level}>"><{$project->getName()}></a>
       </div>
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/index.html">Home</a></li>
-          <li><a href="./whats-new/index.html">What's New?</a></li>
-          <li><a href="./release-notes/index.html">Release Notes</a></li>
-          <li><a href="./books/index.html">User Manuals &amp; Guides</a></li>
-          <li><a href="./videos/index.html">Instructional Videos</a></li>
+          <li<{if $current_section == 'whats_new'}> class="active"<{/if}>><a href="<{navigation_link section=whats_new page_level=$page_level}>">What's New?</a></li>
+          <li<{if $current_section == 'releases'}> class="active"<{/if}>><a href="<{navigation_link section=releases page_level=$page_level}>">Release Notes</a></li>
+          <li<{if $current_section == 'books'}> class="active"<{/if}>><a href="<{navigation_link section=books page_level=$page_level}>">User Manuals &amp; Guides</a></li>
+          <li<{if $current_section == 'videos'}> class="active"<{/if}>><a href="<{navigation_link section=videos page_level=$page_level}>">Instructional Videos</a></li>
         </ul>
         <form class="navbar-form navbar-right" role="search">
           <div class="form-group">

@@ -112,6 +112,7 @@
       $this->smarty->assign([
         'common_questions' => $project->getCommonQuestions(),
         'page_level' => 0,
+        'current_section' => 'home',
       ]);
 
       Shade::writeFile("$target_path/index.html", $this->smarty->fetch('index.tpl'), function($path) use (&$output) {
@@ -156,6 +157,7 @@
         'whats_new_articles_by_version' => $whats_new_articles_by_version,
         'current_whats_new_article' => $this->getCurrentArticleFromSortedArticles($whats_new_articles_by_version),
         'page_level' => 1,
+        'current_section' => 'whats_new',
       ]);
 
       Shade::writeFile("$target_path/whats-new/index.html", $this->smarty->fetch('whats_new_article.tpl'), function($path) use (&$output) {
@@ -266,6 +268,7 @@
         'releases_by_major_version' => $releases_by_major_version,
         'current_release' => $this->getCurrentReleaseFromSortedReleases($releases_by_major_version),
         'page_level' => 1,
+        'current_section' => 'releases',
       ]);
 
       Shade::writeFile("$target_path/release-notes/index.html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
@@ -362,6 +365,7 @@
       $this->smarty->assign([
         'books' => $books,
         'page_level' => 1,
+        'current_section' => 'books',
       ]);
 
       Shade::writeFile("$target_path/books/index.html", $this->smarty->fetch('books.tpl'), function($path) use (&$output) {
@@ -475,6 +479,7 @@
         'page_level' => 1,
         'video_player' => $project->getVideoPlayer(),
         'current_video' => $this->getCurrentVideo($video_groups, $videos),
+        'current_section' => 'videos',
       ]);
 
       Shade::writeFile("$target_path/videos/index.html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {

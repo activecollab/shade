@@ -16,6 +16,26 @@ body {
   background: #f8f8f8;
   margin-top: 25px;
   padding: 15px;
+  border-radius: 5px;
+}
+
+#sidebar h3 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 16px;
+}
+
+#sidebar li.selected {
+  font-weight: bold;
+  font-style: italic;
+}
+
+#sidebar div.book-icon {
+  margin-bottom: 15px;
+}
+
+#video_player {
+  margin: 25px auto;
 }
 
 /*div.sidebar {*/
@@ -74,6 +94,8 @@ div.syntax_higlighted div.syntax_higlighted_source pre {
   padding-left: 10px;
   padding-top: 7px;
   padding-bottom: 7px;
+  overflow-y: scroll;
+  word-wrap: normal;
 }
 
 .source-code {
@@ -128,6 +150,32 @@ div.syntax_higlighted div.syntax_higlighted_source pre {
 .source-code::selection, .source-code span::selection {
   background: yellow;
   color: black;
+}
+
+/** Steps **/
+
+article div.body .step {
+  overflow: none;
+  margin: 8px 0;
+  min-height: 16px;
+}
+
+article div.body .step .step_num {
+  float: left;
+  width: 15px;
+}
+
+article div.body .step .step_num span {
+  background-color: #D10A0B;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid #D10A0B;
+  color: white;
+  font-size: 80%;
+}
+
+article div.body .step .step_content {
+  padding-left: 30px;
 }
 
 /** FOOTER **/

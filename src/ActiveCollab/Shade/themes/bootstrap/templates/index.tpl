@@ -2,10 +2,10 @@
 
 <div id="content_wrapper" class="container">
   <div id="sidebar">
-    <p>Shade builds help portals from static files.</p>
+    <p>Shade builds help portals from Markdown files.</p>
 
     <p class="text-center" style="margin: 25px 0">
-      <button type="button" class="btn btn-success btn-lg">Download v1.0.0</button>
+      <a href="downloads/shade-latest.phar" type="button" class="btn btn-success btn-lg">Download v1.0.0</a>
     </p>
 
     <p>Common Questions:</p>

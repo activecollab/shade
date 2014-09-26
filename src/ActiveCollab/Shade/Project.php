@@ -107,13 +107,26 @@
     }
 
     /**
+     * @var string
+     */
+    private $default_build_target;
+
+    /**
      * Return default build target
      *
      * @return string|null
      */
     function getDefaultBuildTarget()
     {
-      return $this->getConfigurationOption('default_build_target');
+      if (empty($this->default_build_target)) {
+        $this->default_build_target = $this->getConfigurationOption('default_build_target');
+
+        if (empty($this->default_build_target)) {
+          $this->default_build_target = $this->path . '/build';
+        }
+      }
+
+      return $this->default_build_target;
     }
 
     /**

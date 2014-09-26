@@ -38,6 +38,7 @@
       } else {
         $configuration = [
           'name' => $input->getArgument('name'),
+          'default_build_theme' => 'bootstrap',
           'video_groups' => [
             Video::GETTING_STARTED => 'Getting Started',
           ]
@@ -60,8 +61,18 @@
           $output->writeln('<error>Failed to create a project configuration file</error>');
         }
 
-        if ($default_locale && !mkdir($project->getPath() . '/' . $default_locale)) {
-          $output->writeln("<error>Failed to create '$default_locale' folder</error>");
+        if ($default_locale) {
+          if (!mkdir($project->getPath() . '/' . $default_locale)) {
+            $output->writeln("<error>Failed to create '$default_locale' folder</error>");
+          }
+
+          if (!file_put_contents($project->getPath() . '/' . $default_locale . '/index.md', $this->getProjectIndexMd())) {
+            $output->writeln("<error>Failed to create '$default_locale/index.md' folder</error>");
+          }
+        } else {
+          if (!file_put_contents($project->getPath() . '/index.md', $this->getProjectIndexMd())) {
+            $output->writeln("<error>Failed to create 'index.md' folder</error>");
+          }
         }
 
         foreach ([ 'books', 'releases', 'videos', 'whats_new' ] as $what_to_make) {
@@ -75,8 +86,33 @@
         }
 
         if (!mkdir($project->getPath() . '/temp')) {
-          $output->writeln('<error>Failed to create temp folder</error>');
+          $output->writeln('<error>Failed to create /temp folder</error>');
+        }
+
+        if (!mkdir($project->getPath() . '/build')) {
+          $output->writeln('<error>Failed to create /build folder</error>');
         }
       }
+    }
+
+    /**
+     * Return content of the proejct index.md file
+     *
+     * @return string
+     */
+    private function getProjectIndexMd()
+    {
+      $options = [
+        'title' => 'Full Project Name',
+        'description' => 'My Awesome Project',
+      ];
+
+      $result = '';
+
+      foreach ($options as $k => $v) {
+        $result .= $k . ': ' . $v . "\n";
+      }
+
+      return "{$result}\n================================================================\n\nContent for index page";
     }
   }
