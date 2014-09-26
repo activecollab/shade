@@ -9,7 +9,9 @@
    *
    * @package Narrative
    */
-  final class Project {
+  final class Project
+  {
+    use ElementFileParser;
 
     /**
      * @var string
@@ -41,6 +43,8 @@
         if(empty($this->configuration)) {
           $this->configuration = [];
         }
+
+        $this->load();
       }
     }
 
@@ -358,5 +362,13 @@
     public function getTempPath()
     {
       return $this->path . '/temp';
+    }
+
+    /**
+     * @return Project
+     */
+    public function &getProject()
+    {
+      return $this;
     }
   }

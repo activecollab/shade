@@ -1,0 +1,49 @@
+body {
+  padding-top: 60px;
+}
+
+#page_content {
+
+}
+
+#footer {
+  height: 60px;
+  width: 100%;
+}
+
+#footer p {
+  font: 12px/12px 'Open Sans', sans-serif;
+  font-weight: 300;
+  color: #333333;
+}
+
+#footer .rights {
+  float: left;
+}
+
+#footer .rights p {
+  padding-top: 27px;
+}
+
+#footer .social {
+  line-height: 28px;
+  float: right;
+}
+
+#footer .social p {
+  float: left;
+  line-height: 23px;
+  padding-top: 22px;
+}
+
+#footer .social ul.links {
+  float: left;
+  list-style: none;
+  white-space: nowrap;
+  padding: 20px 0 0 15px;
+}
+
+#footer .social ul.links li {
+  display: inline;
+  margin-left: 5px;
+}

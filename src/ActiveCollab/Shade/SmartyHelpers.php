@@ -3,7 +3,7 @@
   namespace ActiveCollab\Shade;
 
   use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
-  use Smarty, Smarty_Internal_Template;
+  use Smarty, Smarty_Internal_Template, Exception;
   use ActiveCollab\Shade, ActiveCollab\Shade\Error\ParamRequiredError;
 
   /**
@@ -56,11 +56,16 @@
     /**
      * Set current element
      *
-     * @param Element $element
+     * @param Project|Element $element
+     * @throws Exception
      */
-    public static function setCurrentElement(Element $element)
+    public static function setCurrentElement($element)
     {
-      self::$current_element = $element;
+      if ($element instanceof Element || $element instanceof Project) {
+        self::$current_element = $element;
+      } else {
+        throw new Exception('Projects and elements are accepted as current element');
+      }
     }
 
     /**
