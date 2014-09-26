@@ -61,3 +61,18 @@ There are five building blocks for every Shade project:
 5. **Videos** let you instructional or promo videos to your documentation.
 
 <{sub}>Building<{/sub}>
+
+Now that you have wrote your documentation, you can simply run:
+
+<{code inline=false}>shade build<{/code}>
+
+to have the system build a static website from the help elements. This pages goes into details about build command and all of its various options.
+
+<{sub}>Advanced Topics<{/sub}>
+
+* <{page name="themes" book="shade"}>Themes<{/page}>
+* <{page name="plugins" book="shade"}>Plugins<{/page}>
+
+<{sub}>Contributing<{/sub}>
+
+GitHub project is here: [https://github.com/activecollab/shade](https://github.com/activecollab/shade). To contribute simply form the repo, make the change and submit a pull request.

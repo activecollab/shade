@@ -2,9 +2,29 @@ body {
   padding-top: 60px;
 }
 
-#page_content {
+#content_wrapper {
 
 }
+
+#content {
+  padding-right: 320px;
+}
+
+#sidebar {
+  float: right;
+  width: 300px;
+  background: #f8f8f8;
+  margin-top: 25px;
+  padding: 15px;
+}
+
+/*div.sidebar {*/
+  /*float: right;*/
+  /*padding: 10px;*/
+  /*margin: 0 0 15px 15px;*/
+  /*background: #f8f8f8;*/
+  /*min-height: 500px;*/
+/*}*/
 
 /** CODE **/
 
@@ -113,12 +133,10 @@ div.syntax_higlighted div.syntax_higlighted_source pre {
 /** FOOTER **/
 
 #footer {
-  height: 60px;
   width: 100%;
 }
 
 #footer p {
-  font: 12px/12px 'Open Sans', sans-serif;
   font-weight: 300;
   color: #333333;
 }
