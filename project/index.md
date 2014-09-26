@@ -1,22 +1,63 @@
-# Principles
+Shade builds help portals from static files. Write a couple of Markdown files, put them in folders and let the Shade build a website just like this one. If you are interested in learning why is Shade the way it is, check out <{page name="principles" book="shade"}>the Principles Page<{/page}> (it's an interesting read if you are working on a complex software project). Or dive right in…
 
-1. Keep the documentation where your code is,
-2. Make it VCS friendly,
-3. Plain-text FTW! Use Shade-flavored Markdown to write documentation. Keep it simple while doing that,
-4. Static HTML outperforms dynamicly built pages,
-5. Use the eco-system instead of reinventing the wheel (Disqus for comments, open API-s to send customer feedback to your favorite tracking systems),
-6. Learn from companies that traditionally have great documentation (Borland, Microsoft etc).
+<{sub}>Installing Shade<{/sub}>
 
-# Why not a dynamic knowledge base? One with database backend, web interface etc?
+Are you on a Unix type of an operating system? Mac or Linux? Than it's easy opening a terminal and doing this:
 
-This goes back to the roots, when this project was internal and used only by our team. In our team, writing documentation is integral part of development process, so integral that it has its own column on our Kanban board. Because of that, we like to have our document where our code is, and that means that we it needs to be in plain text + binary data form, and not in some external database that uses its own version system (if any), has its own editing tools etc.
+<{code}>curl -O https://www.activecollab.com/labs/shade/downloads/shade-1.0.0.phar
+chmod +x shade-1.0.0.phar
+sudo mv shade-1.0.0.phar /usr/local/bin/shade<{/code}>
 
-Benefits of having the documentation in the same place where your code is:
+Now run:
 
-1. It can evolve as code evolves. This makes documentation more likely to happen, because you can draft it as you are working on that awesame feature that has been consuming you for the past couple of weeks,
-2. It is versioned. You use version control system for your code, right?
-3. It follows your workflow and release cycle. Do you use GitFlow, or a similar workflow? Shade documentation plays well in that setting. Do you need to build an old release and have the documentation included? Easy, because Shade documentation is part of your code when you check-out the tag that you need to build.
+<{code inline=false}>shade --version<{/code}>
 
-# Why these elements (books, what's new articles, release notes and videos)?
+to confirm that you got it installed correctly. If all is good, you should get the information about current version of the utility:
 
-These elements worked really well for us for the past 7+ years.
+<{code inline=false}>Shade version 1.0.0<{/code}>
+
+<{sub}>Create a Project<{/sub}>
+
+All Shade projects have a simple folder structure for regular, single language projects:
+
+<{code}>/books
+/releases
+/videos
+/whats_new
+/temp
+index.md<{/code}>
+
+or a bit more complex structure for multilingual projects:
+
+<{code}>/en_US.UTF-8/books
+/en_US.UTF-8/releases
+/en_US.UTF-8/videos
+/en_US.UTF-8/whats_new
+/sr_RS.UTF-8/books
+/sr_RS.UTF-8/releases
+/sr_RS.UTF-8/videos
+/sr_RS.UTF-8/whats_new
+/temp
+index.md<{/code}>
+
+To create a project, navigate to a folder where you want to set up a project structure and execute:
+
+<{code inline=false}>shade project<{/code}>
+
+This will create a single language project. Creating a multilingual project is not complicated either. Just run:
+
+<{code inline=false}>shade project --default-locale=en_US.UTF-8<{/code}>
+
+There are more options available for <{term}>project<{/term}> command and you can find them in <{page name="project-command" book="shade"}>this article<{/page}>.
+
+<{sub}>Writing Content<{/sub}>
+
+There are five building blocks for every Shade project:
+
+1. **Project** itself. You use it to define the home page, how build will work, which integrations will be put into pages, whether the is multilingual content etc,
+2. **Books** are collections of **Pages** that cover a particular topic. They are great for writing user manuals,
+3. **What's New Articles** let you create a small blog with news about your product. They should be written so all of your users are interested in reading them,
+4. **Release Notes** are used to document all the small changes that you make to your product. These are for your fans, users obsessed with details and power-users.
+5. **Videos** let you instructional or promo videos to your documentation.
+
+<{sub}>Building<{/sub}>

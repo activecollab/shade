@@ -19,7 +19,9 @@
      */
     protected function configure()
     {
-      $this->setName('book')->addArgument('name', InputArgument::REQUIRED, 'Short name of the book')->setDescription('Show book details');
+      $this->setName('book')
+        ->addArgument('name', InputArgument::REQUIRED, 'Short name of the book')
+        ->setDescription('Show book details');
     }
 
     /**

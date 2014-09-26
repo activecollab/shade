@@ -371,4 +371,12 @@
     {
       return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getPageLevel()
+    {
+      return 0;
+    }
   }

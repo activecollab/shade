@@ -4,6 +4,7 @@
   "multilingual_build_mode" : "separate_targets",
   "default_locale": "en_US.UTF-8",
   "default_build_target" : "/Users/ilija/Temp/ShadeTarget",
+  "default_build_theme" : "bootstrap",
   "copyright" : "A51 doo",
   "copyright_since" : 2007,
   "search" : {
@@ -12,7 +13,6 @@
   "video_groups" : {
     "getting-started" : "Getting Started"
   },
-  "theme" : "bootstrap",
   "theme_settings" : {
     "social_profiles" : {
       "twitter" : "activecollab",

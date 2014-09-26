@@ -4,6 +4,7 @@
 
   use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Video;
   use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
+  use Symfony\Component\Console\Input\InputArgument;
 
   /**
    * Create a new project
@@ -17,7 +18,10 @@
      */
     function configure()
     {
-      $this->setName('project')->addArgument('name')->setDescription('Create a new project');
+      $this->setName('project')
+        ->addArgument('name')
+        ->addOption('default-locale', null, InputArgument::OPTIONAL, 'Turn on multilingual support and set the default locale')
+        ->setDescription('Create a new project');
     }
 
     /**
@@ -43,10 +47,31 @@
           $configuration['name'] = basename($project->getPath());
         }
 
+        $default_locale = $input->getOption('default-locale');
+
+        if ($default_locale) {
+          $configuration['is_multilingual'] = true;
+          $configuration['default_locale'] = $default_locale;
+        }
+
         if (file_put_contents($project->getPath() . '/project.json', json_encode($configuration, JSON_PRETTY_PRINT))) {
           $output->writeln('Project initialized');
         } else {
           $output->writeln('<error>Failed to create a project configuration file</error>');
+        }
+
+        if ($default_locale && !mkdir($project->getPath() . '/' . $default_locale)) {
+          $output->writeln("<error>Failed to create '$default_locale' folder</error>");
+        }
+
+        foreach ([ 'books', 'releases', 'videos', 'whats_new' ] as $what_to_make) {
+          if ($default_locale) {
+            $what_to_make = "$default_locale/$what_to_make";
+          }
+
+          if (!mkdir($project->getPath() . '/' . $what_to_make)) {
+            $output->writeln("<error>Failed to create '$what_to_make' folder</error>");
+          }
         }
 
         if (!mkdir($project->getPath() . '/temp')) {
