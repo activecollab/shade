@@ -7,6 +7,11 @@
   "default_build_theme" : "bootstrap",
   "copyright" : "A51 doo",
   "copyright_since" : 2007,
+  "google_analytics_account_id" : "UA-66802-3",
+  "google_tag_manager_id" : "GTM-T4R4H2",
+  "disqus_account_id" : "activecollab",
+  "disqus_url_prefix" : "https://activecollab.com/shade",
+  "disqus_identifier_prefix" : "/shade",
   "search" : {
     "engine" : "elasticsearch"
   },

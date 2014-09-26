@@ -8,12 +8,12 @@
     <article>
       <h1><{$current_page->getTitle()}></h1>
       <div class="body"><{$current_page->renderBody() nofilter}></div>
-      <{include "prev_top_next.tpl"}>
       <div class="comments">
         <{foreach $plugins as $plugin}>
           <{$plugin->renderComments($current_page) nofilter}>
         <{/foreach}>
       </div>
+      <{include "prev_top_next.tpl"}>
     </article>
   </div>
   <{else}>
