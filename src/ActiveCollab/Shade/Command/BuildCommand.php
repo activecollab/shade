@@ -20,9 +20,9 @@
     {
       $this
         ->setName('build')
-        ->addOption('target', null, InputOption::VALUE_OPTIONAL, 'Where do you want Shade to build the help?')
-        ->addOption('theme', null, InputOption::VALUE_OPTIONAL, 'Name of the theme that should be used to build help')
-        ->addOption('skip-books', null, InputOption::VALUE_OPTIONAL, 'Comma separated list of books that should be skipped')
+        ->addOption('target', null, InputOption::VALUE_REQUIRED, 'Where do you want Shade to build the help?')
+        ->addOption('theme', null, InputOption::VALUE_REQUIRED, 'Name of the theme that should be used to build help')
+        ->addOption('skip-books', null, InputOption::VALUE_REQUIRED, 'Comma separated list of books that should be skipped')
         ->setDescription('Build a help');
     }
 

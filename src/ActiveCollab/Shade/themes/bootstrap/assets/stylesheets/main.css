@@ -10,6 +10,28 @@ body {
   padding-right: 320px;
 }
 
+#content span.outlined_inline {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background: #f8f8f8;
+  padding: 1px 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#content span.outlined_inline.outlined_inline_mono {
+  font-family: monospace;
+}
+
+#content span.term {
+  font-weight: bold;
+}
+
+#content span.option {
+  font-weight: bold;
+  cursor: pointer;
+}
+
 #sidebar {
   float: right;
   width: 300px;
