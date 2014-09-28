@@ -5,9 +5,9 @@
   <div class="social">
     <p>Stay up to date with all new features:</p>
     <ul class="links">
-      <li><a href="https://twitter.com/activecollab" target="_blank"><img title="Twitter" alt="Twitter" src="<{theme_asset name="images/icon_twitter.png" page_level=$page_level}>"></a></li>
-      <li><a href="https://www.facebook.com/activecollab" target="_blank"><img title="Facebook" alt="Facebook" src="<{theme_asset name="images/icon_facebook.png" page_level=$page_level}>"></a></li>
-      <li><a href="https://plus.google.com/+activecollab" target="_blank"><img title="Google+" alt="Google+" src="<{theme_asset name="images/icon_google.png" page_level=$page_level}>"></a></li>
+    <{foreach $project->getSocialLinks() as $service}>
+      <li><a href="<{$service.url}>" target="_blank"><img  src="<{theme_asset name=$service.icon page_level=$page_level}>" title="{$service.name}" alt="{$service.name} icon"></a></li>
+    <{/foreach}>
     </ul>
   </div>
 </div>

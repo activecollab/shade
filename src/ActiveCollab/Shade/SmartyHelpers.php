@@ -552,6 +552,10 @@
           $highlight = 'xml';
         }
 
+        if ($highlight === 'json') {
+          $highlight = 'javascript';
+        }
+
         return Shade::highlightCode($content, $highlight);
       }
     }

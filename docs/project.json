@@ -18,11 +18,9 @@
   "video_groups" : {
     "getting-started" : "Getting Started"
   },
-  "theme_settings" : {
-    "social_profiles" : {
-      "twitter" : "activecollab",
-      "facebook" : "activecollab",
-      "google_plus" : "activecollab"
-    }
+  "social_links" : {
+    "twitter" : "activecollab",
+    "facebook" : "activecollab",
+    "google" : "activecollab"
   }
 }

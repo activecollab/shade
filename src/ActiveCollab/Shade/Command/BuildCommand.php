@@ -471,6 +471,11 @@
       });
 
       $videos = $project->getVideos();
+
+      if (!$videos->count()) {
+        return true; // Skip video section rendering
+      }
+
       $video_groups = $project->getVideoGroups();
 
       $this->smarty->assign([

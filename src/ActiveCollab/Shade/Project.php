@@ -149,6 +149,30 @@
       return $this->getConfigurationOption('default_build_theme', 'default');
     }
 
+    private $social_links = false;
+
+    function getSocialLinks()
+    {
+      if ($this->social_links === false) {
+        $this->social_links = [];
+
+        if (is_array($this->getConfigurationOption('social_links'))) {
+          foreach ($this->getConfigurationOption('social_links') as $service => $handle) {
+            switch ($service) {
+              case 'twitter':
+                $this->social_links[$service] = [ 'name' => 'Twitter', 'url' => "https://twitter.com/{$handle}", 'icon' => "images/icon_{$service}.png" ]; break;
+              case 'facebook':
+                $this->social_links[$service] = [ 'name' => 'Facebook', 'url' => "https://www.facebook.com/{$handle}", 'icon' => "images/icon_{$service}.png" ]; break;
+              case 'google':
+                $this->social_links[$service] = [ 'name' => 'Google+', 'url' => "https://plus.google.com/+{$handle}", 'icon' => "images/icon_{$service}.png" ]; break;
+            }
+          }
+        }
+      }
+
+      return $this->social_links;
+    }
+
     /**
      * Return configuration option
      *
