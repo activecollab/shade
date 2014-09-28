@@ -263,23 +263,30 @@
     }
 
     /**
+     * @var Video[]|NamedList
+     */
+    private $videos = false;
+
+    /**
      * @return Video[]|NamedList
      */
     function getVideos()
     {
-      $files = call_user_func($this->finders['findVideoFiles'], $this->getVideosPath());
+      if ($this->videos === false) {
+        $files = call_user_func($this->finders['findVideoFiles'], $this->getVideosPath());
 
-      $result = new NamedList();
+        $this->videos = new NamedList();
 
-      foreach ($files as $file) {
-        $video = new Video($this->project, $file);
+        foreach ($files as $file) {
+          $video = new Video($this->project, $file);
 
-        if ($video->isLoaded()) {
-          $result->add($video->getShortName(), $video);
+          if ($video->isLoaded()) {
+            $this->videos->add($video->getShortName(), $video);
+          }
         }
       }
 
-      return $result;
+      return $this->videos;
     }
 
     /**

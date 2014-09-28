@@ -44,7 +44,9 @@
           <li<{if $current_section == 'whats_new'}> class="active"<{/if}>><a href="<{navigation_link section=whats_new page_level=$page_level}>">What's New?</a></li>
           <li<{if $current_section == 'releases'}> class="active"<{/if}>><a href="<{navigation_link section=releases page_level=$page_level}>">Release Notes</a></li>
           <li<{if $current_section == 'books'}> class="active"<{/if}>><a href="<{navigation_link section=books page_level=$page_level}>">User Manuals &amp; Guides</a></li>
+        <{if $project->getVideos()->count()}>
           <li<{if $current_section == 'videos'}> class="active"<{/if}>><a href="<{navigation_link section=videos page_level=$page_level}>">Instructional Videos</a></li>
+        <{/if}>
         </ul>
         <form class="navbar-form navbar-right" role="search">
           <div class="form-group">
