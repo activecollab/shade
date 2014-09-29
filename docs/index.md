@@ -53,7 +53,7 @@ This will create a single language project. Creating a multilingual project is n
 
 <{code inline=false}>shade project --default-locale=en<{/code}>
 
-There are more options available for <{term}>project<{/term}> command and you can find them in <{page name="project-command" book="shade"}>this article<{/page}>.
+There are more options available for <{term}>project<{/term}> command and you can find them in <{page name="commands" section="project" book="shade"}>this article<{/page}>.
 
 <{sub}>Writing Content<{/sub}>
 
