@@ -558,7 +558,7 @@ h3 {
   background: #fffcd9;
 }
 
-.help_book_page .help_book_page_content .note h3 {
+.help_book_page .help_book_page_content .note .panel-heading {
   margin-bottom: 8px !important;
   font-size: 15px !important;
   font-weight: bold;

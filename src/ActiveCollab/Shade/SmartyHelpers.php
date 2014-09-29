@@ -449,7 +449,7 @@
         $title = 'Note';
       }
 
-      return '<div class="panel panel-warning"><div class="panel-heading">' . Shade::clean($title) . '</div><div class="panel-body">' . Shade::markdownToHtml(trim($content)) . '</div></div>';
+      return '<div class="note panel panel-warning"><div class="panel-heading">' . Shade::clean($title) . '</div><div class="panel-body">' . Shade::markdownToHtml(trim($content)) . '</div></div>';
     }
 
     /**

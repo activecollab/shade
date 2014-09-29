@@ -71,6 +71,8 @@ If you are like us and learn more by looking at example than reading the documen
 
 [https://github.com/activecollab/shade/tree/master/docs](https://github.com/activecollab/shade/tree/master/docs)
 
+Notice the interesting thing - documentation is in the same repository where the project code is. In our opinion, that is one of the main <{page name="principles" book="shade"}>benefits<{/page}> of using Shade.
+
 <{sub}>Building<{/sub}>
 
 Now that you have wrote your documentation, you can simply run:
