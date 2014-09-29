@@ -181,7 +181,7 @@
      */
     function getBooksPath()
     {
-      return $this->project->getPath() . '/en_US.UTF-8/books';
+      return $this->project->getPath() . '/en/books';
     }
 
     /**
@@ -259,7 +259,7 @@
      */
     function getVideosPath()
     {
-      return $this->project->getPath() . '/en_US.UTF-8/videos';
+      return $this->project->getPath() . '/en/videos';
     }
 
     /**
@@ -313,7 +313,7 @@
      */
     function getWhatsNewArticlesPath()
     {
-      return $this->project->getPath() . '/en_US.UTF-8/whats_new';
+      return $this->project->getPath() . '/en/whats_new';
     }
 
     /**
@@ -360,7 +360,7 @@
      */
     function getReleasesPath()
     {
-      return $this->project->getPath() . '/en_US.UTF-8/releases';
+      return $this->project->getPath() . '/en/releases';
     }
 
     /**

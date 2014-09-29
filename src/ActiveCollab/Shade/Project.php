@@ -81,7 +81,7 @@
         $this->locale = $this->getDefaultLocale();
 
         if (empty($this->locale)) {
-          $this->locale = 'en_US.UTF-8';
+          $this->locale = 'en';
         }
       }
 
