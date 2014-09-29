@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
   use ActiveCollab\Shade\Project;
 
   /**
@@ -17,7 +17,10 @@
      */
     protected function configure()
     {
-      $this->setName('faq')->setDescription("Show the list of common questions and pages that have the answers");
+      $this
+        ->setName('faq')
+        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
+        ->setDescription("Show the list of common questions and pages that have the answers");
     }
 
     /**
@@ -30,7 +33,7 @@
       $project = new Project(getcwd());
 
       if($project->isValid()) {
-        $common_questions = $project->getCommonQuestions();
+        $common_questions = $project->getCommonQuestions($input->getOption('locale'));
 
         if (count($common_questions)) {
           $table = new Table($output);

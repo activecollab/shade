@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
   use ActiveCollab\Shade\Project;
 
   /**
@@ -17,7 +17,10 @@
      */
     protected function configure()
     {
-      $this->setName('whats_new')->setDescription("List what's new articles from a project");
+      $this
+        ->setName('whats_new')
+        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
+        ->setDescription("List what's new articles from a project");
     }
 
     /**
@@ -30,7 +33,7 @@
       $project = new Project(getcwd());
 
       if($project->isValid()) {
-        $articles = $project->getWhatsNewArticles();
+        $articles = $project->getWhatsNewArticles($input->getOption('locale'));
 
         if ($articles->count()) {
           $table = new Table($output);
