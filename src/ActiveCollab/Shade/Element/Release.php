@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade\Project;
+  use ActiveCollab\Shade\Project, DateTime;
 
   /**
    * Release element (for release notes)
@@ -59,5 +59,26 @@
     public function getSlug()
     {
       return str_replace('.', '-', $this->version_number);
+    }
+
+    /**
+     * @var DateTime|null
+     */
+    private $release_date = false;
+
+    /**
+     * @return DateTime|null
+     */
+    public function getReleaseDate()
+    {
+      if ($this->release_date === false) {
+        if ($this->getProperty('release_date')) {
+          $this->release_date = new DateTime($this->getProperty('release_date'));
+        } else {
+          $this->release_date = null;
+        }
+      }
+
+      return $this->release_date;
     }
   }

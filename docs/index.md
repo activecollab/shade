@@ -32,16 +32,16 @@ project.json<{/code}>
 or a bit more complex structure for multilingual projects:
 
 <{code}>/build
-/en_US.UTF-8/books
-/en_US.UTF-8/releases
-/en_US.UTF-8/videos
-/en_US.UTF-8/whats_new
-/en_US.UTF-8/index.md
-/sr_RS.UTF-8/books
-/sr_RS.UTF-8/releases
-/sr_RS.UTF-8/videos
-/sr_RS.UTF-8/whats_new
-/sr_RS.UTF-8/index.md
+/en/books
+/en/releases
+/en/videos
+/en/whats_new
+/en/index.md
+/sr/books
+/sr/releases
+/sr/videos
+/sr/whats_new
+/sr/index.md
 /temp
 project.md<{/code}>
 
@@ -51,7 +51,7 @@ To create a project, navigate to a folder where you want to set up a project str
 
 This will create a single language project. Creating a multilingual project is not complicated either. Just run:
 
-<{code inline=false}>shade project --default-locale=en_US.UTF-8<{/code}>
+<{code inline=false}>shade project --default-locale=en<{/code}>
 
 There are more options available for <{term}>project<{/term}> command and you can find them in <{page name="project-command" book="shade"}>this article<{/page}>.
 

@@ -7,7 +7,12 @@
   <{if $current_release}>
     <article>
       <h1><abbr title="Version">v</abbr><{$current_release->getTitle()}></h1>
-      <div class="body"><{$current_release->renderBody() nofilter}></div>
+      <div class="body">
+      <{if $current_release->getReleaseDate() instanceof DateTime}>
+        <p class="release_date">Released on: <span><{$current_release->getReleaseDate()->format('Y-m-d')}></span></p>
+      <{/if}>
+        <{$current_release->renderBody() nofilter}>
+      </div>
       <{include "prev_top_next.tpl"}>
     </article>
   </div>

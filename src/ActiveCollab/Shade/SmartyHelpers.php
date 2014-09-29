@@ -658,4 +658,134 @@
       }
     }
 
+    /**
+     * Render added block in release notes
+     *
+     * Note: This block is available only in release notes!
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|void
+     * @throws ParamRequiredError
+     * @throws Exception
+     */
+    public static function block_added($params, $content, &$smarty, &$repeat)
+    {
+      if ($repeat) {
+        return;
+      }
+
+      if (self::$current_element instanceof Release) {
+        return '<p>Added:</p>' . Shade::markdownToHtml(trim($content));
+      } else {
+        throw new Exception('added block is available for release notes only');
+      }
+    }
+
+    /**
+     * Render deprecated block in release notes
+     *
+     * Note: This block is available only in release notes!
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|void
+     * @throws ParamRequiredError
+     * @throws Exception
+     */
+    public static function block_deprecated($params, $content, &$smarty, &$repeat)
+    {
+      if ($repeat) {
+        return;
+      }
+
+      if (self::$current_element instanceof Release) {
+        return '<p>Deprecated:</p>' . Shade::markdownToHtml(trim($content));
+      } else {
+        throw new Exception('added block is available for release notes only');
+      }
+    }
+
+    /**
+     * Render removed block in release notes
+     *
+     * Note: This block is available only in release notes!
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|void
+     * @throws ParamRequiredError
+     * @throws Exception
+     */
+    public static function block_removed($params, $content, &$smarty, &$repeat)
+    {
+      if ($repeat) {
+        return;
+      }
+
+      if (self::$current_element instanceof Release) {
+        return '<p>Removed:</p>' . Shade::markdownToHtml(trim($content));
+      } else {
+        throw new Exception('added block is available for release notes only');
+      }
+    }
+
+    /**
+     * Render fixed block in release notes
+     *
+     * Note: This block is available only in release notes!
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|void
+     * @throws ParamRequiredError
+     * @throws Exception
+     */
+    public static function block_fixed($params, $content, &$smarty, &$repeat)
+    {
+      if ($repeat) {
+        return;
+      }
+
+      if (self::$current_element instanceof Release) {
+        return '<p>Fixed:</p>' . Shade::markdownToHtml(trim($content));
+      } else {
+        throw new Exception('added block is available for release notes only');
+      }
+    }
+
+    /**
+     * Render security block in release notes
+     *
+     * Note: This block is available only in release notes!
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|void
+     * @throws ParamRequiredError
+     * @throws Exception
+     */
+    public static function block_security($params, $content, &$smarty, &$repeat)
+    {
+      if ($repeat) {
+        return;
+      }
+
+      if (self::$current_element instanceof Release) {
+        return '<p>Security:</p>' . Shade::markdownToHtml(trim($content));
+      } else {
+        throw new Exception('added block is available for release notes only');
+      }
+    }
+
   }
