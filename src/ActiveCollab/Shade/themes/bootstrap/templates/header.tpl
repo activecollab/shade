@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="<{$project->getShortLocale()}>">
+<html lang="<{$current_locale}>">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -55,7 +55,7 @@
         <{if count($project->getLocales()) > 1}>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">EN <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><{$current_locale|strtoupper}> <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <{foreach $project->getLocales() as $code => $name}>
               <li><a href="<{locale_link locale=$code default_locale=$default_locale page_level=$page_level}>"><{$name}></a></li>
