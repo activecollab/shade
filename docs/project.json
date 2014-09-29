@@ -1,7 +1,6 @@
 {
   "name": "Shade",
   "is_multilingual": true,
-  "multilingual_build_mode" : "separate_targets",
   "default_locale": "en",
   "default_build_target" : "/Users/ilija/Temp/ShadeTarget",
   "default_build_theme" : "bootstrap",
