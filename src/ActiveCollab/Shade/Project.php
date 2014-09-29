@@ -64,7 +64,7 @@
      */
     function isMultilingual()
     {
-      return count($this->getLocales()) > 1;
+      return $this->getConfigurationOption('is_multilingual') || count($this->getLocales()) > 1;
     }
 
     /**
@@ -272,20 +272,22 @@
     /**
      * Return all project stories
      *
+     * @param string|null $locale
      * @return Book[]|NamedList
      */
-    function getBooks() {
-      return $this->getFinder()->getBooks();
+    function getBooks($locale = null) {
+      return $this->getFinder()->getBooks($locale);
     }
 
     /**
      * Get book by short name
      *
      * @param string $name
+     * @param string|null $locale
      * @return Book|null
      */
-    function getBook($name) {
-      return $this->getFinder()->getBook($name);
+    function getBook($name, $locale = null) {
+      return $this->getFinder()->getBook($name, $locale);
     }
 
     /**
@@ -300,13 +302,14 @@
     /**
      * Return array of common questions
      *
+     * @param string|null $locale
      * @return array
      */
-    public function getCommonQuestions()
+    public function getCommonQuestions($locale = null)
     {
       $result = [];
 
-      foreach ($this->getBooks() as $book) {
+      foreach ($this->getBooks($locale) as $book) {
         $book->populateCommonQuestionsList($result);
       }
 
@@ -326,22 +329,24 @@
     // ---------------------------------------------------
 
     /**
+     * @param string|null $locale
      * @return WhatsNewArticle[]|NamedList
      */
-    function getWhatsNewArticles()
+    function getWhatsNewArticles($locale = null)
     {
-      return $this->getFinder()->getWhatsNewArticles();
+      return $this->getFinder()->getWhatsNewArticles($locale);
     }
 
     /**
      * Return what's new article
      *
      * @param string $name
+     * @param string|null $locale
      * @return WhatsNewArticle|null
      */
-    function getWhatsNewArticle($name)
+    function getWhatsNewArticle($name, $locale = null)
     {
-      return $this->getFinder()->getWhatsNewArticle($name);
+      return $this->getFinder()->getWhatsNewArticle($name, $locale);
     }
 
     // ---------------------------------------------------
@@ -352,11 +357,12 @@
     /**
      * Return releases
      *
+     * @param string|null $locale
      * @return Release[]
      */
-    function getReleases()
+    function getReleases($locale = null)
     {
-      return $this->getFinder()->getReleases();
+      return $this->getFinder()->getReleases($locale);
     }
 
     // ---------------------------------------------------
@@ -391,20 +397,22 @@
     /**
      * Return project videos
      *
+     * @param string|null $locale
      * @return Video[]|NamedList
      */
-    function getVideos()
+    function getVideos($locale = null)
     {
-      return $this->getFinder()->getVideos();
+      return $this->getFinder()->getVideos($locale);
     }
 
     /**
      * @param string $name
+     * @param string|null $locale
      * @return Video|null
      */
-    function getVideo($name)
+    function getVideo($name, $locale = null)
     {
-      return $this->getFinder()->getVideo($name);
+      return $this->getFinder()->getVideo($name, $locale);
     }
 
     /**

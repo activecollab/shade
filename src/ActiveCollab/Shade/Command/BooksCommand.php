@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
   use ActiveCollab\Shade\Project;
 
   /**
@@ -17,7 +17,10 @@
      */
     protected function configure()
     {
-      $this->setName('books')->setDescription('List books from a project');
+      $this
+        ->setName('books')
+        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
+        ->setDescription('List books from a project');
     }
 
     /**
@@ -30,7 +33,7 @@
       $project = new Project(getcwd());
 
       if($project->isValid()) {
-        $books = $project->getBooks();
+        $books = $project->getBooks($input->getOption('locale'));
 
         if (count($books)) {
           $table = new Table($output);
