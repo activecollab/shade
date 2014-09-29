@@ -79,17 +79,13 @@
      */
     function getLocales()
     {
-      if ($this->locale === false) {
+      if ($this->locales === false) {
         $this->locales = [ $this->getDefaultLocale() => $this->getDefaultLocaleName() ];
 
         if (is_array($this->getConfigurationOption('locales'))) {
           foreach ($this->getConfigurationOption('locales') as $code => $name) {
             $this->locales[$code] = $name;
           }
-        }
-
-        if (empty($this->locales)) {
-          $this->locales[$this->getDefaultLocale()] = $this->getDefaultLocaleName();
         }
       }
 

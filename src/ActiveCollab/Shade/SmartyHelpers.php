@@ -659,6 +659,31 @@
     }
 
     /**
+     * Render navigation link
+     *
+     * @param array $params
+     * @return string
+     * @throws ParamRequiredError
+     */
+    public static function function_locale_link($params)
+    {
+      $code = isset($params['locale']) && $params['locale'] ? $params['locale'] : null;
+
+      if (empty($code)) {
+        throw new ParamRequiredError('locale');
+      }
+
+      $default_locale = isset($params['default_locale']) && $params['default_locale'] ? $params['default_locale'] : 'en';
+      $page_level = isset($params['page_level']) && (integer) $params['page_level'] > 0 ? (integer) $params['page_level'] : 0;
+
+      if ($code === $default_locale) {
+        return self::pageLevelToPrefix($page_level) . 'index.html';
+      } else {
+        return self::pageLevelToPrefix($page_level) . "{$code}/index.html";
+      }
+    }
+
+    /**
      * Render added block in release notes
      *
      * Note: This block is available only in release notes!
