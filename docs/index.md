@@ -59,11 +59,17 @@ There are more options available for <{term}>project<{/term}> command and you ca
 
 There are five building blocks for every Shade project:
 
-1. **Project** itself. You use it to define the home page, how build will work, which integrations will be put into pages, whether the is multilingual content etc,
-2. **Books** are collections of **Pages** that cover a particular topic. They are great for writing user manuals,
-3. **What's New Articles** let you create a small blog with news about your product. They should be written so all of your users are interested in reading them,
-4. **Release Notes** are used to document all the small changes that you make to your product. These are for your fans, users obsessed with details and power-users.
-5. **Videos** let you instructional or promo videos to your documentation.
+1. **Project** itself. You use it to define the home page, how build will work, which integrations will be put into pages, whether the is multilingual content etc. More info is available <{page name="new-project" book="shade"}>here<{/page}>,
+2. **Books** are collections of **Pages** that cover a particular topic. They are great for writing user manuals. More info is available <{page name="new-book" book="shade"}>here<{/page}> and <{page name="new-book-page" book="shade"}>here<{/page}>,
+3. **What's New Articles** let you create a small blog with news about your product. They should be written so all of your users are interested in reading them. More info is available <{page name="new-whats-new-article" book="shade"}>here<{/page}>,
+4. **Release Notes** are used to document all the small changes that you make to your product. These are for your fans, users obsessed with details and power-users. More info is available <{page name="new-release" book="shade"}>here<{/page}>.
+5. **Videos** let you instructional or promo videos to your documentation. More info is available <{page name="new-video" book="shade"}>here<{/page}>.
+
+<{sub}>Example Project<{/sub}>
+
+If you are like us and learn more by looking at example than reading the documentation, check out a Shade project that was used to build this website here:
+
+[https://github.com/activecollab/shade/tree/master/docs](https://github.com/activecollab/shade/tree/master/docs)
 
 <{sub}>Building<{/sub}>
 
@@ -71,14 +77,14 @@ Now that you have wrote your documentation, you can simply run:
 
 <{code inline=false}>shade build<{/code}>
 
-to have the system build a static website from the help elements. <{page name="commands" book="shade" section="build"}>This page<{/page}> goes into details about build command and all of its various options.
+to have the system build a static website from the help elements. <{page name="commands" book="shade" section="build"}>This page<{/page}> goes into details about <{code}>build<{/code}> command.
 
 <{sub}>Advanced Topics<{/sub}>
 
 * <{page name="project-config" book="shade"}>Project Configuration<{/page}>
 * <{page name="commands" book="shade" book="shade"}>CLI Commands<{/page}>
-* <{page name="themes" book="shade-dev"}>Themes<{/page}>
-* <{page name="plugins" book="shade-dev"}>Plugins<{/page}>
+* <{page name="themes" book="shade-dev"}>Themes<{/page}> (coming soon)
+* <{page name="plugins" book="shade-dev"}>Plugins<{/page}> (coming soon)
 
 <{sub}>Contributing<{/sub}>
 
