@@ -17,5 +17,6 @@
   $application->add(new ActiveCollab\Shade\Command\UpdateCommand());
   $application->add(new ActiveCollab\Shade\Command\PluginsCommand());
   $application->add(new ActiveCollab\Shade\Command\TodoCommand());
+  $application->add(new ActiveCollab\Shade\Command\LocalesCommand());
 
   $application->run();

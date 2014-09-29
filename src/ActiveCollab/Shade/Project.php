@@ -68,6 +68,35 @@
     }
 
     /**
+     * @var array
+     */
+    private $locales = false;
+
+    /**
+     * Return a list of project locales
+     *
+     * @return array
+     */
+    function getLocales()
+    {
+      if ($this->locale === false) {
+        $this->locales = [ $this->getDefaultLocale() => $this->getDefaultLocaleName() ];
+
+        if (is_array($this->getConfigurationOption('locales'))) {
+          foreach ($this->getConfigurationOption('locales') as $code => $name) {
+            $this->locales[$code] = $name;
+          }
+        }
+
+        if (empty($this->locales)) {
+          $this->locales[$this->getDefaultLocale()] = $this->getDefaultLocaleName();
+        }
+      }
+
+      return $this->locales;
+    }
+
+    /**
      * @var string
      */
     private $locale = false;
@@ -137,6 +166,22 @@
     function getDefaultLocale()
     {
       return $this->getConfigurationOption('default_locale');
+    }
+
+    /**
+     * Return name of the  default locale
+     *
+     * @return string|null
+     */
+    function getDefaultLocaleName()
+    {
+      $default_locale_name = $this->getConfigurationOption('default_locale_name');
+
+      if (empty($default_locale_name)) {
+        $default_locale_name = $this->getDefaultLocale();
+      }
+
+      return $default_locale_name;
     }
 
     /**
