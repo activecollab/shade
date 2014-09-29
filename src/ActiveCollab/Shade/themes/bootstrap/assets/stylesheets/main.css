@@ -10,6 +10,10 @@ body {
   padding-right: 320px;
 }
 
+#content img {
+  max-width: 100%;
+}
+
 #content span.outlined_inline {
   border: 1px solid #ccc;
   border-radius: 2px;
@@ -56,17 +60,21 @@ body {
   margin-bottom: 15px;
 }
 
+#sidebar.releases ol {
+  padding-left: 0;
+}
+
+#sidebar.releases ol li {
+  padding: 0 5px;
+  margin: 5px 0;
+  display: inline-block;
+  width: 23%;
+  text-align: center;
+}
+
 #video_player {
   margin: 25px auto;
 }
-
-/*div.sidebar {*/
-  /*float: right;*/
-  /*padding: 10px;*/
-  /*margin: 0 0 15px 15px;*/
-  /*background: #f8f8f8;*/
-  /*min-height: 500px;*/
-/*}*/
 
 /** CODE **/
 

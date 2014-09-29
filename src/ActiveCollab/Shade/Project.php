@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\VideoPlayer\VideoPlayer, ActiveCollab\Shade\VideoPlayer\WistiaVideoPlayer;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\VideoPlayer\VideoPlayer, ActiveCollab\Shade\Error\ThemeNotFoundError;
 
   /**
    * Narrative project
@@ -140,17 +140,47 @@
     }
 
     /**
+     * Return build theme
+     *
+     * @param string|null $name
+     * @return Theme
+     * @throws ThemeNotFoundError
+     */
+    function getBuildTheme($name = null)
+    {
+      if ($name) {
+        $theme_path = __DIR__ . "/Themes/$name"; // Input
+      } elseif (is_dir($this->getPath() . '/theme')) {
+        $theme_path = $this->getPath() . '/theme'; // Project specific theme
+      } else {
+        $theme_path = __DIR__ . "/Themes/" . $this->getDefaultBuildTheme(); // Default built in theme
+      }
+
+      if ($theme_path && is_dir($theme_path)) {
+        return new Theme($theme_path);
+      } else {
+        throw new ThemeNotFoundError($name, $theme_path);
+      }
+    }
+
+    /**
      * Return name of the default build theme
      *
      * @return string
      */
     function getDefaultBuildTheme()
     {
-      return $this->getConfigurationOption('default_build_theme', 'default');
+      return $this->getConfigurationOption('default_build_theme', 'bootstrap');
     }
 
+    /**
+     * @var array
+     */
     private $social_links = false;
 
+    /**
+     * @return array
+     */
     function getSocialLinks()
     {
       if ($this->social_links === false) {

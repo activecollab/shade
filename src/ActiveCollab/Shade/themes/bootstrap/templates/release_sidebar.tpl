@@ -1,7 +1,7 @@
-<div id="sidebar">
+<div id="sidebar" class="releases">
   <{foreach $releases_by_major_version as $version => $releases}>
   <h3>Version <{$version}></h3>
-  <ol class="release_notes">
+  <ol>
     <{foreach $releases as $release}>
     <li class="<{if $current_release && $current_release->getVersionNumber() == $release->getVersionNumber()}>selected<{/if}>"><a href="<{$release->getSlug()}>.html"><{$release->getTitle()}></a></li>
     <{/foreach}>

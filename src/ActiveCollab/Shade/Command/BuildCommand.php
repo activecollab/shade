@@ -558,13 +558,7 @@
      */
     private function getTheme(InputInterface $input, Project &$project)
     {
-      $theme_name = $target = $input->getOption('theme');
-
-      if (empty($theme_name)) {
-        $theme_name = $project->getDefaultBuildTheme();
-      }
-
-      return Shade::getBuildTheme($theme_name);
+      return $project->getBuildTheme($input->getOption('theme'));
     }
 
   }
