@@ -64,7 +64,7 @@
      */
     function isMultilingual()
     {
-      return (boolean) $this->getConfigurationOption('is_multilingual');
+      return count($this->getLocales()) > 1;
     }
 
     /**
