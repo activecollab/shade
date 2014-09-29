@@ -77,8 +77,8 @@ to have the system build a static website from the help elements. <{page name="c
 
 * <{page name="project-config" book="shade"}>Project Configuration<{/page}>
 * <{page name="commands" book="shade" book="shade"}>CLI Commands<{/page}>
-* <{page name="themes" book="shade"}>Themes<{/page}>
-* <{page name="plugins" book="shade"}>Plugins<{/page}>
+* <{page name="themes" book="shade-dev"}>Themes<{/page}>
+* <{page name="plugins" book="shade-dev"}>Plugins<{/page}>
 
 <{sub}>Contributing<{/sub}>
 

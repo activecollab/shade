@@ -2,7 +2,7 @@
 
   namespace ActiveCollab;
 
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError, ActiveCollab\Shade\SmartyHelpers;
+  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Theme, ActiveCollab\Shade\Error\TempNotFoundError, ActiveCollab\Shade\Error\ThemeNotFoundError, ActiveCollab\Shade\SmartyHelpers, ActiveCollab\Shade\Element\Element;
   use ActiveCollab\Shade\Plugin\Plugin, ActiveCollab\Shade\Plugin\DisqusPlugin, ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin, ActiveCollab\Shade\Plugin\GoogleTagManagerPlugin, ActiveCollab\Shade\Plugin\LiveChatPlugin;
   use Exception, RecursiveIteratorIterator, RecursiveDirectoryIterator, Smarty, ReflectionClass, ReflectionMethod, Michelf\MarkdownExtra, URLify, Hyperlight\Hyperlight;
 
@@ -87,6 +87,16 @@
     }
 
     /**
+     * Return prepared Smarty instance
+     *
+     * @return Smarty
+     */
+    public static function &getSmarty()
+    {
+      return self::$smarty;
+    }
+
+    /**
      * Return available plugins
      *
      * @param Project $project
@@ -103,13 +113,35 @@
     }
 
     /**
-     * Return prepared Smarty instance
-     *
-     * @return Smarty
+     * @var array
      */
-    public static function &getSmarty()
+    private static $todo = [];
+
+    /**
+     * Return all to-do items
+     */
+    public static function getTodo()
     {
-      return self::$smarty;
+      return self::$todo;
+    }
+
+    /**
+     * Method that is used for collecting to-do items
+     *
+     * @param string $message
+     * @param Project|Element $element
+     */
+    public static function recordTodo($message, $element)
+    {
+      if ($element instanceof Element) {
+        $path = $element->getPath();
+      } elseif($element instanceof Project) {
+        $path = $element->getPath();
+      } else {
+        $path = '-UNKNOWN-';
+      }
+
+      self::$todo[] = [ 'message' => $message, 'file' => $path ];
     }
 
     /**

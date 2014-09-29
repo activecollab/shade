@@ -396,6 +396,27 @@
     }
 
     /**
+     * Link to a help book page
+     *
+     * @param  array       $params
+     * @param  string      $content
+     * @param  Smarty      $smarty
+     * @param  boolean     $repeat
+     * @return string|void
+     * @throws ParamRequiredError
+     */
+    public static function block_todo($params, $content, &$smarty, &$repeat)
+    {
+      if ($repeat) {
+        return;
+      }
+
+      Shade::recordTodo(trim($content), self::getCurrentElement());
+
+      return '<div class="panel panel-danger"><div class="panel-heading">To-do</div><div class="panel-body">' . $content . '</div></div>';
+    }
+
+    /**
      * Return book page URL
      *
      * @param string $book_name

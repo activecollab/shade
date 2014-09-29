@@ -1,5 +1,6 @@
-* Title: Shade Help
-* Position: 255
+* Title: User's Guide
+* Description: All about working with Shade projects
+* Position: 1
 
 ================================================================
 

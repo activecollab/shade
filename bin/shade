@@ -16,5 +16,6 @@
   $application->add(new ActiveCollab\Shade\Command\BuildCommand());
   $application->add(new ActiveCollab\Shade\Command\UpdateCommand());
   $application->add(new ActiveCollab\Shade\Command\PluginsCommand());
+  $application->add(new ActiveCollab\Shade\Command\TodoCommand());
 
   $application->run();
