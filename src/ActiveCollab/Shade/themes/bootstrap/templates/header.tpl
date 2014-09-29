@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="<{$project->getShortLocale()}>">
+<html lang="<{$current_locale}>">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +15,10 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-  <{stylesheet_url page_level=$page_level}>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+  <{stylesheet_url page_level=$page_level locale=$current_locale}>
 
   <{foreach $plugins as $plugin}>
     <{$plugin->renderHead() nofilter}>
@@ -48,6 +51,19 @@
           <li<{if $current_section == 'videos'}> class="active"<{/if}>><a href="<{navigation_link section=videos page_level=$page_level}>">Videos</a></li>
         <{/if}>
         </ul>
+
+        <{if count($project->getLocales()) > 1}>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><{$current_locale|strtoupper}> <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <{foreach $project->getLocales() as $code => $name}>
+              <li><a href="<{locale_link locale=$code default_locale=$default_locale current_locale=$current_locale page_level=$page_level}>"><{$name}></a></li>
+              <{/foreach}>
+            </ul>
+          </li>
+        </ul>
+        <{/if}>
         <!-- <form class="navbar-form navbar-right" role="search">
           <div class="form-group">
             <input type="text" class="form-control" placeholder="Search">

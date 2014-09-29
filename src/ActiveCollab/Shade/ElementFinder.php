@@ -177,19 +177,25 @@
     /**
      * Get path of books folder
      *
+     * @param string $locale
      * @return string
      */
-    function getBooksPath()
+    function getBooksPath($locale)
     {
-      return $this->project->getPath() . '/en/books';
+      return $this->getLocalizedPath('books', $locale);
     }
 
     /**
+     * @param string $locale
      * @return Book[]
      */
-    function getBooks()
+    function getBooks($locale = null)
     {
-      $dirs = call_user_func($this->finders['findBookDirs'], $this->getBooksPath());
+      if (empty($locale)) {
+        $locale = $this->project->getDefaultLocale();
+      }
+
+      $dirs = call_user_func($this->finders['findBookDirs'], $this->getBooksPath($locale), $locale);
 
       $result = [];
 
@@ -218,11 +224,12 @@
      * Get book by short name
      *
      * @param string $name
+     * @param string $locale
      * @return Book|null
      */
-    function getBook($name)
+    function getBook($name, $locale = null)
     {
-      foreach($this->getBooks() as $book) {
+      foreach($this->getBooks($locale) as $book) {
         if($book->getShortName() === $name) {
           return $book;
         }
@@ -255,11 +262,12 @@
     /**
      * Return path to the folder where we expect to find videos
      *
+     * @param string $locale
      * @return string
      */
-    function getVideosPath()
+    function getVideosPath($locale)
     {
-      return $this->project->getPath() . '/en/videos';
+      return $this->getLocalizedPath('videos', $locale);
     }
 
     /**
@@ -268,12 +276,17 @@
     private $videos = false;
 
     /**
+     * @param string $locale
      * @return Video[]|NamedList
      */
-    function getVideos()
+    function getVideos($locale = null)
     {
+      if (empty($locale)) {
+        $locale = $this->project->getDefaultLocale();
+      }
+
       if ($this->videos === false) {
-        $files = call_user_func($this->finders['findVideoFiles'], $this->getVideosPath());
+        $files = call_user_func($this->finders['findVideoFiles'], $this->getVideosPath($locale), $locale);
 
         $this->videos = new NamedList();
 
@@ -293,11 +306,12 @@
      * Return a video
      *
      * @param string $name
+     * @param string|null $locale
      * @return Video|null
      */
-    function getVideo($name)
+    function getVideo($name, $locale = null)
     {
-      foreach($this->getVideos() as $video) {
+      foreach($this->getVideos($locale) as $video) {
         if($video->getShortName() === $name) {
           return $video;
         }
@@ -309,19 +323,25 @@
     /**
      * Return path to the folder where we expect to find what's new articles
      *
+     * @param string $locale
      * @return string
      */
-    function getWhatsNewArticlesPath()
+    function getWhatsNewArticlesPath($locale)
     {
-      return $this->project->getPath() . '/en/whats_new';
+      return $this->getLocalizedPath('whats_new', $locale);
     }
 
     /**
+     * @param string|null $locale
      * @return WhatsNewArticle[]|NamedList
      */
-    function getWhatsNewArticles()
+    function getWhatsNewArticles($locale = null)
     {
-      $files = call_user_func($this->finders['findWhatsNewFiles'], $this->getWhatsNewArticlesPath());
+      if (empty($locale)) {
+        $locale = $this->project->getDefaultLocale();
+      }
+
+      $files = call_user_func($this->finders['findWhatsNewFiles'], $this->getWhatsNewArticlesPath($locale), $locale);
 
       $result = new NamedList();
 
@@ -340,11 +360,12 @@
 
     /**
      * @param string $name
+     * @param string|null $locale
      * @return WhatsNewArticle[]|null
      */
-    function getWhatsNewArticle($name)
+    function getWhatsNewArticle($name, $locale = null)
     {
-      foreach($this->getWhatsNewArticles() as $article) {
+      foreach($this->getWhatsNewArticles($locale) as $article) {
         if($article->getShortName() === $name) {
           return $article;
         }
@@ -356,19 +377,25 @@
     /**
      * Return path to the folder where we expect to find release entries
      *
+     * @param string $locale
      * @return string
      */
-    function getReleasesPath()
+    function getReleasesPath($locale)
     {
-      return $this->project->getPath() . '/en/releases';
+      return $this->getLocalizedPath('releases', $locale);
     }
 
     /**
+     * @param string|null $locale
      * @return Release[]
      */
-    function getReleases()
+    function getReleases($locale = null)
     {
-      $files = call_user_func($this->finders['findReleaseFiles'], $this->getReleasesPath());
+      if (empty($locale)) {
+        $locale = $this->project->getDefaultLocale();
+      }
+
+      $files = call_user_func($this->finders['findReleaseFiles'], $this->getReleasesPath($locale), $locale);
 
       $result = [];
 
@@ -381,5 +408,19 @@
       }
 
       return $result;
+    }
+
+    /**
+     * @param string $sub_dir
+     * @param string $locale
+     * @return string
+     */
+    private function getLocalizedPath($sub_dir, $locale)
+    {
+      if ($this->project->isMultilingual()) {
+        return $this->project->getPath() . "/$locale/$sub_dir";
+      } else {
+        return $this->project->getPath() . "/$sub_dir";
+      }
     }
   }

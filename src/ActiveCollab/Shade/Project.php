@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\VideoPlayer\VideoPlayer, ActiveCollab\Shade\VideoPlayer\WistiaVideoPlayer;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Error\ParseJsonError, ActiveCollab\Shade\VideoPlayer\VideoPlayer, ActiveCollab\Shade\Error\ThemeNotFoundError;
 
   /**
    * Narrative project
@@ -64,7 +64,32 @@
      */
     function isMultilingual()
     {
-      return (boolean) $this->getConfigurationOption('is_multilingual');
+      return $this->getConfigurationOption('is_multilingual') || count($this->getLocales()) > 1;
+    }
+
+    /**
+     * @var array
+     */
+    private $locales = false;
+
+    /**
+     * Return a list of project locales
+     *
+     * @return array
+     */
+    function getLocales()
+    {
+      if ($this->locales === false) {
+        $this->locales = [ $this->getDefaultLocale() => $this->getDefaultLocaleName() ];
+
+        if (is_array($this->getConfigurationOption('locales'))) {
+          foreach ($this->getConfigurationOption('locales') as $code => $name) {
+            $this->locales[$code] = $name;
+          }
+        }
+      }
+
+      return $this->locales;
     }
 
     /**
@@ -140,17 +165,63 @@
     }
 
     /**
+     * Return name of the  default locale
+     *
+     * @return string|null
+     */
+    function getDefaultLocaleName()
+    {
+      $default_locale_name = $this->getConfigurationOption('default_locale_name');
+
+      if (empty($default_locale_name)) {
+        $default_locale_name = $this->getDefaultLocale();
+      }
+
+      return $default_locale_name;
+    }
+
+    /**
+     * Return build theme
+     *
+     * @param string|null $name
+     * @return Theme
+     * @throws ThemeNotFoundError
+     */
+    function getBuildTheme($name = null)
+    {
+      if ($name) {
+        $theme_path = __DIR__ . "/Themes/$name"; // Input
+      } elseif (is_dir($this->getPath() . '/theme')) {
+        $theme_path = $this->getPath() . '/theme'; // Project specific theme
+      } else {
+        $theme_path = __DIR__ . "/Themes/" . $this->getDefaultBuildTheme(); // Default built in theme
+      }
+
+      if ($theme_path && is_dir($theme_path)) {
+        return new Theme($theme_path);
+      } else {
+        throw new ThemeNotFoundError($name, $theme_path);
+      }
+    }
+
+    /**
      * Return name of the default build theme
      *
      * @return string
      */
     function getDefaultBuildTheme()
     {
-      return $this->getConfigurationOption('default_build_theme', 'default');
+      return $this->getConfigurationOption('default_build_theme', 'bootstrap');
     }
 
+    /**
+     * @var array
+     */
     private $social_links = false;
 
+    /**
+     * @return array
+     */
     function getSocialLinks()
     {
       if ($this->social_links === false) {
@@ -201,20 +272,22 @@
     /**
      * Return all project stories
      *
+     * @param string|null $locale
      * @return Book[]|NamedList
      */
-    function getBooks() {
-      return $this->getFinder()->getBooks();
+    function getBooks($locale = null) {
+      return $this->getFinder()->getBooks($locale);
     }
 
     /**
      * Get book by short name
      *
      * @param string $name
+     * @param string|null $locale
      * @return Book|null
      */
-    function getBook($name) {
-      return $this->getFinder()->getBook($name);
+    function getBook($name, $locale = null) {
+      return $this->getFinder()->getBook($name, $locale);
     }
 
     /**
@@ -229,13 +302,14 @@
     /**
      * Return array of common questions
      *
+     * @param string|null $locale
      * @return array
      */
-    public function getCommonQuestions()
+    public function getCommonQuestions($locale = null)
     {
       $result = [];
 
-      foreach ($this->getBooks() as $book) {
+      foreach ($this->getBooks($locale) as $book) {
         $book->populateCommonQuestionsList($result);
       }
 
@@ -255,22 +329,24 @@
     // ---------------------------------------------------
 
     /**
+     * @param string|null $locale
      * @return WhatsNewArticle[]|NamedList
      */
-    function getWhatsNewArticles()
+    function getWhatsNewArticles($locale = null)
     {
-      return $this->getFinder()->getWhatsNewArticles();
+      return $this->getFinder()->getWhatsNewArticles($locale);
     }
 
     /**
      * Return what's new article
      *
      * @param string $name
+     * @param string|null $locale
      * @return WhatsNewArticle|null
      */
-    function getWhatsNewArticle($name)
+    function getWhatsNewArticle($name, $locale = null)
     {
-      return $this->getFinder()->getWhatsNewArticle($name);
+      return $this->getFinder()->getWhatsNewArticle($name, $locale);
     }
 
     // ---------------------------------------------------
@@ -281,11 +357,12 @@
     /**
      * Return releases
      *
+     * @param string|null $locale
      * @return Release[]
      */
-    function getReleases()
+    function getReleases($locale = null)
     {
-      return $this->getFinder()->getReleases();
+      return $this->getFinder()->getReleases($locale);
     }
 
     // ---------------------------------------------------
@@ -320,20 +397,22 @@
     /**
      * Return project videos
      *
+     * @param string|null $locale
      * @return Video[]|NamedList
      */
-    function getVideos()
+    function getVideos($locale = null)
     {
-      return $this->getFinder()->getVideos();
+      return $this->getFinder()->getVideos($locale);
     }
 
     /**
      * @param string $name
+     * @param string|null $locale
      * @return Video|null
      */
-    function getVideo($name)
+    function getVideo($name, $locale = null)
     {
-      return $this->getFinder()->getVideo($name);
+      return $this->getFinder()->getVideo($name, $locale);
     }
 
     /**

@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade\Command;
 
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
   use ActiveCollab\Shade\Project;
 
   /**
@@ -17,7 +17,10 @@
      */
     protected function configure()
     {
-      $this->setName('videos')->setDescription('List videos from a project');
+      $this
+        ->setName('videos')
+        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
+        ->setDescription('List videos from a project');
     }
 
     /**
@@ -30,7 +33,7 @@
       $project = new Project(getcwd());
 
       if($project->isValid()) {
-        $videos = $project->getVideos();
+        $videos = $project->getVideos($input->getOption('locale'));
 
         if ($videos->count()) {
           $table = new Table($output);

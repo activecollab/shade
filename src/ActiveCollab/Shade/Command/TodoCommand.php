@@ -3,7 +3,7 @@
   namespace ActiveCollab\Shade\Command;
 
   use ActiveCollab\Shade;
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
   use ActiveCollab\Shade\Project;
 
   /**
@@ -18,7 +18,10 @@
      */
     protected function configure()
     {
-      $this->setName('todo')->setDescription('Find and show to-do notes from project elements');
+      $this
+        ->setName('todo')
+        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
+        ->setDescription('Find and show to-do notes from project elements');
     }
 
     /**
@@ -35,7 +38,7 @@
       if($project->isValid()) {
         Shade::initSmarty($project, Shade::getBuildTheme($project->getDefaultBuildTheme()));
 
-        $this->renderEverything($project);
+        $this->renderEverything($project, $input->getOption('locale'));
 
         $todo_notes = Shade::getTodo();
 
@@ -68,10 +71,11 @@
 
     /**
      * @param Project $project
+     * @param string|null $locale
      */
-    private function renderEverything(Project &$project)
+    private function renderEverything(Project &$project, $locale)
     {
-      foreach ($project->getBooks() as $book) {
+      foreach ($project->getBooks($locale) as $book) {
         $book->renderBody();
 
         foreach ($book->getPages() as $page) {
@@ -79,15 +83,15 @@
         }
       }
 
-      foreach ($project->getWhatsNewArticles() as $article) {
+      foreach ($project->getWhatsNewArticles($locale) as $article) {
         $article->renderBody();
       }
 
-      foreach ($project->getReleases() as $release) {
+      foreach ($project->getReleases($locale) as $release) {
         $release->renderBody();
       }
 
-      foreach ($project->getVideos() as $video) {
+      foreach ($project->getVideos($locale) as $video) {
         $video->renderBody();
       }
     }

@@ -58,15 +58,23 @@
 
         $this->smarty =& Shade::initSmarty($project, $theme);
 
-        foreach ([ 'prepareTargetPath', 'buildLandingPage', 'buildWhatsNew', 'buildReleaseNotes', 'buildBooks', 'buildVideos' ] as $build_step) {
-          try {
-            if (!$this->$build_step($input, $output, $project, $target_path, $theme)) {
-              $output->writeln("Build process failed at step '$build_step'. Aborting...");
-              return;
+        $this->prepareTargetPath($input, $output, $project, $target_path, $theme);
+
+        foreach ($project->getLocales() as $locale => $locale_name) {
+          Shade\SmartyHelpers::setCurrentLocale($locale);
+
+          $this->smarty->assign('current_locale', $locale);
+
+          foreach ([ 'buildLandingPage', 'buildWhatsNew', 'buildReleaseNotes', 'buildBooks', 'buildVideos' ] as $build_step) {
+            try {
+              if (!$this->$build_step($input, $output, $project, $target_path, $theme, $locale)) {
+                $output->writeln("Build process failed at step '$build_step'. Aborting...");
+                return;
+              }
+            } catch (Exception $e) {
+              $output->writeln('Exception: ' . $e->getMessage());
+              $output->writeln($e->getTraceAsString());
             }
-          } catch (Exception $e) {
-            $output->writeln('Exception: ' . $e->getMessage());
-            $output->writeln($e->getTraceAsString());
           }
         }
       } else {
@@ -103,19 +111,34 @@
      * @param Project $project
      * @param string $target_path
      * @param Theme $theme
+     * @param string $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
      */
-    public function buildLandingPage(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    public function buildLandingPage(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
     {
+      if ($locale === $project->getDefaultLocale()) {
+        $index_path = "$target_path/index.html";
+      } else {
+        $index_path = "$target_path/$locale/index.html";
+
+        Shade::createDir("$target_path/$locale", function($path) use (&$output) {
+          $output->writeln("Directory '$path' created");
+        });
+
+        Shade::createDir("$target_path/assets/images/$locale", function($path) use (&$output) {
+          $output->writeln("Directory '$path' created");
+        });
+      }
+
       $this->smarty->assign([
         'common_questions' => $project->getCommonQuestions(),
         'page_level' => 0,
         'current_section' => 'home',
       ]);
 
-      Shade::writeFile("$target_path/index.html", $this->smarty->fetch('index.tpl'), function($path) use (&$output) {
+      Shade::writeFile($index_path, $this->smarty->fetch('index.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
@@ -130,24 +153,28 @@
      * @param Project $project
      * @param string $target_path
      * @param Theme $theme
+     * @param string $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
      */
-    public function buildWhatsNew(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    public function buildWhatsNew(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
     {
-      Shade::createDir("$target_path/whats-new", function($path) use (&$output) {
+      $whats_new_path = $locale === $project->getDefaultLocale() ? "$target_path/whats-new" : "$target_path/$locale/whats-new";
+      $whats_new_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new" : "$target_path/assets/images/$locale/whats-new";
+
+      Shade::createDir($whats_new_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
       });
 
-      Shade::createDir("$target_path/assets/images/whats-new", function($path) use (&$output) {
+      Shade::createDir($whats_new_images_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
       });
 
-      $whats_new_articles = $project->getWhatsNewArticles();
+      $whats_new_articles = $project->getWhatsNewArticles($locale);
 
       foreach ($whats_new_articles as $whats_new_article) {
-        $this->copyVersionImages($whats_new_article, $target_path, $output);
+        $this->copyVersionImages($project, $whats_new_article, $target_path, $locale, $output);
       }
 
       $whats_new_articles_by_version = $this->getWhatsNewArticlesByVersion($whats_new_articles);
@@ -160,18 +187,18 @@
         'current_section' => 'whats_new',
       ]);
 
-      Shade::writeFile("$target_path/whats-new/index.html", $this->smarty->fetch('whats_new_article.tpl'), function($path) use (&$output) {
+      Shade::writeFile("$whats_new_path/index.html", $this->smarty->fetch('whats_new_article.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
-      Shade::writeFile("$target_path/whats-new/rss.xml", $this->smarty->fetch('rss.tpl'), function($path) use (&$output) {
+      Shade::writeFile("$whats_new_path/rss.xml", $this->smarty->fetch('rss.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
       foreach ($whats_new_articles as $whats_new_article) {
         $this->smarty->assign('current_whats_new_article', $whats_new_article);
 
-        Shade::writeFile("$target_path/whats-new/" . $whats_new_article->getShortName() . ".html", $this->smarty->fetch('whats_new_article.tpl'), function($path) use (&$output) {
+        Shade::writeFile("$whats_new_path/" . $whats_new_article->getShortName() . ".html", $this->smarty->fetch('whats_new_article.tpl'), function($path) use (&$output) {
           $output->writeln("File '$path' created");
         });
       }
@@ -180,22 +207,26 @@
     }
 
     /**
+     * @param Project $project
      * @param WhatsNewArticle $article
      * @param string $target_path
+     * @param string $locale
      * @param OutputInterface $output
      */
-    private function copyVersionImages(WhatsNewArticle $article, $target_path, OutputInterface $output)
+    private function copyVersionImages(Project $project, WhatsNewArticle $article, $target_path, $locale, OutputInterface $output)
     {
       $version_num = $article->getVersionNumber();
 
-      if (is_dir("$target_path/assets/images/whats-new/$version_num")) {
+      $version_dir_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new/$version_num" : "$target_path/assets/images/$locale/whats-new/$version_num";
+
+      if (is_dir($version_dir_path)) {
         return;
       }
 
       $version_path = dirname($article->getIndexFilePath());
 
       if (is_dir("$version_path/images")) {
-        Shade::copyDir("$version_path/images", "$target_path/assets/images/whats-new/$version_num", null, function($path) use (&$output) {
+        Shade::copyDir("$version_path/images", $version_dir_path, null, function($path) use (&$output) {
           $output->writeln("$path copied");
         });
       }
@@ -251,17 +282,20 @@
      * @param Project $project
      * @param string $target_path
      * @param Theme $theme
+     * @param string $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
      */
-    public function buildReleaseNotes(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    public function buildReleaseNotes(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
     {
-      Shade::createDir("$target_path/release-notes", function($path) use (&$output) {
+      $release_notes_path = $locale === $project->getDefaultLocale() ? "$target_path/release-notes" : "$target_path/$locale/release-notes";
+
+      Shade::createDir($release_notes_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
       });
 
-      $releases = $project->getReleases();
+      $releases = $project->getReleases($locale);
       $releases_by_major_version = $this->getReleasesByMajorVersion($releases);
 
       $this->smarty->assign([
@@ -271,7 +305,7 @@
         'current_section' => 'releases',
       ]);
 
-      Shade::writeFile("$target_path/release-notes/index.html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
+      Shade::writeFile("$release_notes_path/index.html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
@@ -280,7 +314,7 @@
           'current_release' => $release
         ]);
 
-        Shade::writeFile("$target_path/release-notes/" . $release->getSlug() . ".html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
+        Shade::writeFile("$release_notes_path/" . $release->getSlug() . ".html", $this->smarty->fetch('release.tpl'), function($path) use (&$output) {
           $output->writeln("File '$path' created");
         });
       }
@@ -340,26 +374,30 @@
      * @param Project $project
      * @param string $target_path
      * @param Theme $theme
+     * @param string $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
      */
-    public function buildBooks(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    public function buildBooks(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
     {
-      Shade::createDir("$target_path/books", function($path) use (&$output) {
+      $books_path = $locale === $project->getDefaultLocale() ? "$target_path/books" : "$target_path/$locale/books";
+      $books_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/books" : "$target_path/assets/images/$locale/books";
+
+      Shade::createDir($books_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
       });
 
-      Shade::createDir("$target_path/assets/images/books", function($path) use (&$output) {
+      Shade::createDir($books_images_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
       });
 
-      $books = $project->getBooks();
+      $books = $project->getBooks($locale);
 
       $this->skipBooks($input, $books);
 
       foreach ($books as $book) {
-        $this->copyBookImages($book, $target_path, $output);
+        $this->copyBookImages($project, $book, $target_path, $locale, $output);
       }
 
       $this->smarty->assign([
@@ -368,12 +406,12 @@
         'current_section' => 'books',
       ]);
 
-      Shade::writeFile("$target_path/books/index.html", $this->smarty->fetch('books.tpl'), function($path) use (&$output) {
+      Shade::writeFile("$books_path/index.html", $this->smarty->fetch('books.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
       foreach ($books as $book) {
-        Shade::createDir("$target_path/books/" . $book->getShortName(), function($path) use (&$output) {
+        Shade::createDir("$books_path/" . $book->getShortName(), function($path) use (&$output) {
           $output->writeln("Directory '$path' created");
         });
 
@@ -387,7 +425,7 @@
           'sidebar_image' => '../../assets/images/books/' . $book->getShortName() . '/_cover_small.png'
         ]);
 
-        Shade::writeFile("$target_path/books/" . $book->getShortName() . "/index.html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
+        Shade::writeFile("$books_path/" . $book->getShortName() . "/index.html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
           $output->writeln("File '$path' created");
         });
 
@@ -396,7 +434,7 @@
             'current_page' => $page,
           ]);
 
-          Shade::writeFile("$target_path/books/" . $book->getShortName() . "/" . $page->getShortName() . ".html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
+          Shade::writeFile("$books_path/" . $book->getShortName() . "/" . $page->getShortName() . ".html", $this->smarty->fetch('book_page.tpl'), function($path) use (&$output) {
             $output->writeln("File '$path' created");
           });
         }
@@ -423,17 +461,21 @@
     }
 
     /**
+     * @param Project $project
      * @param Book $book
      * @param string $target_path
+     * @param string $locale
      * @param OutputInterface $output
      */
-    private function copyBookImages(Book $book, $target_path, OutputInterface $output)
+    private function copyBookImages(Project $project, Book $book, $target_path, $locale, OutputInterface $output)
     {
       $book_path = $book->getPath();
       $book_name = $book->getShortName();
 
       if (is_dir("$book_path/images")) {
-        Shade::copyDir("$book_path/images", "$target_path/assets/images/books/$book_name", null, function($path) use (&$output) {
+        $book_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/books/$book_name" : "$target_path/assets/images/$locale/books/$book_name";
+
+        Shade::copyDir("$book_path/images", $book_images_path, null, function($path) use (&$output) {
           $output->writeln("$path copied");
         });
       }
@@ -460,13 +502,16 @@
      * @param Project $project
      * @param string $target_path
      * @param Theme $theme
+     * @param string $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
      */
-    public function buildVideos(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    public function buildVideos(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
     {
-      Shade::createDir("$target_path/videos", function($path) use (&$output) {
+      $videos_path = $locale === $project->getDefaultLocale() ? "$target_path/videos" : "$target_path/$locale/videos";
+
+      Shade::createDir($videos_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
       });
 
@@ -487,7 +532,7 @@
         'current_section' => 'videos',
       ]);
 
-      Shade::writeFile("$target_path/videos/index.html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
+      Shade::writeFile("$videos_path/index.html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
         $output->writeln("File '$path' created");
       });
 
@@ -496,7 +541,7 @@
           'current_video' => $video,
         ]);
 
-        Shade::writeFile("$target_path/videos/" . $video->getSlug() . ".html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
+        Shade::writeFile("$videos_path/" . $video->getSlug() . ".html", $this->smarty->fetch('videos.tpl'), function($path) use (&$output) {
           $output->writeln("File '$path' created");
         });
       }
@@ -558,13 +603,7 @@
      */
     private function getTheme(InputInterface $input, Project &$project)
     {
-      $theme_name = $target = $input->getOption('theme');
-
-      if (empty($theme_name)) {
-        $theme_name = $project->getDefaultBuildTheme();
-      }
-
-      return Shade::getBuildTheme($theme_name);
+      return $project->getBuildTheme($input->getOption('theme'));
     }
 
   }

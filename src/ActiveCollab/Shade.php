@@ -74,8 +74,11 @@
           };
         }
 
+        SmartyHelpers::setDefaultLocale($project->getDefaultLocale());
+
         self::$smarty->assign([
           'project' => $project,
+          'default_locale' => $project->getDefaultLocale(),
           'copyright' => $project->getConfigurationOption('copyright', '--UNKNOWN--'),
           'copyright_since' => $project->getConfigurationOption('copyright_since'),
           'page_level' => 0,

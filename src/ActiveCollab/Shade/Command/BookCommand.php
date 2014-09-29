@@ -3,7 +3,7 @@
   namespace ActiveCollab\Shade\Command;
 
   use ActiveCollab\Shade\Element\Book;
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table;
+  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
   use ActiveCollab\Shade\Project;
   use Symfony\Component\Console\Input\InputArgument;
 
@@ -21,6 +21,7 @@
     {
       $this->setName('book')
         ->addArgument('name', InputArgument::REQUIRED, 'Short name of the book')
+        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
         ->setDescription('Show book details');
     }
 
@@ -34,7 +35,7 @@
       $project = new Project(getcwd());
 
       if($project->isValid()) {
-        $book = $project->getBook($input->getArgument('name'));
+        $book = $project->getBook($input->getArgument('name'), $input->getOption('locale'));
 
         if ($book instanceof Book) {
           $table = new Table($output);
