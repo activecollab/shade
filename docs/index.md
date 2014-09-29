@@ -71,13 +71,15 @@ Now that you have wrote your documentation, you can simply run:
 
 <{code inline=false}>shade build<{/code}>
 
-to have the system build a static website from the help elements. <{page name="command-build" book="shade"}>This page<{/page}> goes into details about build command and all of its various options.
+to have the system build a static website from the help elements. <{page name="commands" book="shade" section="build"}>This page<{/page}> goes into details about build command and all of its various options.
 
 <{sub}>Advanced Topics<{/sub}>
 
+* <{page name="project-config" book="shade"}>Project Configuration<{/page}>
+* <{page name="commands" book="shade" book="shade"}>CLI Commands<{/page}>
 * <{page name="themes" book="shade"}>Themes<{/page}>
 * <{page name="plugins" book="shade"}>Plugins<{/page}>
 
 <{sub}>Contributing<{/sub}>
 
-GitHub project is here: [https://github.com/activecollab/shade](https://github.com/activecollab/shade). To contribute simply form the repo, make the change and submit a pull request.
+GitHub project is here: [https://github.com/activecollab/shade](https://github.com/activecollab/shade). To contribute simply fork the repo, make the change and submit a pull request.

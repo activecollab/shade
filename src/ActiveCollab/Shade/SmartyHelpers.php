@@ -353,6 +353,7 @@
       }
 
       $book_name = isset($params['book']) ? $params['book'] : null;
+      $section = isset($params['section']) && $params['section'] ? '#s-' . Shade::slug($params['section']) : null;
 
       if (empty($book_name)) {
         if (self::$current_element instanceof Book) {
@@ -368,12 +369,12 @@
         $page = $book->getPage($name);
 
         if ($page instanceof BookPage) {
-          $params['href'] = self::getBookPageUrl($book->getShortName(), $page->getShortName());
+          $params['href'] = self::getBookPageUrl($book->getShortName(), $page->getShortName()) . $section;
 
           if (empty($params['class'])) {
-            $params['class'] = 'link_to_help_book_page';
+            $params['class'] = 'link_to_book_page';
           } else {
-            $params['class'] .= ' link_to_help_book_page';
+            $params['class'] .= ' link_to_book_page';
           }
 
           $params['data-page-name'] = $page->getShortName();
@@ -388,7 +389,7 @@
       }
 
       if (Shade::isTesting() && isset($development_error_message)) {
-        return '<span style="color: red; border-bottom: 1px dotted red; cursor: help;" title="Invalid page link: ' . Shade::clean($development_error_message) . '">' . Shade::clean($content) . '</span>';
+        return '<span style="color: red; border-bottom: 1px dotted red; cursor: help;" title="Invalid page link: ' . Shade::clean($development_error_message) . '">' . $content . '</span>';
       } else {
         return $content;
       }
@@ -611,6 +612,12 @@
       </div>';
     }
 
+    /**
+     * Render navigation link
+     *
+     * @param array $params
+     * @return string
+     */
     public static function function_navigation_link($params)
     {
       $page_level = isset($params['page_level']) && (integer) $params['page_level'] > 0 ? (integer) $params['page_level'] : 0;
