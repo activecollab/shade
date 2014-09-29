@@ -11,7 +11,7 @@
    */
   final class Shade
   {
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.2';
 
     /**
      * @param string $name
