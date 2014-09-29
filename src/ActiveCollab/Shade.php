@@ -74,6 +74,8 @@
           };
         }
 
+        SmartyHelpers::setDefaultLocale($project->getDefaultLocale());
+
         self::$smarty->assign([
           'project' => $project,
           'default_locale' => $project->getDefaultLocale(),

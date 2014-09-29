@@ -18,7 +18,7 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-  <{stylesheet_url page_level=$page_level}>
+  <{stylesheet_url page_level=$page_level locale=$current_locale}>
 
   <{foreach $plugins as $plugin}>
     <{$plugin->renderHead() nofilter}>

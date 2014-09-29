@@ -32,10 +32,15 @@
      * Set current element
      *
      * @param Project $project
+     * @throws ParamRequiredError
      */
     public static function setCurrentProject(Project $project)
     {
-      self::$current_project = $project;
+      if ($project instanceof Project) {
+        self::$current_project = $project;
+      } else {
+        throw new ParamRequiredError('project');
+      }
     }
 
     /**
@@ -77,6 +82,32 @@
     }
 
     /**
+     * @var string
+     */
+    private static $default_locale;
+
+    /**
+     * @param string $locale
+     */
+    public static function setDefaultLocale($locale)
+    {
+      self::$default_locale = $locale;
+    }
+
+    /**
+     * @var string
+     */
+    private static $current_locale;
+
+    /**
+     * @param string $locale
+     */
+    public static function setCurrentLocale($locale)
+    {
+      self::$current_locale = $locale;
+    }
+
+    /**
      * Image function
      *
      * @param  array  $params
@@ -90,9 +121,17 @@
         $page_level = self::$current_element->getPageLevel();
 
         if (self::$current_element instanceof BookPage) {
-          $params = [ 'src' => self::pageLevelToPrefix($page_level) . "assets/images/books/" . self::$current_element->getBookName() . '/' . $params['name'] ];
+          $src = self::$current_locale === self::$default_locale ?
+            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/books/" . self::$current_element->getBookName() . '/' . $params['name'] :
+            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/" . self::$current_locale . "/books/" . self::$current_element->getBookName() . '/' . $params['name'];
+
+          $params = [ 'src' => $src ];
         } elseif (self::$current_element instanceof WhatsNewArticle) {
-          $params = [ 'src' => self::pageLevelToPrefix($page_level) . "assets/images/whats-new/" . self::$current_element->getVersionNumber() . '/' . $params['name'] ];
+          $src = self::$current_locale === self::$default_locale ?
+            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/whats-new/" . self::$current_element->getVersionNumber() . '/' . $params['name'] :
+            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/" . self::$current_locale . "/whats-new/" . self::$current_element->getVersionNumber() . '/' . $params['name'];
+
+          $params = [ 'src' => $src ];
         } else {
           return '#';
         }
@@ -129,16 +168,22 @@
     public static function function_stylesheet_url($params)
     {
       $page_level = isset($params['page_level']) ? (integer) $params['page_level'] : 0;
+      $locale = isset($params['locale']) && $params['locale'] ? $params['locale'] : null;
 
-      return '<link rel="stylesheet" type="text/css" href="' . self::pageLevelToPrefix($page_level) . "assets/stylesheets/main.css?timestamp=" . time() . '">';
+      return '<link rel="stylesheet" type="text/css" href="' . self::pageLevelToPrefix($page_level, $locale) . "assets/stylesheets/main.css?timestamp=" . time() . '">';
     }
 
     /**
-     * @param $page_level
+     * @param integer $page_level
+     * @param string|null $locale
      * @return string
      */
-    private static function pageLevelToPrefix($page_level)
+    private static function pageLevelToPrefix($page_level, $locale = null)
     {
+      if ($locale && $locale != self::$default_locale) {
+        $page_level++;
+      }
+
       if ($page_level > 0) {
         $prefix = './';
 

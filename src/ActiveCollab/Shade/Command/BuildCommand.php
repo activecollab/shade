@@ -61,6 +61,8 @@
         $this->prepareTargetPath($input, $output, $project, $target_path, $theme);
 
         foreach ($project->getLocales() as $locale => $locale_name) {
+          Shade\SmartyHelpers::setCurrentLocale($locale);
+
           $this->smarty->assign('current_locale', $locale);
 
           foreach ([ 'buildLandingPage', 'buildWhatsNew', 'buildReleaseNotes', 'buildBooks', 'buildVideos' ] as $build_step) {
@@ -124,6 +126,10 @@
         Shade::createDir("$target_path/$locale", function($path) use (&$output) {
           $output->writeln("Directory '$path' created");
         });
+
+        Shade::createDir("$target_path/assets/images/$locale", function($path) use (&$output) {
+          $output->writeln("Directory '$path' created");
+        });
       }
 
       $this->smarty->assign([
@@ -155,7 +161,7 @@
     public function buildWhatsNew(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
     {
       $whats_new_path = $locale === $project->getDefaultLocale() ? "$target_path/whats-new" : "$target_path/$locale/whats-new";
-      $whats_new_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new" : "$target_path/$locale/whats-new";
+      $whats_new_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new" : "$target_path/assets/images/$locale/whats-new";
 
       Shade::createDir($whats_new_path, function($path) use (&$output) {
         $output->writeln("Directory '$path' created");
@@ -211,7 +217,7 @@
     {
       $version_num = $article->getVersionNumber();
 
-      $version_dir_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new/$version_num" : "$target_path/assets/images/whats-new/$locale/$version_num";
+      $version_dir_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new/$version_num" : "$target_path/assets/images/$locale/whats-new/$version_num";
 
       if (is_dir($version_dir_path)) {
         return;

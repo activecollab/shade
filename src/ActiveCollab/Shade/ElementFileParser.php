@@ -2,7 +2,7 @@
 
   namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Error\ElementFileNotFoundError, Exception;
+  use ActiveCollab\Shade, ActiveCollab\Shade\Error\ElementFileNotFoundError, Exception, ActiveCollab\Shade\Element\Element;
 
   /**
    * Parse element definition file
@@ -72,7 +72,12 @@
       $template = $smarty->createTemplate($this->getIndexFilePath());
 
       SmartyHelpers::setCurrentElement($this);
-      SmartyHelpers::setCurrentProject($this->getProject());
+
+      if ($this instanceof Element) {
+        SmartyHelpers::setCurrentProject($this->getProject());
+      } elseif ($this instanceof Project) {
+        SmartyHelpers::setCurrentProject($this);
+      }
 
       $content = $template->fetch();
 
