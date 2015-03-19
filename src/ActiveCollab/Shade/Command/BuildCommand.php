@@ -605,5 +605,4 @@
     {
       return $project->getBuildTheme($input->getOption('theme'));
     }
-
   }

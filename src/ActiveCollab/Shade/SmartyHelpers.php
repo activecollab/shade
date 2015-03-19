@@ -876,4 +876,12 @@
       }
     }
 
+    /**
+     * Return shade version
+     */
+    public static function function_shade_version()
+    {
+      return Shade::VERSION;
+    }
+
   }
