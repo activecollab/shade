@@ -120,7 +120,9 @@
      */
     function getShortLocale()
     {
-      return array_shift(explode('_', $this->getLocale()));
+      $bits = explode('_', $this->getLocale());
+
+      return array_shift($bits);
     }
 
     /**
