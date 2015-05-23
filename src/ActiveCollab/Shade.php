@@ -11,8 +11,6 @@
    */
   final class Shade
   {
-    const VERSION = '1.0.3';
-
     /**
      * @param string $name
      * @return Theme
