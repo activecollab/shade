@@ -27,6 +27,7 @@
   $builder = Builder::create($phar_path);
 
   $builder->addFile(__DIR__ . '/LICENSE', 'LICENSE');
+  $builder->addFile(__DIR__ . '/VERSION', 'VERSION');
 
   foreach ([ 'bin', 'src', 'vendor' ] as $dir_to_add) {
     /**
