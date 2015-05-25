@@ -4,7 +4,15 @@
     die("Please use CLI to run this script");
   }
 
-  $version = file_get_contents(__DIR__ . '/VERSION');
+  print "Running composer install --no-dev --prefer-dist --optimize-autoloader...\n";
+  shell_exec('composer install --no-dev --prefer-dist --optimize-autoloader');
+
+  $version = isset($argv[1]) && $argv[1] ? $argv[1] : null;
+
+  if (!$version) {
+    $version = file_get_contents(__DIR__ . '/VERSION');
+  }
+
   $phar_path = __DIR__ . "/dist/shade-{$version}.phar";
 
   if (is_file($phar_path)) {
@@ -59,5 +67,8 @@
       ->addRequire('bin/shade.php')
       ->getStub()
   );
+
+  print "\nRunning composer install...\n\n";
+  shell_exec('composer install');
 
   die("\n" . basename($phar_path) . ' created. SHA1 checksum: ' . sha1_file($phar_path) . "\n");
