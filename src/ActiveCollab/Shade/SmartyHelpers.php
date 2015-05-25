@@ -111,11 +111,10 @@
      * Image function
      *
      * @param  array  $params
-     * @param   Smarty_Internal_Template $smarty
      * @return string
      * @throws ParamRequiredError
      */
-    public static function function_image($params, Smarty_Internal_Template &$smarty)
+    public static function function_image($params)
     {
       if (isset($params['name']) && $params['name']) {
         $page_level = self::$current_element->getPageLevel();
@@ -179,7 +178,20 @@
     }
 
     /**
-     * @param array $params
+     * @param  array  $params
+     * @return string
+     */
+    public static function function_asset_link($params)
+    {
+      $name = isset($params['name']) ? $params['name'] : '';
+      $page_level = isset($params['page_level']) ? (integer) $params['page_level'] : 0;
+      $locale = isset($params['locale']) && $params['locale'] ? $params['locale'] : null;
+
+      return self::pageLevelToPrefix($page_level, $locale) . "assets/$name";
+    }
+
+    /**
+     * @param  array  $params
      * @return string
      */
     public static function function_stylesheet_url($params)
@@ -877,11 +889,19 @@
     }
 
     /**
+     * @var string
+     */
+    private static $shade_version = false;
+
+    /**
      * Return shade version
      */
     public static function function_shade_version()
     {
-      return Shade::VERSION;
-    }
+      if (self::$shade_version === false) {
+        self::$shade_version = file_get_contents(dirname(dirname(dirname(__DIR__))) . '/VERSION');
+      }
 
+      return self::$shade_version;
+    }
   }
