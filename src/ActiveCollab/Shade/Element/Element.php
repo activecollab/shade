@@ -1,16 +1,18 @@
 <?php
 
-  namespace ActiveCollab\Shade\Element;
+namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Project, ActiveCollab\Shade\ElementFileParser;
+use ActiveCollab\Shade;
+use ActiveCollab\Shade\ElementFileParser;
+use ActiveCollab\Shade\Project;
 
-  /**
-   * Framework level help element implementation
-   *
-   * @package Shade
-   */
-  abstract class Element
-  {
+/**
+ * Framework level help element implementation
+ *
+ * @package Shade
+ */
+abstract class Element
+{
     use ElementFileParser;
 
     /**
@@ -27,12 +29,12 @@
      */
     public function __construct(Project $project, $path, $load = true)
     {
-      $this->project = $project;
-      $this->path = $path;
+        $this->project = $project;
+        $this->path = $path;
 
-      if ($load) {
-        $this->load();
-      }
+        if ($load) {
+            $this->load();
+        }
     }
 
     /**
@@ -45,7 +47,7 @@
      */
     public function getPath()
     {
-      return $this->path;
+        return $this->path;
     }
 
     /**
@@ -55,7 +57,7 @@
      */
     public function getFolderName()
     {
-      return basename($this->path);
+        return basename($this->path);
     }
 
     /**
@@ -63,7 +65,7 @@
      */
     public function &getProject()
     {
-      return $this->project;
+        return $this->project;
     }
 
     /**
@@ -80,11 +82,11 @@
      */
     public function getShortName()
     {
-      if ($this->short_name === null) {
-        $this->short_name = str_replace('_', '-', basename($this->path));
-      }
+        if ($this->short_name === null) {
+            $this->short_name = str_replace('_', '-', basename($this->path));
+        }
 
-      return $this->short_name;
+        return $this->short_name;
     }
 
     /**
@@ -101,6 +103,6 @@
      */
     public function getPageLevel()
     {
-      return 1;
+        return 1;
     }
-  }
+}

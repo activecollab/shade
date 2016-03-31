@@ -1,16 +1,19 @@
 <?php
 
-  namespace ActiveCollab\Shade;
+namespace ActiveCollab\Shade;
 
-  use ActiveCollab\Shade, ActiveCollab\Shade\Error\ElementFileNotFoundError, Exception, ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade;
+use ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade\Error\ElementFileNotFoundError;
+use Exception;
 
-  /**
-   * Parse element definition file
-   *
-   * @package ActiveCollab\Shade
-   */
-  trait ElementFileParser
-  {
+/**
+ * Parse element definition file
+ *
+ * @package ActiveCollab\Shade
+ */
+trait ElementFileParser
+{
     /**
      * @var string
      */
@@ -46,7 +49,7 @@
      */
     public function getProperty($name, $default = null)
     {
-      return isset($this->properties[$name]) ? $this->properties[$name] : $default;
+        return isset($this->properties[$name]) ? $this->properties[$name] : $default;
     }
 
     /**
@@ -56,7 +59,7 @@
      */
     public function getBody()
     {
-      return $this->body;
+        return $this->body;
     }
 
     /**
@@ -67,33 +70,33 @@
      */
     public function renderBody()
     {
-      $smarty =& Shade::getSmarty();
+        $smarty =& Shade::getSmarty();
 
-      $template = $smarty->createTemplate($this->getIndexFilePath());
+        $template = $smarty->createTemplate($this->getIndexFilePath());
 
-      SmartyHelpers::setCurrentElement($this);
+        SmartyHelpers::setCurrentElement($this);
 
-      if ($this instanceof Element) {
-        SmartyHelpers::setCurrentProject($this->getProject());
-      } elseif ($this instanceof Project) {
-        SmartyHelpers::setCurrentProject($this);
-      }
-
-      $content = $template->fetch();
-
-      SmartyHelpers::resetCurrentElementAndProject();
-
-      $separator_pos = strpos($content, $this->properties_separator);
-
-      if ($separator_pos === false) {
-        if (substr($content, 0, 1) == '*') {
-          $content = '*Content Not Provided*';
+        if ($this instanceof Element) {
+            SmartyHelpers::setCurrentProject($this->getProject());
+        } elseif ($this instanceof Project) {
+            SmartyHelpers::setCurrentProject($this);
         }
-      } else {
-        $content = trim(substr($content, $separator_pos + strlen($this->properties_separator)));
-      }
 
-      return Shade::markdownToHtml($content);
+        $content = $template->fetch();
+
+        SmartyHelpers::resetCurrentElementAndProject();
+
+        $separator_pos = strpos($content, $this->properties_separator);
+
+        if ($separator_pos === false) {
+            if (substr($content, 0, 1) == '*') {
+                $content = '*Content Not Provided*';
+            }
+        } else {
+            $content = trim(substr($content, $separator_pos + strlen($this->properties_separator)));
+        }
+
+        return Shade::markdownToHtml($content);
     }
 
     /**
@@ -103,7 +106,7 @@
      */
     public function isLoaded()
     {
-      return $this->is_loaded;
+        return $this->is_loaded;
     }
 
     /**
@@ -113,51 +116,51 @@
      */
     public function load()
     {
-      if (empty($this->is_loaded)) {
-        $index_file = $this->getIndexFilePath();
+        if (empty($this->is_loaded)) {
+            $index_file = $this->getIndexFilePath();
 
-        if (is_file($index_file)) {
-          $this->body = file_get_contents($index_file);
+            if (is_file($index_file)) {
+                $this->body = file_get_contents($index_file);
 
-          $separator_pos = strpos($this->body, $this->properties_separator);
+                $separator_pos = strpos($this->body, $this->properties_separator);
 
-          if ($separator_pos === false) {
-            if (substr($this->body, 0, 1) == '*') {
-              $properties_string = $this->body;
-              $this->body = '';
-            } else {
-              $properties_string = '';
-            }
-          } else {
-            $properties_string = trim(substr($this->body, 0, $separator_pos));
-            $this->body = trim(substr($this->body, $separator_pos + strlen($this->properties_separator)));
-          }
-
-          if ($properties_string) {
-            $properties_lines = explode("\n", $properties_string);
-
-            if (count($properties_lines)) {
-              foreach ($properties_lines as $properties_line) {
-                $properties_line = trim(trim($properties_line, '*')); // Clean up
-
-                if ($properties_line) {
-                  $colon_pos = strpos($properties_line, ':');
-
-                  if ($colon_pos !== false) {
-                    $this->loadProperty(trim(substr($properties_line, 0, $colon_pos)), trim(substr($properties_line, $colon_pos + 1)));
-                  }
+                if ($separator_pos === false) {
+                    if (substr($this->body, 0, 1) == '*') {
+                        $properties_string = $this->body;
+                        $this->body = '';
+                    } else {
+                        $properties_string = '';
+                    }
+                } else {
+                    $properties_string = trim(substr($this->body, 0, $separator_pos));
+                    $this->body = trim(substr($this->body, $separator_pos + strlen($this->properties_separator)));
                 }
-              }
+
+                if ($properties_string) {
+                    $properties_lines = explode("\n", $properties_string);
+
+                    if (count($properties_lines)) {
+                        foreach ($properties_lines as $properties_line) {
+                            $properties_line = trim(trim($properties_line, '*')); // Clean up
+
+                            if ($properties_line) {
+                                $colon_pos = strpos($properties_line, ':');
+
+                                if ($colon_pos !== false) {
+                                    $this->loadProperty(trim(substr($properties_line, 0, $colon_pos)), trim(substr($properties_line, $colon_pos + 1)));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $this->body = trim($this->body);
+            } else {
+                throw new ElementFileNotFoundError($index_file);
             }
-          }
 
-          $this->body = trim($this->body);
-        } else {
-          throw new ElementFileNotFoundError($index_file);
+            $this->is_loaded = true;
         }
-
-        $this->is_loaded = true;
-      }
     }
 
     /**
@@ -168,7 +171,7 @@
      */
     private function loadProperty($name, $value)
     {
-      $this->properties[Shade::underscore(str_replace(' ', '', $name))] = $value;
+        $this->properties[Shade::underscore(str_replace(' ', '', $name))] = $value;
     }
 
     /**
@@ -183,11 +186,11 @@
      */
     public function getIndexFilePath()
     {
-      if (empty($this->index_file_path)) {
-        $this->index_file_path = is_dir($this->getPath()) ? $this->getPath() . '/index.md' : $this->getPath();
-      }
+        if (empty($this->index_file_path)) {
+            $this->index_file_path = is_dir($this->getPath()) ? $this->getPath() . '/index.md' : $this->getPath();
+        }
 
-      return $this->index_file_path;
+        return $this->index_file_path;
     }
 
     // ---------------------------------------------------
@@ -203,4 +206,4 @@
      * @return string
      */
     abstract function getPath();
-  }
+}
