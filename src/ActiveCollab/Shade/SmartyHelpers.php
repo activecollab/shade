@@ -261,7 +261,7 @@
       }
 
       if ($result) {
-        return '<div class="related_videos"><h3>' . Shade::lang('Related Video') . '</h3><ul>' . $result . '</ul></div>';
+        return '<div class="related_videos"><h2>' . Shade::lang('Related Video') . '</h2><ul>' . $result . '</ul></div>';
       }
 
       return '';
@@ -677,7 +677,7 @@
         $slug = Shade::slug($content);
       }
 
-      return '<h3 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . Shade::lang('Link to this Section') . '" class="sub_permalink">#</a></h3>';
+      return '<h2 id="s-' . Shade::clean($slug) . '" class="sub_header">' . Shade::clean($content) . ' <a href="#s-' . Shade::clean($slug) . '" title="' . Shade::lang('Link to this Section') . '" class="sub_permalink">#</a></h2>';
     }
 
     /**
