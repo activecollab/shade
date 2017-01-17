@@ -7,11 +7,12 @@
     "herrera-io/phar-update" : "~1.0",
     "michelf/php-markdown": "1.4.*@dev",
     "razielanarki/hyperlight": "0.1.2",
-    "smarty/smarty": "3.1.19",
+    "smarty/smarty": "^3.1.0",
     "jbroadway/urlify": "1.0.*@dev",
     "phine/phar": "~1.0"
   },
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-0": { "ActiveCollab\\Shade" : "src" }
   }
