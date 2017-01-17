@@ -899,7 +899,7 @@
     public static function function_shade_version()
     {
       if (self::$shade_version === false) {
-        self::$shade_version = file_get_contents(dirname(dirname(dirname(__DIR__))) . '/VERSION');
+        self::$shade_version = trim(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/VERSION'));
       }
 
       return self::$shade_version;
