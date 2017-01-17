@@ -10,7 +10,7 @@
   $version = isset($argv[1]) && $argv[1] ? $argv[1] : null;
 
   if (!$version) {
-    $version = file_get_contents(__DIR__ . '/VERSION');
+    $version = trim(file_get_contents(__DIR__ . '/VERSION'));
   }
 
   $phar_path = __DIR__ . "/dist/shade-{$version}.phar";
