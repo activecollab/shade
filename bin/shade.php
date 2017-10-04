@@ -6,13 +6,15 @@
 
   date_default_timezone_set('UTC');
 
-  require dirname(__DIR__) . '/vendor/autoload.php';
+  define('SHADE_ROOT_PATH', dirname(__DIR__));
+
+  require SHADE_ROOT_PATH . '/vendor/autoload.php';
 
   use Symfony\Component\Console\Application;
 
-  $application = new Application('Shade', file_get_contents(dirname(__DIR__) . '/VERSION'));
+  $application = new Application('Shade', file_get_contents(SHADE_ROOT_PATH . '/VERSION'));
 
-  foreach (new DirectoryIterator(dirname(__DIR__) . '/src/ActiveCollab/Shade/Command') as $file) {
+  foreach (new DirectoryIterator(SHADE_ROOT_PATH . '/src/ActiveCollab/Shade/Command') as $file) {
     if ($file->isFile()) {
       $class_name = ('\\ActiveCollab\\Shade\\Command\\' . $file->getBasename('.php'));
 

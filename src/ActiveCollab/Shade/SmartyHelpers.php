@@ -158,7 +158,7 @@
     }
 
     /**
-     * Return theme param URl
+     * Return theme param URL
      *
      * @param array $params
      * @return string
