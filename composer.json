@@ -3,6 +3,7 @@
     "description": "Build help portals with ease",
     "license": "MIT",
     "require": {
+        "php": ">=7.1",
         "symfony/console": "^4.0",
         "herrera-io/phar-update": "~1.0",
         "michelf/php-markdown": "1.4.*@dev",
