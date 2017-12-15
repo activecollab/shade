@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Command;
 
 use ActiveCollab\Shade;
@@ -18,14 +24,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Build help
+ * Build help.
  *
  * @package ActiveCollab\Shade\Command
  */
 class BuildCommand extends Command
 {
     /**
-     * Configure the command
+     * Configure the command.
      */
     protected function configure()
     {
@@ -43,8 +49,8 @@ class BuildCommand extends Command
     private $smarty;
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -64,7 +70,7 @@ class BuildCommand extends Command
             }
 
             if (!($theme instanceof Theme)) {
-                $output->writeln("Theme not found");
+                $output->writeln('Theme not found');
 
                 return;
             }
@@ -97,11 +103,11 @@ class BuildCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Project         $project
-     * @param                 $target_path
-     * @param Theme           $theme
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
+     * @param  Project         $project
+     * @param                  $target_path
+     * @param  Theme           $theme
      * @return bool
      */
     public function prepareTargetPath(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
@@ -118,14 +124,14 @@ class BuildCommand extends Command
     }
 
     /**
-     * Build index.html page
+     * Build index.html page.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Project         $project
-     * @param string          $target_path
-     * @param Theme           $theme
-     * @param string          $locale
+     * @param  InputInterface   $input
+     * @param  OutputInterface  $output
+     * @param  Project          $project
+     * @param  string           $target_path
+     * @param  Theme            $theme
+     * @param  string           $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
@@ -160,14 +166,14 @@ class BuildCommand extends Command
     }
 
     /**
-     * Build what's new section of the project
+     * Build what's new section of the project.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Project         $project
-     * @param string          $target_path
-     * @param Theme           $theme
-     * @param string          $locale
+     * @param  InputInterface   $input
+     * @param  OutputInterface  $output
+     * @param  Project          $project
+     * @param  string           $target_path
+     * @param  Theme            $theme
+     * @param  string           $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
@@ -212,7 +218,7 @@ class BuildCommand extends Command
         foreach ($whats_new_articles as $whats_new_article) {
             $this->smarty->assign('current_whats_new_article', $whats_new_article);
 
-            Shade::writeFile("$whats_new_path/" . $whats_new_article->getShortName() . ".html", $this->smarty->fetch('whats_new_article.tpl'), function ($path) use (&$output) {
+            Shade::writeFile("$whats_new_path/" . $whats_new_article->getShortName() . '.html', $this->smarty->fetch('whats_new_article.tpl'), function ($path) use (&$output) {
                 $output->writeln("File '$path' created");
             });
         }
@@ -247,9 +253,9 @@ class BuildCommand extends Command
     }
 
     /**
-     * Return what's new articles sorted by version
+     * Return what's new articles sorted by version.
      *
-     * @param WhatsNewArticle[] $whats_new_articles
+     * @param  WhatsNewArticle[] $whats_new_articles
      * @return array
      */
     private function getWhatsNewArticlesByVersion($whats_new_articles)
@@ -272,9 +278,9 @@ class BuildCommand extends Command
     }
 
     /**
-     * Get first article from the list of sorter articles
+     * Get first article from the list of sorter articles.
      *
-     * @param array $whats_new_articles_by_version
+     * @param  array           $whats_new_articles_by_version
      * @return WhatsNewArticle
      */
     private function getCurrentArticleFromSortedArticles($whats_new_articles_by_version)
@@ -289,14 +295,14 @@ class BuildCommand extends Command
     }
 
     /**
-     * Build release notes
+     * Build release notes.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Project         $project
-     * @param string          $target_path
-     * @param Theme           $theme
-     * @param string          $locale
+     * @param  InputInterface   $input
+     * @param  OutputInterface  $output
+     * @param  Project          $project
+     * @param  string           $target_path
+     * @param  Theme            $theme
+     * @param  string           $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
@@ -328,7 +334,7 @@ class BuildCommand extends Command
                 'current_release' => $release,
             ]);
 
-            Shade::writeFile("$release_notes_path/" . $release->getSlug() . ".html", $this->smarty->fetch('release.tpl'), function ($path) use (&$output) {
+            Shade::writeFile("$release_notes_path/" . $release->getSlug() . '.html', $this->smarty->fetch('release.tpl'), function ($path) use (&$output) {
                 $output->writeln("File '$path' created");
             });
         }
@@ -337,9 +343,9 @@ class BuildCommand extends Command
     }
 
     /**
-     * Return releases by major version
+     * Return releases by major version.
      *
-     * @param Release[] $releases
+     * @param  Release[] $releases
      * @return array
      */
     private function getReleasesByMajorVersion($releases)
@@ -366,7 +372,7 @@ class BuildCommand extends Command
     }
 
     /**
-     * @param array $sorted_releases
+     * @param  array        $sorted_releases
      * @return Release|null
      */
     private function getCurrentReleaseFromSortedReleases($sorted_releases)
@@ -381,14 +387,14 @@ class BuildCommand extends Command
     }
 
     /**
-     * Build books and book pages
+     * Build books and book pages.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Project         $project
-     * @param string          $target_path
-     * @param Theme           $theme
-     * @param string          $locale
+     * @param  InputInterface   $input
+     * @param  OutputInterface  $output
+     * @param  Project          $project
+     * @param  string           $target_path
+     * @param  Theme            $theme
+     * @param  string           $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
@@ -439,7 +445,7 @@ class BuildCommand extends Command
                 'sidebar_image' => '../../assets/images/books/' . $book->getShortName() . '/_cover_small.png',
             ]);
 
-            Shade::writeFile("$books_path/" . $book->getShortName() . "/index.html", $this->smarty->fetch('book_page.tpl'), function ($path) use (&$output) {
+            Shade::writeFile("$books_path/" . $book->getShortName() . '/index.html', $this->smarty->fetch('book_page.tpl'), function ($path) use (&$output) {
                 $output->writeln("File '$path' created");
             });
 
@@ -448,7 +454,7 @@ class BuildCommand extends Command
                     'current_page' => $page,
                 ]);
 
-                Shade::writeFile("$books_path/" . $book->getShortName() . "/" . $page->getShortName() . ".html", $this->smarty->fetch('book_page.tpl'), function ($path) use (&$output) {
+                Shade::writeFile("$books_path/" . $book->getShortName() . '/' . $page->getShortName() . '.html', $this->smarty->fetch('book_page.tpl'), function ($path) use (&$output) {
                     $output->writeln("File '$path' created");
                 });
             }
@@ -496,7 +502,7 @@ class BuildCommand extends Command
     }
 
     /**
-     * @param BookPage[] $pages
+     * @param  BookPage[] $pages
      * @return BookPage
      */
     private function getCurrentPage($pages)
@@ -509,14 +515,14 @@ class BuildCommand extends Command
     }
 
     /**
-     * Build videos
+     * Build videos.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Project         $project
-     * @param string          $target_path
-     * @param Theme           $theme
-     * @param string          $locale
+     * @param  InputInterface   $input
+     * @param  OutputInterface  $output
+     * @param  Project          $project
+     * @param  string           $target_path
+     * @param  Theme            $theme
+     * @param  string           $locale
      * @return bool
      * @throws Exception
      * @throws \SmartyException
@@ -567,7 +573,7 @@ class BuildCommand extends Command
                 'current_video' => $video,
             ]);
 
-            Shade::writeFile("$videos_path/" . $video->getSlug() . ".html", $this->smarty->fetch('videos.tpl'), function ($path) use (&$output) {
+            Shade::writeFile("$videos_path/" . $video->getSlug() . '.html', $this->smarty->fetch('videos.tpl'), function ($path) use (&$output) {
                 $output->writeln("File '$path' created");
             });
         }
@@ -576,7 +582,7 @@ class BuildCommand extends Command
     }
 
     /**
-     * @param Video[] $videos
+     * @param  Video[]    $videos
      * @return Video|null
      */
     private function getCurrentVideo($video_groups, $videos)
@@ -593,10 +599,10 @@ class BuildCommand extends Command
     }
 
     /**
-     * Return build target path
+     * Return build target path.
      *
-     * @param InputInterface $input
-     * @param Project        $project
+     * @param  InputInterface $input
+     * @param  Project        $project
      * @return string
      */
     private function getBuildTarget(InputInterface $input, Project &$project)
@@ -611,9 +617,9 @@ class BuildCommand extends Command
     }
 
     /**
-     * Return true if target path is valid
+     * Return true if target path is valid.
      *
-     * @param string $target_path
+     * @param  string $target_path
      * @return bool
      */
     private function isValidTargetPath($target_path)
@@ -622,8 +628,8 @@ class BuildCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param Project        $project
+     * @param  InputInterface                 $input
+     * @param  Project                        $project
      * @return Theme
      * @throws Shade\Error\ThemeNotFoundError
      */

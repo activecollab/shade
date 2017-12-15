@@ -1,27 +1,29 @@
 <?php
 
-  /**
-   * Bootstrap command line application
-   */
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
 
-  date_default_timezone_set('UTC');
+date_default_timezone_set('UTC');
 
-  define('SHADE_ROOT_PATH', dirname(__DIR__));
+define('SHADE_ROOT_PATH', dirname(__DIR__));
 
-  require SHADE_ROOT_PATH . '/vendor/autoload.php';
+require SHADE_ROOT_PATH . '/vendor/autoload.php';
 
-  use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Application;
 
-  $application = new Application('Shade', file_get_contents(SHADE_ROOT_PATH . '/VERSION'));
+$application = new Application('Shade', file_get_contents(SHADE_ROOT_PATH . '/VERSION'));
 
-  foreach (new DirectoryIterator(SHADE_ROOT_PATH . '/src/ActiveCollab/Shade/Command') as $file) {
+foreach (new DirectoryIterator(SHADE_ROOT_PATH . '/src/ActiveCollab/Shade/Command') as $file) {
     if ($file->isFile()) {
-      $class_name = ('\\ActiveCollab\\Shade\\Command\\' . $file->getBasename('.php'));
+        $class_name = ('\\ActiveCollab\\Shade\\Command\\' . $file->getBasename('.php'));
 
-      if (!(new ReflectionClass($class_name))->isAbstract()) {
-        $application->add(new $class_name);
-      }
+        if (!(new ReflectionClass($class_name))->isAbstract()) {
+            $application->add(new $class_name);
+        }
     }
-  }
+}
 
-  $application->run();
+$application->run();

@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Plugin;
 
-use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Element\Release;
+use ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Element\WhatsNewArticle;
 
 /**
- * Add Disqus comments to the generated pages
+ * Add Disqus comments to the generated pages.
  *
  * @package ActiveCollab\Shade\Plugin
  */
@@ -26,7 +32,7 @@ class DisqusPlugin extends Plugin
     }
 
     /**
-     * Return Disqus settings
+     * Return Disqus settings.
      *
      * @return array
      */
@@ -42,9 +48,9 @@ class DisqusPlugin extends Plugin
     }
 
     /**
-     * Returns in <help_book_page_comments> tag
+     * Returns in <help_book_page_comments> tag.
      *
-     * @param Element $element
+     * @param  Element $element
      * @return string
      */
     function renderComments(Element $element)

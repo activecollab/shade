@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Plugin;
 
 /**
- * Insert Google Tag Manager
+ * Insert Google Tag Manager.
  *
  * @package ActiveCollab\Shade\Plugin
  */
@@ -30,7 +36,7 @@ class GoogleTagManagerPlugin extends Plugin
     }
 
     /**
-     * Returns in <head> tag
+     * Returns in <head> tag.
      *
      * @return string
      */

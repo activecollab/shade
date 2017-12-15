@@ -1,19 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Command;
 
-use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
-use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Project, Symfony\Component\Console\Command\Command, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * List project releases
+ * List project releases.
  *
  * @package ActiveCollab\Shade\Command
  */
 class ReleasesCommand extends Command
 {
     /**
-     * Configure the command
+     * Configure the command.
      */
     protected function configure()
     {
@@ -24,8 +30,8 @@ class ReleasesCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)

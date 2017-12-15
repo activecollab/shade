@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade;
 
 /**
- * Framework level help video class
+ * Framework level help video class.
  *
  * @package Shade
  */
@@ -14,7 +20,7 @@ class Video extends Element
     const GETTING_STARTED = 'getting-started';
 
     /**
-     * Return book's short name
+     * Return book's short name.
      *
      * @return string
      */
@@ -24,14 +30,14 @@ class Video extends Element
     }
 
     /**
-     * Cached group name value
+     * Cached group name value.
      *
      * @var string
      */
     private $group_name = false;
 
     /**
-     * Return name of the group that this video belongs to
+     * Return name of the group that this video belongs to.
      *
      * @return string
      */
@@ -49,14 +55,14 @@ class Video extends Element
     }
 
     /**
-     * Cached title
+     * Cached title.
      *
      * @var string
      */
     protected $title;
 
     /**
-     * Return page title
+     * Return page title.
      *
      * @return string
      */
@@ -81,14 +87,14 @@ class Video extends Element
     }
 
     /**
-     * Cached slug value
+     * Cached slug value.
      *
      * @var string
      */
     protected $slug;
 
     /**
-     * Return page slug
+     * Return page slug.
      *
      * @return string
      */
@@ -108,7 +114,7 @@ class Video extends Element
     }
 
     /**
-     * Return property description
+     * Return property description.
      *
      * @return string
      */
@@ -118,7 +124,7 @@ class Video extends Element
     }
 
     /**
-     * Return source URL
+     * Return source URL.
      *
      * Only supported modifier at the moment is 2X
      *
@@ -135,14 +141,14 @@ class Video extends Element
     }
 
     /**
-     * Cached play time value
+     * Cached play time value.
      *
      * @var string
      */
     private $play_time = false;
 
     /**
-     * Return video play time
+     * Return video play time.
      *
      * @return string
      */

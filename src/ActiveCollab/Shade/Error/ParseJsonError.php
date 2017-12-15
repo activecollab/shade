@@ -1,30 +1,36 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Error;
 
 /**
- * Exception that is thrown when we fail to parse JSON
+ * Exception that is thrown when we fail to parse JSON.
  *
  * @package ActiveCollab\Shade\Error
  */
 class ParseJsonError extends Error
 {
     /**
-     * Problematic JSON code
+     * Problematic JSON code.
      *
      * @var string
      */
     private $json;
 
     /**
-     * Parse error code
+     * Parse error code.
      *
-     * @var integer
+     * @var int
      */
     private $json_error;
 
     /**
-     * Construct exception instance
+     * Construct exception instance.
      *
      * @param string      $json
      * @param int         $json_error
@@ -69,7 +75,7 @@ class ParseJsonError extends Error
     }
 
     /**
-     * Return JSON source
+     * Return JSON source.
      *
      * @return string
      */
@@ -79,7 +85,7 @@ class ParseJsonError extends Error
     }
 
     /**
-     * Return JSOn error code
+     * Return JSOn error code.
      *
      * @return int
      */

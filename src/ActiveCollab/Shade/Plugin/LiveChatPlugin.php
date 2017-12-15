@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Plugin;
 
 /**
- * Insert Google Analytics tracking code
+ * Insert Google Analytics tracking code.
  *
  * @package ActiveCollab\Shade\Plugin
  */
@@ -30,7 +36,7 @@ class LiveChatPlugin extends Plugin
     }
 
     /**
-     * Returns after #footer
+     * Returns after #footer.
      *
      * @return string
      */

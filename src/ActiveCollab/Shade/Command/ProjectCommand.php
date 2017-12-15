@@ -1,20 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Video;
-use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Project;
+use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create a new project
+ * Create a new project.
  *
  * @package ActiveCollab\Shade\Command
  */
 class ProjectCommand extends Command
 {
     /**
-     * Configure the command
+     * Configure the command.
      */
     function configure()
     {
@@ -25,8 +31,8 @@ class ProjectCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -96,7 +102,7 @@ class ProjectCommand extends Command
     }
 
     /**
-     * Return content of the proejct index.md file
+     * Return content of the proejct index.md file.
      *
      * @return string
      */

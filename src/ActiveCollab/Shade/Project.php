@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade;
 
 use ActiveCollab\Shade;
@@ -13,7 +19,7 @@ use ActiveCollab\Shade\Error\ThemeNotFoundError;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
 
 /**
- * Narrative project
+ * Narrative project.
  *
  * @package Narrative
  */
@@ -32,9 +38,9 @@ final class Project
     private $configuration = [];
 
     /**
-     * Create a new project instance
+     * Create a new project instance.
      *
-     * @param string $path
+     * @param  string                                       $path
      * @throws |ActiveCollab\Narrative\Error\ParseJsonError
      */
     function __construct($path)
@@ -58,7 +64,7 @@ final class Project
     }
 
     /**
-     * Return project name
+     * Return project name.
      *
      * @return string
      */
@@ -68,7 +74,7 @@ final class Project
     }
 
     /**
-     * Return true if this project is multilingual
+     * Return true if this project is multilingual.
      *
      * @return bool
      */
@@ -83,7 +89,7 @@ final class Project
     private $locales = false;
 
     /**
-     * Return a list of project locales
+     * Return a list of project locales.
      *
      * @return array
      */
@@ -124,7 +130,7 @@ final class Project
     }
 
     /**
-     * Return short locale code
+     * Return short locale code.
      *
      * @return string
      */
@@ -149,7 +155,7 @@ final class Project
     private $default_build_target;
 
     /**
-     * Return default build target
+     * Return default build target.
      *
      * @return string|null
      */
@@ -167,7 +173,7 @@ final class Project
     }
 
     /**
-     * Return default locale, for multilingual projects
+     * Return default locale, for multilingual projects.
      *
      * @return string|null
      */
@@ -177,7 +183,7 @@ final class Project
     }
 
     /**
-     * Return name of the  default locale
+     * Return name of the  default locale.
      *
      * @return string|null
      */
@@ -193,9 +199,9 @@ final class Project
     }
 
     /**
-     * Return build theme
+     * Return build theme.
      *
-     * @param string|null $name
+     * @param  string|null        $name
      * @return Theme
      * @throws ThemeNotFoundError
      */
@@ -206,7 +212,7 @@ final class Project
         } elseif (is_dir($this->getPath() . '/theme')) {
             $theme_path = $this->getPath() . '/theme'; // Project specific theme
         } else {
-            $theme_path = __DIR__ . "/Themes/" . $this->getDefaultBuildTheme(); // Default built in theme
+            $theme_path = __DIR__ . '/Themes/' . $this->getDefaultBuildTheme(); // Default built in theme
         }
 
         if ($theme_path && is_dir($theme_path)) {
@@ -217,7 +223,7 @@ final class Project
     }
 
     /**
-     * Return name of the default build theme
+     * Return name of the default build theme.
      *
      * @return string
      */
@@ -260,10 +266,10 @@ final class Project
     }
 
     /**
-     * Return configuration option
+     * Return configuration option.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param  string $name
+     * @param  mixed  $default
      * @return mixed
      */
     public function getConfigurationOption($name, $default = null)
@@ -272,7 +278,7 @@ final class Project
     }
 
     /**
-     * Return project path
+     * Return project path.
      *
      * @return string
      */
@@ -286,9 +292,9 @@ final class Project
     // ---------------------------------------------------
 
     /**
-     * Return all project stories
+     * Return all project stories.
      *
-     * @param string|null $locale
+     * @param  string|null      $locale
      * @return Book[]|NamedList
      */
     function getBooks($locale = null)
@@ -297,10 +303,10 @@ final class Project
     }
 
     /**
-     * Get book by short name
+     * Get book by short name.
      *
-     * @param string      $name
-     * @param string|null $locale
+     * @param  string      $name
+     * @param  string|null $locale
      * @return Book|null
      */
     function getBook($name, $locale = null)
@@ -309,7 +315,7 @@ final class Project
     }
 
     /**
-     * @param Book $book
+     * @param  Book                 $book
      * @return BookPage[]|NamedList
      */
     function getBookPages(Book $book)
@@ -318,9 +324,9 @@ final class Project
     }
 
     /**
-     * Return array of common questions
+     * Return array of common questions.
      *
-     * @param string|null $locale
+     * @param  string|null $locale
      * @return array
      */
     public function getCommonQuestions($locale = null)
@@ -347,7 +353,7 @@ final class Project
     // ---------------------------------------------------
 
     /**
-     * @param string|null $locale
+     * @param  string|null                 $locale
      * @return WhatsNewArticle[]|NamedList
      */
     function getWhatsNewArticles($locale = null)
@@ -356,10 +362,10 @@ final class Project
     }
 
     /**
-     * Return what's new article
+     * Return what's new article.
      *
-     * @param string      $name
-     * @param string|null $locale
+     * @param  string               $name
+     * @param  string|null          $locale
      * @return WhatsNewArticle|null
      */
     function getWhatsNewArticle($name, $locale = null)
@@ -373,9 +379,9 @@ final class Project
 
 
     /**
-     * Return releases
+     * Return releases.
      *
-     * @param string|null $locale
+     * @param  string|null $locale
      * @return Release[]
      */
     function getReleases($locale = null)
@@ -393,7 +399,7 @@ final class Project
     private $video_groups = false;
 
     /**
-     * Return array of video groups
+     * Return array of video groups.
      *
      * @return array
      */
@@ -413,9 +419,9 @@ final class Project
     }
 
     /**
-     * Return project videos
+     * Return project videos.
      *
-     * @param string|null $locale
+     * @param  string|null       $locale
      * @return Video[]|NamedList
      */
     function getVideos($locale = null)
@@ -424,8 +430,8 @@ final class Project
     }
 
     /**
-     * @param string      $name
-     * @param string|null $locale
+     * @param  string      $name
+     * @param  string|null $locale
      * @return Video|null
      */
     function getVideo($name, $locale = null)
@@ -434,7 +440,7 @@ final class Project
     }
 
     /**
-     * Return true if this is a valid project
+     * Return true if this is a valid project.
      *
      * @return bool
      */
@@ -476,7 +482,7 @@ final class Project
     private $video_player;
 
     /**
-     * Return instance that will be used to render videos
+     * Return instance that will be used to render videos.
      *
      * @return VideoPlayer
      */
@@ -490,7 +496,7 @@ final class Project
     }
 
     /**
-     * Return temp path
+     * Return temp path.
      *
      * @return string
      */

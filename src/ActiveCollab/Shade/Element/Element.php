@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade;
@@ -7,7 +13,7 @@ use ActiveCollab\Shade\ElementFileParser;
 use ActiveCollab\Shade\Project;
 
 /**
- * Framework level help element implementation
+ * Framework level help element implementation.
  *
  * @package Shade
  */
@@ -21,7 +27,7 @@ abstract class Element
     private $project;
 
     /**
-     * Construct and load help element
+     * Construct and load help element.
      *
      * @param Project $project
      * @param string  $path
@@ -51,7 +57,7 @@ abstract class Element
     }
 
     /**
-     * Get folder name
+     * Get folder name.
      *
      * @return string
      */
@@ -69,14 +75,14 @@ abstract class Element
     }
 
     /**
-     * Book's short name
+     * Book's short name.
      *
      * @var string
      */
     protected $short_name;
 
     /**
-     * Return book's short name
+     * Return book's short name.
      *
      * @return string
      */
@@ -90,14 +96,14 @@ abstract class Element
     }
 
     /**
-     * Return element title
+     * Return element title.
      *
      * @return string
      */
     abstract public function getTitle();
 
     /**
-     * Return page level in the build structure
+     * Return page level in the build structure.
      *
      * @return int
      */

@@ -54,7 +54,7 @@ return (new PhpCsFixer\Config('psr2'))
         'simplified_null_return' => false,
         'single_blank_line_at_eof' => true,
     ])->setFinder((new PhpCsFixer\Finder())->in([
+        __DIR__ . '/bin',
         __DIR__ . '/src',
-        __DIR__ . '/test',
     ])
 );

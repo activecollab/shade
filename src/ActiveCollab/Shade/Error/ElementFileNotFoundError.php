@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Error;
 
 /**
- * Exception that is thrown when we fail to load an element definition file
+ * Exception that is thrown when we fail to load an element definition file.
  *
  * @package ActiveCollab\Shade\Error
  */

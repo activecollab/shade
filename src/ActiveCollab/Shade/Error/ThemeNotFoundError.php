@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Error;
 
 /**
- * Exception that is thrown when we fail to load a given theme
+ * Exception that is thrown when we fail to load a given theme.
  *
  * @package ActiveCollab\Shade\Error
  */

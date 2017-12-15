@@ -1,18 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\NamedList;
 
 /**
- * Framework level help book implementation
+ * Framework level help book implementation.
  *
  * @package Shade
  */
 class Book extends Element
 {
     /**
-     * Return book title
+     * Return book title.
      *
      * @return string
      */
@@ -22,7 +28,7 @@ class Book extends Element
     }
 
     /**
-     * Return property description
+     * Return property description.
      *
      * @return string
      */
@@ -32,14 +38,14 @@ class Book extends Element
     }
 
     /**
-     * Cached pages, per user
+     * Cached pages, per user.
      *
      * @var array
      */
     private $pages = false;
 
     /**
-     * Show pages that $user can see
+     * Show pages that $user can see.
      *
      * @return BookPage[]|NamedList
      */
@@ -53,9 +59,9 @@ class Book extends Element
     }
 
     /**
-     * Return a book page
+     * Return a book page.
      *
-     * @param string $name
+     * @param  string   $name
      * @return BookPage
      */
     public function getPage($name)
@@ -64,14 +70,14 @@ class Book extends Element
     }
 
     /**
-     * @var integer
+     * @var int
      */
     private $position = false;
 
     /**
-     * Return book position
+     * Return book position.
      *
-     * @return integer
+     * @return int
      */
     public function getPosition()
     {
@@ -83,7 +89,7 @@ class Book extends Element
     }
 
     /**
-     * Populate list of common questions
+     * Populate list of common questions.
      *
      * @param array $common_questions
      */

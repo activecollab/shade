@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade;
 
 use ActiveCollab\Shade;
@@ -8,7 +14,7 @@ use ActiveCollab\Shade\Error\ElementFileNotFoundError;
 use Exception;
 
 /**
- * Parse element definition file
+ * Parse element definition file.
  *
  * @package ActiveCollab\Shade
  */
@@ -20,28 +26,28 @@ trait ElementFileParser
     private $properties_separator = '================================================================';
 
     /**
-     * Load indicator
+     * Load indicator.
      *
      * @var bool
      */
     protected $is_loaded = false;
 
     /**
-     * List of properties
+     * List of properties.
      *
      * @var string
      */
     protected $properties = [];
 
     /**
-     * Body text
+     * Body text.
      *
      * @var string
      */
     protected $body;
 
     /**
-     * Return property value
+     * Return property value.
      *
      * @param  string $name
      * @param  mixed  $default
@@ -53,7 +59,7 @@ trait ElementFileParser
     }
 
     /**
-     * Return element body
+     * Return element body.
      *
      * @return string
      */
@@ -63,7 +69,7 @@ trait ElementFileParser
     }
 
     /**
-     * Render body of a given element
+     * Render body of a given element.
      *
      * @return string
      * @throws Exception
@@ -100,7 +106,7 @@ trait ElementFileParser
     }
 
     /**
-     * Return true if we loaded element's definition
+     * Return true if we loaded element's definition.
      *
      * @return bool
      */
@@ -110,7 +116,7 @@ trait ElementFileParser
     }
 
     /**
-     * Load element's definition
+     * Load element's definition.
      *
      * @throws ElementFileNotFoundError
      */
@@ -164,7 +170,7 @@ trait ElementFileParser
     }
 
     /**
-     * Load property value
+     * Load property value.
      *
      * @param string $name
      * @param string $value
@@ -180,7 +186,7 @@ trait ElementFileParser
     private $index_file_path;
 
     /**
-     * Get index file path
+     * Get index file path.
      *
      * @return string
      */

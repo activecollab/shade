@@ -1,40 +1,46 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade;
 
-use Closure, ArrayIterator, IteratorAggregate, ArrayAccess, Countable, JsonSerializable, NotImplementedError, InvalidInstanceError;
+use ArrayAccess, ArrayIterator, Closure, Countable, InvalidInstanceError, IteratorAggregate, JsonSerializable, NotImplementedError;
 
 /**
- * Collection of named data
+ * Collection of named data.
  *
  * @package angie.library
  */
 class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerializable
 {
     /**
-     * List data
+     * List data.
      *
      * @var array
      */
     protected $data = [];
 
     /**
-     * All data only to be appended to the list
+     * All data only to be appended to the list.
      *
-     * @var boolean
+     * @var bool
      */
     protected $append_only = false;
 
     /**
      * Set to true if prepareItem() function needs to be called when item value
-     * is being set (false by defualt)
+     * is being set (false by defualt).
      *
-     * @var boolean
+     * @var bool
      */
     protected $prepare_items = false;
 
     /**
-     * Construct named list
+     * Construct named list.
      *
      * @param array $data
      */
@@ -52,10 +58,10 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
 // ---------------------------------------------------
 
     /**
-     * Return true if $name entry exists in this list
+     * Return true if $name entry exists in this list.
      *
      * @param  string $name
-     * @return boolean
+     * @return bool
      */
     public function exists($name)
     {
@@ -63,7 +69,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Return item with $name
+     * Return item with $name.
      *
      * @param  string $name
      * @return mixed
@@ -74,15 +80,15 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Add data to the list
+     * Add data to the list.
      *
      * $name can be string in which case system sets $data as value. If $name is
      * array, system will add multiple values, where name is key and value is
      * value of given element
      *
-     * @param  string  $name
-     * @param  mixed   $data
-     * @param  boolean $skip_existing
+     * @param  string $name
+     * @param  mixed  $data
+     * @param  bool   $skip_existing
      * @return mixed
      */
     public function add($name, $data = null, $skip_existing = false)
@@ -107,11 +113,11 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Add data to the beginning of the list
+     * Add data to the beginning of the list.
      *
-     * @param  string  $name
-     * @param  mixed   $data
-     * @param  boolean $skip_existing
+     * @param  string              $name
+     * @param  mixed               $data
+     * @param  bool                $skip_existing
      * @return mixed
      * @throws NotImplementedError
      */
@@ -129,12 +135,12 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Add data before $before element
+     * Add data before $before element.
      *
-     * @param  string  $name
-     * @param  mixed   $data
-     * @param  string  $before
-     * @param  boolean $skip_existing
+     * @param  string              $name
+     * @param  mixed               $data
+     * @param  string              $before
+     * @param  bool                $skip_existing
      * @return mixed
      * @throws NotImplementedError
      */
@@ -152,12 +158,12 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Add item after $after list element
+     * Add item after $after list element.
      *
-     * @param  string  $name
-     * @param  mixed   $data
-     * @param  string  $after
-     * @param  boolean $skip_existing
+     * @param  string              $name
+     * @param  mixed               $data
+     * @param  string              $after
+     * @param  bool                $skip_existing
      * @return mixed
      * @throws NotImplementedError
      */
@@ -175,7 +181,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Remove data from the list
+     * Remove data from the list.
      *
      * @param string $name
      */
@@ -195,7 +201,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Clear the list
+     * Clear the list.
      */
     public function clear()
     {
@@ -203,7 +209,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Return all data keys
+     * Return all data keys.
      *
      * @return array
      */
@@ -213,7 +219,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * return named list as array
+     * return named list as array.
      *
      * @return array
      */
@@ -223,9 +229,9 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Sort with a callback
+     * Sort with a callback.
      *
-     * @param  Closure $callback
+     * @param  Closure              $callback
      * @throws InvalidInstanceError
      */
     public function sort($callback)
@@ -242,7 +248,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
 // ---------------------------------------------------
 
     /**
-     * Do add item to the list
+     * Do add item to the list.
      *
      * @param  string $name
      * @param  mixed  $data
@@ -312,7 +318,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Prepare item value
+     * Prepare item value.
      *
      * This function is called for each value when prepare_value flag is set to
      * true for this particular list
@@ -330,10 +336,10 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
 // ---------------------------------------------------
 
     /**
-     * Check if $offset exists
+     * Check if $offset exists.
      *
      * @param  string $offset
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset)
     {
@@ -341,7 +347,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Return value at $offset
+     * Return value at $offset.
      *
      * @param  string $offset
      * @return mixed
@@ -352,7 +358,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Set value at $offset
+     * Set value at $offset.
      *
      * @param string $offset
      * @param mixed  $value
@@ -363,7 +369,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Unset value at $offset
+     * Unset value at $offset.
      *
      * @param string $offset
      */
@@ -373,9 +379,9 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Number of elements
+     * Number of elements.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -383,7 +389,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Returns an iterator for for this object, for use with foreach
+     * Returns an iterator for for this object, for use with foreach.
      *
      * @return ArrayIterator
      */
@@ -393,7 +399,7 @@ class NamedList implements IteratorAggregate, ArrayAccess, Countable, JsonSerial
     }
 
     /**
-     * Return serialized data
+     * Return serialized data.
      *
      * @return array
      */

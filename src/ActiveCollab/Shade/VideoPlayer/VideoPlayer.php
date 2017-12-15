@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\VideoPlayer;
 
-use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Video;
+use ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Project;
 
 /**
- * Abstract video player renderer
+ * Abstract video player renderer.
  *
  * @package ActiveCollab\Shade
  */
@@ -25,7 +31,7 @@ abstract class VideoPlayer
     }
 
     /**
-     * @param Video $video
+     * @param  Video  $video
      * @return string
      */
     abstract function renderPlayer(Video $video);

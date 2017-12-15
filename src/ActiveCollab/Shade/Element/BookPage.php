@@ -1,25 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade;
 
 /**
- * Framework level help book page class
+ * Framework level help book page class.
  *
  * @package Shade
  */
 class BookPage extends Element
 {
     /**
-     * Parent book name
+     * Parent book name.
      *
      * @var string
      */
     private $book_name;
 
     /**
-     * Construct and load help element
+     * Construct and load help element.
      *
      * @param string      $module
      * @param Book|string $book
@@ -34,7 +40,7 @@ class BookPage extends Element
     }
 
     /**
-     * Return book name
+     * Return book name.
      *
      * @return string
      */
@@ -44,7 +50,7 @@ class BookPage extends Element
     }
 
     /**
-     * Return book's short name
+     * Return book's short name.
      *
      * @return string
      */
@@ -54,14 +60,14 @@ class BookPage extends Element
     }
 
     /**
-     * Cached title
+     * Cached title.
      *
      * @var string
      */
     protected $title;
 
     /**
-     * Return page title
+     * Return page title.
      *
      * @return string
      */
@@ -86,14 +92,14 @@ class BookPage extends Element
     }
 
     /**
-     * Cached slug value
+     * Cached slug value.
      *
      * @var string
      */
     protected $slug;
 
     /**
-     * Return page slug
+     * Return page slug.
      *
      * @return string
      */
@@ -113,7 +119,7 @@ class BookPage extends Element
     }
 
     /**
-     * Return page level in the build structure
+     * Return page level in the build structure.
      *
      * @return int
      */

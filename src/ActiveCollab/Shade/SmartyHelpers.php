@@ -1,20 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade;
 
-use ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
+use ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
-use ActiveCollab\Shade\Element\Release;
-use Smarty;
-use Exception;
-use ActiveCollab\Shade;
 use ActiveCollab\Shade\Error\ParamRequiredError;
+use Exception;
+use Smarty;
 
 /**
- * Help element text helpers
+ * Help element text helpers.
  *
  * @package Shade
  */
@@ -26,7 +32,7 @@ class SmartyHelpers
     private static $current_project;
 
     /**
-     * Return current element
+     * Return current element.
      *
      * @return Project
      */
@@ -36,9 +42,9 @@ class SmartyHelpers
     }
 
     /**
-     * Set current element
+     * Set current element.
      *
-     * @param Project $project
+     * @param  Project            $project
      * @throws ParamRequiredError
      */
     public static function setCurrentProject(Project $project)
@@ -56,7 +62,7 @@ class SmartyHelpers
     private static $current_element;
 
     /**
-     * Return current element
+     * Return current element.
      *
      * @return Element
      */
@@ -66,9 +72,9 @@ class SmartyHelpers
     }
 
     /**
-     * Set current element
+     * Set current element.
      *
-     * @param Project|Element $element
+     * @param  Project|Element $element
      * @throws Exception
      */
     public static function setCurrentElement($element)
@@ -81,7 +87,7 @@ class SmartyHelpers
     }
 
     /**
-     * Reset current element and project
+     * Reset current element and project.
      */
     public static function resetCurrentElementAndProject()
     {
@@ -115,9 +121,9 @@ class SmartyHelpers
     }
 
     /**
-     * Image function
+     * Image function.
      *
-     * @param  array $params
+     * @param  array              $params
      * @return string
      * @throws ParamRequiredError
      */
@@ -141,33 +147,33 @@ class SmartyHelpers
     }
 
     /**
-     * @param string  $name
-     * @param integer $page_level
+     * @param  string $name
+     * @param  int    $page_level
      * @return string
      */
     private static function getBookPageImageUrl($name, $page_level)
     {
         return self::$current_locale === self::$default_locale ?
-            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/books/" . self::$current_element->getBookName() . '/' . $name :
-            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/" . self::$current_locale . "/books/" . self::$current_element->getBookName() . '/' . $name;
+            self::pageLevelToPrefix($page_level, self::$current_locale) . 'assets/images/books/' . self::$current_element->getBookName() . '/' . $name :
+            self::pageLevelToPrefix($page_level, self::$current_locale) . 'assets/images/' . self::$current_locale . '/books/' . self::$current_element->getBookName() . '/' . $name;
     }
 
     /**
-     * @param string  $name
-     * @param integer $page_level
+     * @param  string $name
+     * @param  int    $page_level
      * @return string
      */
     private static function getWhatsNewArticleImageUrl($name, $page_level)
     {
         return $src = self::$current_locale === self::$default_locale ?
-            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/whats-new/" . self::$current_element->getVersionNumber() . '/' . $name :
-            self::pageLevelToPrefix($page_level, self::$current_locale) . "assets/images/" . self::$current_locale . "/whats-new/" . self::$current_element->getVersionNumber() . '/' . $name;
+            self::pageLevelToPrefix($page_level, self::$current_locale) . 'assets/images/whats-new/' . self::$current_element->getVersionNumber() . '/' . $name :
+            self::pageLevelToPrefix($page_level, self::$current_locale) . 'assets/images/' . self::$current_locale . '/whats-new/' . self::$current_element->getVersionNumber() . '/' . $name;
     }
 
     /**
-     * Return theme param URL
+     * Return theme param URL.
      *
-     * @param array $params
+     * @param  array              $params
      * @return string
      * @throws ParamRequiredError
      */
@@ -185,7 +191,7 @@ class SmartyHelpers
     }
 
     /**
-     * @param  array $params
+     * @param  array  $params
      * @return string
      */
     public static function function_asset_link($params)
@@ -198,7 +204,7 @@ class SmartyHelpers
     }
 
     /**
-     * @param  array $params
+     * @param  array  $params
      * @return string
      */
     public static function function_stylesheet_url($params)
@@ -206,12 +212,12 @@ class SmartyHelpers
         $page_level = isset($params['page_level']) ? (integer) $params['page_level'] : 0;
         $locale = isset($params['locale']) && $params['locale'] ? $params['locale'] : null;
 
-        return '<link rel="stylesheet" type="text/css" href="' . self::pageLevelToPrefix($page_level, $locale) . "assets/stylesheets/main.css?timestamp=" . time() . '">';
+        return '<link rel="stylesheet" type="text/css" href="' . self::pageLevelToPrefix($page_level, $locale) . 'assets/stylesheets/main.css?timestamp=' . time() . '">';
     }
 
     /**
-     * @param integer     $page_level
-     * @param string|null $locale
+     * @param  int         $page_level
+     * @param  string|null $locale
      * @return string
      */
     private static function pageLevelToPrefix($page_level, $locale = null)
@@ -234,9 +240,9 @@ class SmartyHelpers
     }
 
     /**
-     * Render related video blokc
+     * Render related video blokc.
      *
-     * @param  array $params
+     * @param  array              $params
      * @return string
      * @throws ParamRequiredError
      */
@@ -275,12 +281,12 @@ class SmartyHelpers
     }
 
     /**
-     * Link to a video
+     * Link to a video.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|null
      * @throws ParamRequiredError
      */
@@ -309,9 +315,9 @@ class SmartyHelpers
     }
 
     /**
-     * Return video URL
+     * Return video URL.
      *
-     * @param string $slug
+     * @param  string $slug
      * @return string
      */
     private static function getVideoUrl($slug)
@@ -320,12 +326,12 @@ class SmartyHelpers
     }
 
     /**
-     * Link to a news article
+     * Link to a news article.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|null
      * @throws ParamRequiredError
      */
@@ -353,9 +359,9 @@ class SmartyHelpers
     }
 
     /**
-     * Return what's new article URL
+     * Return what's new article URL.
      *
-     * @param string $slug
+     * @param  string $slug
      * @return string
      */
     private static function getWhatsNewArticleUrl($slug)
@@ -364,12 +370,12 @@ class SmartyHelpers
     }
 
     /**
-     * Link to a help book
+     * Link to a help book.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|null
      * @throws ParamRequiredError
      */
@@ -401,9 +407,9 @@ class SmartyHelpers
     }
 
     /**
-     * Return book URL
+     * Return book URL.
      *
-     * @param string $short_name
+     * @param  string $short_name
      * @return string
      */
     private static function getBookUrl($short_name)
@@ -412,12 +418,12 @@ class SmartyHelpers
     }
 
     /**
-     * Link to a help book page
+     * Link to a help book page.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|null
      * @throws ParamRequiredError
      */
@@ -477,12 +483,12 @@ class SmartyHelpers
     }
 
     /**
-     * Link to a help book page
+     * Link to a help book page.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|void
      * @throws ParamRequiredError
      */
@@ -498,10 +504,10 @@ class SmartyHelpers
     }
 
     /**
-     * Return book page URL
+     * Return book page URL.
      *
-     * @param string $book_name
-     * @param string $page_slug
+     * @param  string $book_name
+     * @param  string $page_slug
      * @return string
      */
     private static function getBookPageUrl($book_name, $page_slug)
@@ -510,12 +516,12 @@ class SmartyHelpers
     }
 
     /**
-     * Note block
+     * Note block.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_note($params, $content, &$smarty, &$repeat)
@@ -534,12 +540,12 @@ class SmartyHelpers
     }
 
     /**
-     * Option block
+     * Option block.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_option($params, $content, &$smarty, &$repeat)
@@ -560,12 +566,12 @@ class SmartyHelpers
     }
 
     /**
-     * Term block
+     * Term block.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_term($params, $content, &$smarty, &$repeat)
@@ -586,12 +592,12 @@ class SmartyHelpers
     }
 
     /**
-     * Wrap file system paths using this block
+     * Wrap file system paths using this block.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_path($params, $content, &$smarty, &$repeat)
@@ -612,12 +618,12 @@ class SmartyHelpers
     }
 
     /**
-     * Code block
+     * Code block.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_code($params, $content, &$smarty, &$repeat)
@@ -664,12 +670,12 @@ class SmartyHelpers
     }
 
     /**
-     * Render a page sub-header
+     * Render a page sub-header.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_sub($params, $content, &$smarty, &$repeat)
@@ -688,12 +694,12 @@ class SmartyHelpers
     }
 
     /**
-     * Render a tutorial step
+     * Render a tutorial step.
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array  $params
+     * @param  string $content
+     * @param  Smarty $smarty
+     * @param  bool   $repeat
      * @return string
      */
     public static function block_step($params, $content, &$smarty, &$repeat)
@@ -715,9 +721,9 @@ class SmartyHelpers
     }
 
     /**
-     * Render navigation link
+     * Render navigation link.
      *
-     * @param array $params
+     * @param  array  $params
      * @return string
      */
     public static function function_navigation_link($params)
@@ -740,9 +746,9 @@ class SmartyHelpers
     }
 
     /**
-     * Render navigation link
+     * Render navigation link.
      *
-     * @param array $params
+     * @param  array              $params
      * @return string
      * @throws ParamRequiredError
      */
@@ -766,14 +772,14 @@ class SmartyHelpers
     }
 
     /**
-     * Render added block in release notes
+     * Render added block in release notes.
      *
      * Note: This block is available only in release notes!
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|void
      * @throws ParamRequiredError
      * @throws Exception
@@ -792,14 +798,14 @@ class SmartyHelpers
     }
 
     /**
-     * Render deprecated block in release notes
+     * Render deprecated block in release notes.
      *
      * Note: This block is available only in release notes!
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|void
      * @throws ParamRequiredError
      * @throws Exception
@@ -818,14 +824,14 @@ class SmartyHelpers
     }
 
     /**
-     * Render removed block in release notes
+     * Render removed block in release notes.
      *
      * Note: This block is available only in release notes!
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|void
      * @throws ParamRequiredError
      * @throws Exception
@@ -844,14 +850,14 @@ class SmartyHelpers
     }
 
     /**
-     * Render fixed block in release notes
+     * Render fixed block in release notes.
      *
      * Note: This block is available only in release notes!
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|void
      * @throws ParamRequiredError
      * @throws Exception
@@ -870,14 +876,14 @@ class SmartyHelpers
     }
 
     /**
-     * Render security block in release notes
+     * Render security block in release notes.
      *
      * Note: This block is available only in release notes!
      *
-     * @param  array   $params
-     * @param  string  $content
-     * @param  Smarty  $smarty
-     * @param  boolean $repeat
+     * @param  array              $params
+     * @param  string             $content
+     * @param  Smarty             $smarty
+     * @param  bool               $repeat
      * @return string|null
      * @throws ParamRequiredError
      * @throws Exception
@@ -901,7 +907,7 @@ class SmartyHelpers
     private static $shade_version = false;
 
     /**
-     * Return shade version
+     * Return shade version.
      */
     public static function function_shade_version()
     {

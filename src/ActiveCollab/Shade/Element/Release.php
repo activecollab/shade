@@ -1,25 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\Project, DateTime;
 
 /**
- * Release element (for release notes)
+ * Release element (for release notes).
  *
  * @package ActiveCollab\Shade\Element
  */
 class Release extends Element
 {
     /**
-     * Application version number
+     * Application version number.
      *
      * @var string
      */
     private $version_number;
 
     /**
-     * Construct and load help element
+     * Construct and load help element.
      *
      * @param Project $project
      * @param string  $version_number
@@ -42,7 +48,7 @@ class Release extends Element
     }
 
     /**
-     * Return in which version change was introduced
+     * Return in which version change was introduced.
      *
      * @return string
      */
@@ -52,7 +58,7 @@ class Release extends Element
     }
 
     /**
-     * Return page slug
+     * Return page slug.
      *
      * @return string
      */

@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Command;
 
 use Herrera\Phar\Update\Manager, Herrera\Phar\Update\Manifest;
 use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Auto-update command
+ * Auto-update command.
  *
  * @package ActiveCollab\Shade\Command
  */
@@ -15,7 +21,7 @@ class UpdateCommand extends Command
     const MANIFEST_FILE = 'https://www.activecollab.com/labs/shade/manifest.json';
 
     /**
-     * Configure the command
+     * Configure the command.
      */
     protected function configure()
     {
@@ -23,8 +29,8 @@ class UpdateCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)

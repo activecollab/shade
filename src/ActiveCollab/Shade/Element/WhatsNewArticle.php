@@ -1,25 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade;
 
 /**
- * What's new article element
+ * What's new article element.
  *
  * @package Shade
  */
 class WhatsNewArticle extends Element
 {
     /**
-     * Application version number
+     * Application version number.
      *
      * @var string
      */
     private $version_number;
 
     /**
-     * Construct and load help element
+     * Construct and load help element.
      *
      * @param string $module
      * @param string $version_number
@@ -34,7 +40,7 @@ class WhatsNewArticle extends Element
     }
 
     /**
-     * Return book's short name
+     * Return book's short name.
      *
      * @return string
      */
@@ -44,7 +50,7 @@ class WhatsNewArticle extends Element
     }
 
     /**
-     * Return in which version change was introduced
+     * Return in which version change was introduced.
      *
      * @return string
      */
@@ -54,14 +60,14 @@ class WhatsNewArticle extends Element
     }
 
     /**
-     * Cached title
+     * Cached title.
      *
      * @var string
      */
     protected $title;
 
     /**
-     * Return page title
+     * Return page title.
      *
      * @return string
      */
@@ -86,14 +92,14 @@ class WhatsNewArticle extends Element
     }
 
     /**
-     * Cached slug value
+     * Cached slug value.
      *
      * @var string
      */
     protected $slug;
 
     /**
-     * Return page slug
+     * Return page slug.
      *
      * @return string
      */

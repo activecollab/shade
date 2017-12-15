@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade;
 
 use Exception;
 
 /**
- * Shade theme class
+ * Shade theme class.
  *
  * @package ActiveCollab\Shade
  */
@@ -17,7 +23,7 @@ class Theme
     private $path;
 
     /**
-     * @param string $path
+     * @param  string    $path
      * @throws Exception
      */
     function __construct($path)

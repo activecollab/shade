@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\VideoPlayer;
 
 use ActiveCollab\Shade\Element\Video;
 
 /**
- * Wistia video player
+ * Wistia video player.
  *
  * @package ActiveCollab\Shade\VideoPlayer
  * @see http://wistia.com/
@@ -13,7 +19,7 @@ use ActiveCollab\Shade\Element\Video;
 class WistiaVideoPlayer extends VideoPlayer
 {
     /**
-     * @param Video $video
+     * @param  Video  $video
      * @return string
      */
     function renderPlayer(Video $video)

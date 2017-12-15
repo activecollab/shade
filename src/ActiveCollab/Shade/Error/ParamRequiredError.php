@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Error;
 
 /**
- * Exception that is thrown when required param is not provided in a template function call
+ * Exception that is thrown when required param is not provided in a template function call.
  *
  * @package ActiveCollab\Shade\Error
  */

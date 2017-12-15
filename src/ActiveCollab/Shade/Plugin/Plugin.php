@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\Shade\Plugin;
 
-use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Project;
 
 /**
- * Abstract plugin
+ * Abstract plugin.
  *
  * @package ActiveCollab\Shade\Plugin
  */
@@ -25,7 +31,7 @@ abstract class Plugin
     }
 
     /**
-     * Return a value that indicates that this plugin is enabled (account ID, true etc)
+     * Return a value that indicates that this plugin is enabled (account ID, true etc).
      */
     function isEnabled()
     {
@@ -41,7 +47,7 @@ abstract class Plugin
     }
 
     /**
-     * Returns in <head> tag
+     * Returns in <head> tag.
      *
      * @return string
      */
@@ -50,14 +56,14 @@ abstract class Plugin
     }
 
     /**
-     * Render after <body> tag is open
+     * Render after <body> tag is open.
      */
     function renderBody()
     {
     }
 
     /**
-     * Render in comments section
+     * Render in comments section.
      *
      * @param Element $element
      */
@@ -66,7 +72,7 @@ abstract class Plugin
     }
 
     /**
-     * Render footer (after #footer and before <body> is closed)
+     * Render footer (after #footer and before <body> is closed).
      *
      * @return string
      */
