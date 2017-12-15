@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\Element;
+namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade;
+use ActiveCollab\Shade;
 
-  /**
-   * Framework level help book page class
-   *
-   * @package Shade
-   */
-  class BookPage extends Element
-  {
+/**
+ * Framework level help book page class
+ *
+ * @package Shade
+ */
+class BookPage extends Element
+{
     /**
      * Parent book name
      *
@@ -28,9 +28,9 @@
      */
     public function __construct($module, $book, $path, $load = true)
     {
-      $this->book_name = $book instanceof Book ? $book->getShortName() : $book;
+        $this->book_name = $book instanceof Book ? $book->getShortName() : $book;
 
-      parent::__construct($module, $path, $load);
+        parent::__construct($module, $path, $load);
     }
 
     /**
@@ -40,7 +40,7 @@
      */
     public function getBookName()
     {
-      return $this->book_name;
+        return $this->book_name;
     }
 
     /**
@@ -50,7 +50,7 @@
      */
     public function getShortName()
     {
-      return $this->getSlug();
+        return $this->getSlug();
     }
 
     /**
@@ -67,22 +67,22 @@
      */
     public function getTitle()
     {
-      if ($this->title === null) {
-        $title = $this->getProperty('title');
+        if ($this->title === null) {
+            $title = $this->getProperty('title');
 
-        if (empty($title)) {
-          $basename = basename($this->path);
+            if (empty($title)) {
+                $basename = basename($this->path);
 
-          $first_dot = strpos($basename, '.');
-          $second_dot = strpos($basename, '.', $first_dot + 1);
+                $first_dot = strpos($basename, '.');
+                $second_dot = strpos($basename, '.', $first_dot + 1);
 
-          $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
-        } else {
-          $this->title = $title;
+                $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
+            } else {
+                $this->title = $title;
+            }
         }
-      }
 
-      return $this->title;
+        return $this->title;
     }
 
     /**
@@ -99,17 +99,17 @@
      */
     public function getSlug()
     {
-      if ($this->slug === null) {
-        $slug = $this->getProperty('slug');
+        if ($this->slug === null) {
+            $slug = $this->getProperty('slug');
 
-        if (empty($slug)) {
-          $this->slug = Shade::slug($this->getTitle());
-        } else {
-          $this->slug = $slug;
+            if (empty($slug)) {
+                $this->slug = Shade::slug($this->getTitle());
+            } else {
+                $this->slug = $slug;
+            }
         }
-      }
 
-      return $this->slug;
+        return $this->slug;
     }
 
     /**
@@ -119,6 +119,6 @@
      */
     public function getPageLevel()
     {
-      return 2;
+        return 2;
     }
-  }
+}

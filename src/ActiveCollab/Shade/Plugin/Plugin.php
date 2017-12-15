@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\Plugin;
+namespace ActiveCollab\Shade\Plugin;
 
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Element;
 
-  /**
-   * Abstract plugin
-   *
-   * @package ActiveCollab\Shade\Plugin
-   */
-  abstract class Plugin
-  {
+/**
+ * Abstract plugin
+ *
+ * @package ActiveCollab\Shade\Plugin
+ */
+abstract class Plugin
+{
     /**
      * @var Project
      */
@@ -21,7 +21,7 @@
      */
     function __construct(Project &$project)
     {
-      $this->project = $project;
+        $this->project = $project;
     }
 
     /**
@@ -29,7 +29,7 @@
      */
     function isEnabled()
     {
-      return false;
+        return false;
     }
 
     /**
@@ -37,7 +37,7 @@
      */
     function getName()
     {
-      return array_pop(explode('\\', get_class($this)));
+        return array_pop(explode('\\', get_class($this)));
     }
 
     /**
@@ -73,4 +73,4 @@
     function renderFoot()
     {
     }
-  }
+}

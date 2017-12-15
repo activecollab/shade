@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\Element;
+namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade\Project, DateTime;
+use ActiveCollab\Shade\Project, DateTime;
 
-  /**
-   * Release element (for release notes)
-   *
-   * @package ActiveCollab\Shade\Element
-   */
-  class Release extends Element
-  {
+/**
+ * Release element (for release notes)
+ *
+ * @package ActiveCollab\Shade\Element
+ */
+class Release extends Element
+{
     /**
      * Application version number
      *
@@ -28,9 +28,9 @@
      */
     public function __construct(Project $project, $version_number, $path, $load = true)
     {
-      $this->version_number = $version_number;
+        $this->version_number = $version_number;
 
-      parent::__construct($project, $path, $load);
+        parent::__construct($project, $path, $load);
     }
 
     /**
@@ -38,7 +38,7 @@
      */
     function getTitle()
     {
-      return $this->getVersionNumber();
+        return $this->getVersionNumber();
     }
 
     /**
@@ -48,7 +48,7 @@
      */
     public function getVersionNumber()
     {
-      return $this->version_number;
+        return $this->version_number;
     }
 
     /**
@@ -58,7 +58,7 @@
      */
     public function getSlug()
     {
-      return str_replace('.', '-', $this->version_number);
+        return str_replace('.', '-', $this->version_number);
     }
 
     /**
@@ -71,14 +71,14 @@
      */
     public function getReleaseDate()
     {
-      if ($this->release_date === false) {
-        if ($this->getProperty('release_date')) {
-          $this->release_date = new DateTime($this->getProperty('release_date'));
-        } else {
-          $this->release_date = null;
+        if ($this->release_date === false) {
+            if ($this->getProperty('release_date')) {
+                $this->release_date = new DateTime($this->getProperty('release_date'));
+            } else {
+                $this->release_date = null;
+            }
         }
-      }
 
-      return $this->release_date;
+        return $this->release_date;
     }
-  }
+}

@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\Element;
+namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade;
+use ActiveCollab\Shade;
 
-  /**
-   * Framework level help video class
-   *
-   * @package Shade
-   */
-  class Video extends Element
-  {
+/**
+ * Framework level help video class
+ *
+ * @package Shade
+ */
+class Video extends Element
+{
     const GETTING_STARTED = 'getting-started';
 
     /**
@@ -20,7 +20,7 @@
      */
     public function getShortName()
     {
-      return $this->getSlug();
+        return $this->getSlug();
     }
 
     /**
@@ -37,15 +37,15 @@
      */
     public function getGroupName()
     {
-      if ($this->group_name === false) {
-        $this->group_name = $this->getProperty('group');
+        if ($this->group_name === false) {
+            $this->group_name = $this->getProperty('group');
 
-        if (empty($this->group_name)) {
-          $this->group_name = self::GETTING_STARTED;
+            if (empty($this->group_name)) {
+                $this->group_name = self::GETTING_STARTED;
+            }
         }
-      }
 
-      return $this->group_name;
+        return $this->group_name;
     }
 
     /**
@@ -62,22 +62,22 @@
      */
     public function getTitle()
     {
-      if ($this->title === null) {
-        $title = $this->getProperty('title');
+        if ($this->title === null) {
+            $title = $this->getProperty('title');
 
-        if (empty($title)) {
-          $basename = basename($this->path);
+            if (empty($title)) {
+                $basename = basename($this->path);
 
-          $first_dot = strpos($basename, '.');
-          $second_dot = strpos($basename, '.', $first_dot + 1);
+                $first_dot = strpos($basename, '.');
+                $second_dot = strpos($basename, '.', $first_dot + 1);
 
-          $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
-        } else {
-          $this->title = $title;
+                $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
+            } else {
+                $this->title = $title;
+            }
         }
-      }
 
-      return $this->title;
+        return $this->title;
     }
 
     /**
@@ -94,17 +94,17 @@
      */
     public function getSlug()
     {
-      if ($this->slug === null) {
-        $slug = $this->getProperty('slug');
+        if ($this->slug === null) {
+            $slug = $this->getProperty('slug');
 
-        if (empty($slug)) {
-          $this->slug = Shade::slug($this->getTitle());
-        } else {
-          $this->slug = $slug;
+            if (empty($slug)) {
+                $this->slug = Shade::slug($this->getTitle());
+            } else {
+                $this->slug = $slug;
+            }
         }
-      }
 
-      return $this->slug;
+        return $this->slug;
     }
 
     /**
@@ -114,7 +114,7 @@
      */
     public function getDescription()
     {
-      return $this->getProperty('description');
+        return $this->getProperty('description');
     }
 
     /**
@@ -127,11 +127,11 @@
      */
     public function getSourceUrl($modifier = null)
     {
-      if (empty($modifier)) {
-        return $this->getProperty('url');
-      } else {
-        return $this->getProperty('url' . strtolower($modifier));
-      }
+        if (empty($modifier)) {
+            return $this->getProperty('url');
+        } else {
+            return $this->getProperty('url' . strtolower($modifier));
+        }
     }
 
     /**
@@ -148,14 +148,14 @@
      */
     public function getPlayTime()
     {
-      if ($this->play_time === false) {
-        $this->play_time = $this->getProperty('play_time');
+        if ($this->play_time === false) {
+            $this->play_time = $this->getProperty('play_time');
 
-        if (empty($this->play_time)) {
-          $this->play_time = '-:--';
+            if (empty($this->play_time)) {
+                $this->play_time = '-:--';
+            }
         }
-      }
 
-      return $this->play_time;
+        return $this->play_time;
     }
-  }
+}

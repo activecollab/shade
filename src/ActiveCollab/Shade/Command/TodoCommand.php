@@ -1,98 +1,98 @@
 <?php
 
-  namespace ActiveCollab\Shade\Command;
+namespace ActiveCollab\Shade\Command;
 
-  use ActiveCollab\Shade;
-  use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
-  use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade;
+use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputOption;
+use ActiveCollab\Shade\Project;
 
-  /**
-   * List to-do notes
-   *
-   * @package ActiveCollab\Shade\Command
-   */
-  class TodoCommand extends Command
-  {
+/**
+ * List to-do notes
+ *
+ * @package ActiveCollab\Shade\Command
+ */
+class TodoCommand extends Command
+{
     /**
      * Configure the command
      */
     protected function configure()
     {
-      $this
-        ->setName('todo')
-        ->addOption('locale', null, InputOption::VALUE_REQUIRED)
-        ->setDescription('Find and show to-do notes from project elements');
+        $this
+            ->setName('todo')
+            ->addOption('locale', null, InputOption::VALUE_REQUIRED)
+            ->setDescription('Find and show to-do notes from project elements');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-      ini_set('date.timezone', 'UTC');
+        ini_set('date.timezone', 'UTC');
 
-      $project = new Project(getcwd());
+        $project = new Project(getcwd());
 
-      if($project->isValid()) {
-        Shade::initSmarty($project, Shade::getBuildTheme($project->getDefaultBuildTheme()));
+        if ($project->isValid()) {
+            Shade::initSmarty($project, Shade::getBuildTheme($project->getDefaultBuildTheme()));
 
-        $this->renderEverything($project, $input->getOption('locale'));
+            $this->renderEverything($project, $input->getOption('locale'));
 
-        $todo_notes = Shade::getTodo();
+            $todo_notes = Shade::getTodo();
 
-        if (count($todo_notes)) {
-          $table = new Table($output);
-          $table->setHeaders([ 'Message', 'File' ]);
+            if (count($todo_notes)) {
+                $table = new Table($output);
+                $table->setHeaders(['Message', 'File']);
 
-          $path_len = strlen(rtrim($project->getPath(), '/'));
+                $path_len = strlen(rtrim($project->getPath(), '/'));
 
-          foreach ($todo_notes as $todo_note) {
-            $table->addRow([ $todo_note['message'], substr($todo_note['file'], $path_len + 1) ]);
-          }
+                foreach ($todo_notes as $todo_note) {
+                    $table->addRow([$todo_note['message'], substr($todo_note['file'], $path_len + 1)]);
+                }
 
-          $table->render();
+                $table->render();
 
-          $output->writeln('');
+                $output->writeln('');
 
-          if (count($todo_notes) === 1) {
-            $output->writeln('1 todo note found');
-          } else {
-            $output->writeln(count($todo_notes) . ' todo notes found');
-          }
+                if (count($todo_notes) === 1) {
+                    $output->writeln('1 todo note found');
+                } else {
+                    $output->writeln(count($todo_notes) . ' todo notes found');
+                }
+            } else {
+                $output->writeln('0 todo notes found');
+            }
         } else {
-          $output->writeln('0 todo notes found');
+            $output->writeln('<error>This is not a valid Shade project</error>');
         }
-      } else {
-        $output->writeln('<error>This is not a valid Shade project</error>');
-      }
     }
 
     /**
-     * @param Project $project
+     * @param Project     $project
      * @param string|null $locale
      */
     private function renderEverything(Project &$project, $locale)
     {
-      foreach ($project->getBooks($locale) as $book) {
-        $book->renderBody();
+        foreach ($project->getBooks($locale) as $book) {
+            $book->renderBody();
 
-        foreach ($book->getPages() as $page) {
-          $page->renderBody();
+            foreach ($book->getPages() as $page) {
+                $page->renderBody();
+            }
         }
-      }
 
-      foreach ($project->getWhatsNewArticles($locale) as $article) {
-        $article->renderBody();
-      }
+        foreach ($project->getWhatsNewArticles($locale) as $article) {
+            $article->renderBody();
+        }
 
-      foreach ($project->getReleases($locale) as $release) {
-        $release->renderBody();
-      }
+        foreach ($project->getReleases($locale) as $release) {
+            $release->renderBody();
+        }
 
-      foreach ($project->getVideos($locale) as $video) {
-        $video->renderBody();
-      }
+        foreach ($project->getVideos($locale) as $video) {
+            $video->renderBody();
+        }
     }
-  }
+}

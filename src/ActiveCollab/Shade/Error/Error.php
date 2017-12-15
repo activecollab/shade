@@ -1,10 +1,10 @@
 <?php
 
-  namespace ActiveCollab\Shade\Error;
+namespace ActiveCollab\Shade\Error;
 
-  /**
-   * @package ActiveCollab\Shade\Error
-   */
-  class Error extends \Exception
-  {
-  }
+/**
+ * @package ActiveCollab\Shade\Error
+ */
+class Error extends \Exception
+{
+}

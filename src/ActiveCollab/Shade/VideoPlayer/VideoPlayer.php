@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\VideoPlayer;
+namespace ActiveCollab\Shade\VideoPlayer;
 
-  use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Video;
+use ActiveCollab\Shade\Project, ActiveCollab\Shade\Element\Video;
 
-  /**
-   * Abstract video player renderer
-   *
-   * @package ActiveCollab\Shade
-   */
-  abstract class VideoPlayer
-  {
+/**
+ * Abstract video player renderer
+ *
+ * @package ActiveCollab\Shade
+ */
+abstract class VideoPlayer
+{
     /**
      * @var Project
      */
@@ -21,7 +21,7 @@
      */
     function __construct(Project &$project)
     {
-      $this->project = $project;
+        $this->project = $project;
     }
 
     /**
@@ -29,4 +29,4 @@
      * @return string
      */
     abstract function renderPlayer(Video $video);
-  }
+}

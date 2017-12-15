@@ -1,19 +1,24 @@
 {
-  "name" : "activecollab/shade",
-  "description" : "Build help portals with ease",
-  "license" : "MIT",
-  "require" : {
-    "symfony/console" : "~2.3",
-    "herrera-io/phar-update" : "~1.0",
-    "michelf/php-markdown": "1.4.*@dev",
-    "razielanarki/hyperlight": "0.1.2",
-    "smarty/smarty": "^3.1.0",
-    "jbroadway/urlify": "1.0.*@dev",
-    "phine/phar": "~1.0"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload": {
-    "psr-0": { "ActiveCollab\\Shade" : "src" }
-  }
+    "name": "activecollab/shade",
+    "description": "Build help portals with ease",
+    "license": "MIT",
+    "require": {
+        "symfony/console": "^4.0",
+        "herrera-io/phar-update": "~1.0",
+        "michelf/php-markdown": "1.4.*@dev",
+        "razielanarki/hyperlight": "0.1.2",
+        "smarty/smarty": "^3.1.0",
+        "jbroadway/urlify": "1.0.*@dev",
+        "phine/phar": "~1.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-0": {
+            "ActiveCollab\\Shade": "src"
+        }
+    }
 }

@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\Element;
+namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade;
+use ActiveCollab\Shade;
 
-  /**
-   * What's new article element
-   *
-   * @package Shade
-   */
-  class WhatsNewArticle extends Element
-  {
+/**
+ * What's new article element
+ *
+ * @package Shade
+ */
+class WhatsNewArticle extends Element
+{
     /**
      * Application version number
      *
@@ -28,9 +28,9 @@
      */
     public function __construct($module, $version_number, $path, $load = true)
     {
-      $this->version_number = $version_number;
+        $this->version_number = $version_number;
 
-      parent::__construct($module, $path, $load);
+        parent::__construct($module, $path, $load);
     }
 
     /**
@@ -40,7 +40,7 @@
      */
     public function getShortName()
     {
-      return $this->getSlug();
+        return $this->getSlug();
     }
 
     /**
@@ -50,7 +50,7 @@
      */
     public function getVersionNumber()
     {
-      return $this->version_number;
+        return $this->version_number;
     }
 
     /**
@@ -67,22 +67,22 @@
      */
     public function getTitle()
     {
-      if ($this->title === null) {
-        $title = $this->getProperty('title');
+        if ($this->title === null) {
+            $title = $this->getProperty('title');
 
-        if (empty($title)) {
-          $basename = basename($this->path);
+            if (empty($title)) {
+                $basename = basename($this->path);
 
-          $first_dot = strpos($basename, '.');
-          $second_dot = strpos($basename, '.', $first_dot + 1);
+                $first_dot = strpos($basename, '.');
+                $second_dot = strpos($basename, '.', $first_dot + 1);
 
-          $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
-        } else {
-          $this->title = $title;
+                $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
+            } else {
+                $this->title = $title;
+            }
         }
-      }
 
-      return $this->title;
+        return $this->title;
     }
 
     /**
@@ -99,19 +99,19 @@
      */
     public function getSlug()
     {
-      if ($this->slug === null) {
-        $this->slug = ''; // str_replace('.', '-', $this->version_number) . '-';
+        if ($this->slug === null) {
+            $this->slug = ''; // str_replace('.', '-', $this->version_number) . '-';
 
-        $slug = $this->getProperty('slug');
+            $slug = $this->getProperty('slug');
 
-        if (empty($slug)) {
-          $this->slug .= Shade::slug($this->getTitle());
-        } else {
-          $this->slug .= $slug;
+            if (empty($slug)) {
+                $this->slug .= Shade::slug($this->getTitle());
+            } else {
+                $this->slug .= $slug;
+            }
         }
-      }
 
-      return $this->slug;
+        return $this->slug;
     }
 
-  }
+}

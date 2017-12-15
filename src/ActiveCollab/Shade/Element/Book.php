@@ -1,16 +1,16 @@
 <?php
 
-  namespace ActiveCollab\Shade\Element;
+namespace ActiveCollab\Shade\Element;
 
-  use ActiveCollab\Shade\NamedList;
+use ActiveCollab\Shade\NamedList;
 
-  /**
-   * Framework level help book implementation
-   *
-   * @package Shade
-   */
-  class Book extends Element
-  {
+/**
+ * Framework level help book implementation
+ *
+ * @package Shade
+ */
+class Book extends Element
+{
     /**
      * Return book title
      *
@@ -18,7 +18,7 @@
      */
     public function getTitle()
     {
-      return $this->getProperty('title', 'Book');
+        return $this->getProperty('title', 'Book');
     }
 
     /**
@@ -28,7 +28,7 @@
      */
     public function getDescription()
     {
-      return $this->getProperty('description');
+        return $this->getProperty('description');
     }
 
     /**
@@ -45,11 +45,11 @@
      */
     public function getPages()
     {
-      if (empty($this->pages)) {
-        $this->pages = $this->getProject()->getBookPages($this);
-      }
+        if (empty($this->pages)) {
+            $this->pages = $this->getProject()->getBookPages($this);
+        }
 
-      return $this->pages;
+        return $this->pages;
     }
 
     /**
@@ -60,7 +60,7 @@
      */
     public function getPage($name)
     {
-      return $this->getPages()->get($name);
+        return $this->getPages()->get($name);
     }
 
     /**
@@ -75,11 +75,11 @@
      */
     public function getPosition()
     {
-      if ($this->position === false) {
-        $this->position = (integer) $this->getProperty('position');
-      }
+        if ($this->position === false) {
+            $this->position = (integer) $this->getProperty('position');
+        }
 
-      return $this->position;
+        return $this->position;
     }
 
     /**
@@ -89,18 +89,18 @@
      */
     public function populateCommonQuestionsList(array &$common_questions)
     {
-      foreach ($this->getPages() as $page) {
-        $answers_common_question = $page->getProperty('answers_common_question');
+        foreach ($this->getPages() as $page) {
+            $answers_common_question = $page->getProperty('answers_common_question');
 
-        if ($answers_common_question) {
-          $common_questions[] = [
-            'question' => $answers_common_question,
-            'book' => $this->getShortName(),
-            'page' => $page->getShortName(),
-            'position' => (integer) $page->getProperty('answer_position'),
-          ];
+            if ($answers_common_question) {
+                $common_questions[] = [
+                    'question' => $answers_common_question,
+                    'book' => $this->getShortName(),
+                    'page' => $page->getShortName(),
+                    'position' => (integer) $page->getProperty('answer_position'),
+                ];
+            }
         }
-      }
     }
 
-  }
+}

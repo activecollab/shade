@@ -1,24 +1,24 @@
 <?php
 
-  namespace ActiveCollab\Shade\Plugin;
+namespace ActiveCollab\Shade\Plugin;
 
-  /**
-   * Insert Google Analytics tracking code
-   *
-   * @package ActiveCollab\Shade\Plugin
-   */
-  class LiveChatPlugin extends Plugin
-  {
+/**
+ * Insert Google Analytics tracking code
+ *
+ * @package ActiveCollab\Shade\Plugin
+ */
+class LiveChatPlugin extends Plugin
+{
     /**
      * @return bool|string
      */
     function isEnabled()
     {
-      if ($google_tag_manager_id = $this->getAccountId()) {
-        return 'Yes, Account ID: ' . $google_tag_manager_id;
-      } else {
-        return false;
-      }
+        if ($google_tag_manager_id = $this->getAccountId()) {
+            return 'Yes, Account ID: ' . $google_tag_manager_id;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -26,7 +26,7 @@
      */
     private function getAccountId()
     {
-      return $this->project->getConfigurationOption('live_chat_id');
+        return $this->project->getConfigurationOption('live_chat_id');
     }
 
     /**
@@ -36,21 +36,21 @@
      */
     function renderFoot()
     {
-      if ($live_chat_id = $this->getAccountId()) {
-        return <<<EOS
+        if ($live_chat_id = $this->getAccountId()) {
+            return <<<EOS
 <script type="text/javascript">
 var __lc = {};
 __lc.license = {$live_chat_id};
 
 (function() {
-	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
 })();
 </script>
 EOS;
-      } else {
-        return '';
-      }
+        } else {
+            return '';
+        }
     }
-  }
+}

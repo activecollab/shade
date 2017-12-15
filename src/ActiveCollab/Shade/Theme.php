@@ -1,15 +1,16 @@
 <?php
-  namespace ActiveCollab\Shade;
 
-  use Exception;
+namespace ActiveCollab\Shade;
 
-  /**
-   * Shade theme class
-   *
-   * @package ActiveCollab\Shade
-   */
-  class Theme
-  {
+use Exception;
+
+/**
+ * Shade theme class
+ *
+ * @package ActiveCollab\Shade
+ */
+class Theme
+{
     /**
      * @var string
      */
@@ -21,11 +22,11 @@
      */
     function __construct($path)
     {
-      if (is_dir($path)) {
-        $this->path = $path;
-      } else {
-        throw new Exception("Path '$path' is not a valid Shade theme");
-      }
+        if (is_dir($path)) {
+            $this->path = $path;
+        } else {
+            throw new Exception("Path '$path' is not a valid Shade theme");
+        }
     }
 
     /**
@@ -33,6 +34,6 @@
      */
     function getPath()
     {
-      return $this->path;
+        return $this->path;
     }
-  }
+}

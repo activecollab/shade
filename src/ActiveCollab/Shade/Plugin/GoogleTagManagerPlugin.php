@@ -1,24 +1,24 @@
 <?php
 
-  namespace ActiveCollab\Shade\Plugin;
+namespace ActiveCollab\Shade\Plugin;
 
-  /**
-   * Insert Google Tag Manager
-   *
-   * @package ActiveCollab\Shade\Plugin
-   */
-  class GoogleTagManagerPlugin extends Plugin
-  {
+/**
+ * Insert Google Tag Manager
+ *
+ * @package ActiveCollab\Shade\Plugin
+ */
+class GoogleTagManagerPlugin extends Plugin
+{
     /**
      * @return bool|string
      */
     function isEnabled()
     {
-      if ($google_tag_manager_id = $this->getAccountId()) {
-        return 'Yes, Account ID: ' . $google_tag_manager_id;
-      } else {
-        return false;
-      }
+        if ($google_tag_manager_id = $this->getAccountId()) {
+            return 'Yes, Account ID: ' . $google_tag_manager_id;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -26,7 +26,7 @@
      */
     private function getAccountId()
     {
-      return $this->project->getConfigurationOption('google_tag_manager_id');
+        return $this->project->getConfigurationOption('google_tag_manager_id');
     }
 
     /**
@@ -36,8 +36,8 @@
      */
     function renderBody()
     {
-      if ($google_tag_manager_id = $this->getAccountId()) {
-        return <<<EOS
+        if ($google_tag_manager_id = $this->getAccountId()) {
+            return <<<EOS
 <!-- Google Tag Manager -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id={$google_tag_manager_id}"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -48,8 +48,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','{$google_tag_manager_id}');</script>
 <!-- End Google Tag Manager -->
 EOS;
-      } else {
-        return '';
-      }
+        } else {
+            return '';
+        }
     }
-  }
+}
