@@ -8,8 +8,10 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Project;
-use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputInterface;
+use ActiveCollab\Shade\Element\Video;
+use ActiveCollab\Shade\Project;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,14 +21,18 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ProjectCommand extends Command
 {
-    /**
-     * Configure the command.
-     */
     function configure()
     {
+        parent::configure();
+
         $this->setName('project')
             ->addArgument('name')
-            ->addOption('default-locale', null, InputArgument::OPTIONAL, 'Turn on multilingual support and set the default locale')
+            ->addOption(
+                'default-locale',
+                null,
+                InputArgument::OPTIONAL,
+                'Turn on multilingual support and set the default locale'
+            )
             ->setDescription('Create a new project');
     }
 

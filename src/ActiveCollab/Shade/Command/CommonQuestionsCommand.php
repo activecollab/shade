@@ -8,7 +8,10 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Project, Symfony\Component\Console\Command\Command, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputOption;
+use ActiveCollab\Shade\Project;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -18,11 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CommonQuestionsCommand extends Command
 {
-    /**
-     * Configure the command.
-     */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('faq')
             ->addOption('locale', null, InputOption::VALUE_REQUIRED)

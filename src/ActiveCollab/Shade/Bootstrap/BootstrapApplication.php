@@ -17,17 +17,25 @@ use Symfony\Component\Console\Application;
 class BootstrapApplication implements BootstrapApplicationInterface
 {
     private $application_version;
-
     private $commands_path;
+    private $debug;
 
-    public function __construct($application_version, $commands_path)
+    public function __construct($application_version, $commands_path, $debug = false)
     {
         $this->application_version = $application_version;
         $this->commands_path = $commands_path;
+        $this->debug = $debug;
     }
 
     public function bootstrapApp(): Application
     {
+        if ($this->debug) {
+            ini_set('display_errors', '1');
+            error_reporting(E_ALL);
+        } else {
+            ini_set('display_errors', '0');
+        }
+
         $application = new Application('Shade', $this->application_version);
 
         foreach (new DirectoryIterator($this->commands_path) as $file) {

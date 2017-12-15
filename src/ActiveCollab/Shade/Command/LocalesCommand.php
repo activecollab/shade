@@ -8,8 +8,9 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Element\Book;
-use ActiveCollab\Shade\Project, Symfony\Component\Console\Command\Command, Symfony\Component\Console\Helper\Table, Symfony\Component\Console\Input\InputInterface;
+use ActiveCollab\Shade\Project;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,12 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class LocalesCommand extends Command
 {
-    /**
-     * Configure the command.
-     */
     protected function configure()
     {
-        $this->setName('locales')->setDescription('List project locales');
+        parent::configure();
+
+        $this
+            ->setName('locales')
+            ->setDescription('List project locales');
     }
 
     /**

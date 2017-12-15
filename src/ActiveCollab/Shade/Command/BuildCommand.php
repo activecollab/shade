@@ -18,7 +18,6 @@ use ActiveCollab\Shade\Project;
 use ActiveCollab\Shade\Theme;
 use Exception;
 use Smarty;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,11 +29,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class BuildCommand extends Command
 {
-    /**
-     * Configure the command.
-     */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('build')
             ->addOption('target', null, InputOption::VALUE_REQUIRED, 'Where do you want Shade to build the help?')

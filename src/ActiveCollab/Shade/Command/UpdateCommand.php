@@ -8,8 +8,10 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use Herrera\Phar\Update\Manager, Herrera\Phar\Update\Manifest;
-use Symfony\Component\Console\Command\Command, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface;
+use Herrera\Phar\Update\Manager;
+use Herrera\Phar\Update\Manifest;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Auto-update command.
@@ -20,12 +22,13 @@ class UpdateCommand extends Command
 {
     const MANIFEST_FILE = 'https://www.activecollab.com/labs/shade/manifest.json';
 
-    /**
-     * Configure the command.
-     */
     protected function configure()
     {
-        $this->setName('update')->setDescription('Updates shade.phar to the latest version');
+        parent::configure();
+
+        $this
+            ->setName('update')
+            ->setDescription('Updates shade.phar to the latest version');
     }
 
     /**
