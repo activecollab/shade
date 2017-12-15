@@ -1,7 +1,13 @@
 <?php
 
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
   if (php_sapi_name() != 'cli') {
-    die("Please use CLI to run this script");
+    die('Please use CLI to run this script');
   }
 
   print "Running composer install --no-dev --prefer-dist --optimize-autoloader...\n";
@@ -29,7 +35,7 @@
 
   use Phine\Phar\Builder, Phine\Phar\Stub;
 
-  $skip_if_found = [ '/.git', '/.svn', '/smarty/documentation', '/smarty/development', '/tests', '/Tests' ];
+  $skip_if_found = ['/.git', '/.svn', '/smarty/documentation', '/smarty/development', '/tests', '/Tests'];
   $source_path_strlen = strlen(__DIR__);
 
   $builder = Builder::create($phar_path);
@@ -37,7 +43,7 @@
   $builder->addFile(__DIR__ . '/LICENSE', 'LICENSE');
   $builder->addFile(__DIR__ . '/VERSION', 'VERSION');
 
-  foreach ([ 'bin', 'src', 'vendor' ] as $dir_to_add) {
+  foreach (['bin', 'src', 'vendor'] as $dir_to_add) {
     /**
      * @var RecursiveDirectoryIterator[] $iterator
      */
