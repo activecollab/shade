@@ -6,23 +6,18 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\Shade;
+namespace ActiveCollab\Shade\Element\Finder;
 
 use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Renderer\RendererInterface;
+use ActiveCollab\Shade\NamedList;
+use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\ProjectInterface;
 use ActiveCollab\Shade\Shade;
 use DirectoryIterator, Exception;
 
-/**
- * Element finder definition.
- *
- * @package Shade\ElementFinder
- */
-class ElementFinder
+class ElementFinder implements ElementFinderInterface
 {
-    /**
-     * @var Project
-     */
-    protected $project;
+    private $project;
     private $renderer;
 
     /**
@@ -30,8 +25,7 @@ class ElementFinder
      */
     protected $finders = [];
 
-
-    function __construct(ProjectInterface &$project, RendererInterface $renderer)
+    function __construct(ProjectInterface $project, RendererInterface $renderer)
     {
         $this->project = $project;
         $this->renderer = $renderer;

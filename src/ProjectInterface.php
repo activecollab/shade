@@ -10,15 +10,19 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade;
 
+use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Ability\LoadableInterface;
+use ActiveCollab\Shade\Ability\RenderableInterface;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
+use ActiveCollab\Shade\Element\Finder\ElementFinder;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
 
-interface ProjectInterface extends BuildableInterface
+interface ProjectInterface extends BuildableInterface, LoadableInterface, RenderableInterface
 {
     /**
      * Return project name.

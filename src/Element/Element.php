@@ -32,6 +32,11 @@ abstract class Element implements ElementInterface
         }
     }
 
+    public function renderBody(): string
+    {
+        return $this->renderer->renderElementBody($this);
+    }
+
     public function getTransformator(): TransformatorInterface
     {
         return new Transformator();

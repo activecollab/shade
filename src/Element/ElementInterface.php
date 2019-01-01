@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Element;
 
-use ActiveCollab\Shade\BuildableInterface;
+use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Ability\LoadableInterface;
+use ActiveCollab\Shade\Ability\RenderableInterface;
 use ActiveCollab\Shade\Project;
 
-interface ElementInterface extends BuildableInterface
+interface ElementInterface extends BuildableInterface, LoadableInterface, RenderableInterface
 {
     /**
      * @return string

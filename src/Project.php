@@ -10,6 +10,8 @@ namespace ActiveCollab\Shade;
 
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
+use ActiveCollab\Shade\Element\Finder\ElementFinder;
+use ActiveCollab\Shade\Element\Finder\ElementFinderInterface;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
@@ -60,7 +62,7 @@ class Project implements ProjectInterface
         }
     }
 
-    public function renderBody()
+    public function renderBody(): string
     {
         return $this->renderer->renderProjectBody($this);
     }
@@ -456,13 +458,10 @@ class Project implements ProjectInterface
      */
     private $finder;
 
-    /**
-     * @return ElementFinder
-     */
-    function &getFinder()
+    function &getFinder(): ElementFinderInterface
     {
         if (empty($this->finder)) {
-            $this->finder = new ElementFinder($this);
+            $this->finder = new ElementFinder($this, $this->renderer);
 
             if (is_file($this->getPath() . '/finders.php')) {
                 $finders = require $this->getPath() . '/finders.php';

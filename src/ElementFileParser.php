@@ -8,10 +8,8 @@
 
 namespace ActiveCollab\Shade;
 
-use ActiveCollab\Shade\Element\Element;
 use ActiveCollab\Shade\Error\ElementFileNotFoundError;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
-use Exception;
 
 trait ElementFileParser
 {
@@ -36,16 +34,9 @@ trait ElementFileParser
      */
     protected $body;
 
-    /**
-     * Return property value.
-     *
-     * @param  string $name
-     * @param  mixed  $default
-     * @return string
-     */
-    public function getProperty($name, $default = null)
+    public function getProperty(string $name, string $default = null): ?string
     {
-        return isset($this->properties[$name]) ? $this->properties[$name] : $default;
+        return $this->properties[$name] ?? $default;
     }
 
     /**
@@ -56,43 +47,6 @@ trait ElementFileParser
     public function getBody()
     {
         return $this->body;
-    }
-
-    /**
-     * Render body of a given element.
-     *
-     * @return string
-     * @throws Exception
-     */
-    public function renderBody()
-    {
-        $smarty =& Shade::getSmarty();
-
-        $template = $smarty->createTemplate($this->getIndexFilePath());
-
-        SmartyHelpers::setCurrentElement($this);
-
-        if ($this instanceof Element) {
-            SmartyHelpers::setCurrentProject($this->getProject());
-        } elseif ($this instanceof Project) {
-            SmartyHelpers::setCurrentProject($this);
-        }
-
-        $content = $template->fetch();
-
-        SmartyHelpers::resetCurrentElementAndProject();
-
-        $separator_pos = strpos($content, $this->properties_separator);
-
-        if ($separator_pos === false) {
-            if (substr($content, 0, 1) == '*') {
-                $content = '*Content Not Provided*';
-            }
-        } else {
-            $content = trim(substr($content, $separator_pos + strlen($this->properties_separator)));
-        }
-
-        return $this->getTransformator()->transform($content);
     }
 
     /**

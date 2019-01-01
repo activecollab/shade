@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Renderer;
 
-use ActiveCollab\Shade\BuildableInterface;
+use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\Element\ElementInterface;
 use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactoryInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;

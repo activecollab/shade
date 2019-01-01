@@ -8,10 +8,9 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\Shade;
+namespace ActiveCollab\Shade\Ability;
 
-interface BuildableInterface
+interface RenderableInterface
 {
-    public function getPageLevel(): int;
-    public function getIndexFilePath(): string;
+    public function renderBody(): string;
 }

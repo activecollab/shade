@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\Shade;
 
+use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Element\Element;
