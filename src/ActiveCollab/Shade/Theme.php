@@ -6,27 +6,17 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\Shade;
 
 use Exception;
 
-/**
- * Shade theme class.
- *
- * @package ActiveCollab\Shade
- */
-class Theme
+class Theme implements ThemeInterface
 {
-    /**
-     * @var string
-     */
     private $path;
 
-    /**
-     * @param  string    $path
-     * @throws Exception
-     */
-    function __construct($path)
+    function __construct(string $path)
     {
         if (is_dir($path)) {
             $this->path = $path;
@@ -35,10 +25,7 @@ class Theme
         }
     }
 
-    /**
-     * @return string
-     */
-    function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
