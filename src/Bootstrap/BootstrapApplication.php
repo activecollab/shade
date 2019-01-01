@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Bootstrap;
 
+use DI\ContainerBuilder;
 use DirectoryIterator;
 use ReflectionClass;
 use Symfony\Component\Console\Application;
@@ -17,13 +18,17 @@ use Symfony\Component\Console\Application;
 class BootstrapApplication implements BootstrapApplicationInterface
 {
     private $application_version;
-    private $commands_path;
+    private $application_path;
     private $debug;
 
-    public function __construct(string $application_version, string $commands_path, bool $debug = false)
+    public function __construct(
+        string $application_version,
+        string $application_path,
+        bool $debug = false
+    )
     {
         $this->application_version = $application_version;
-        $this->commands_path = $commands_path;
+        $this->application_path = $application_path;
         $this->debug = $debug;
     }
 
@@ -36,14 +41,18 @@ class BootstrapApplication implements BootstrapApplicationInterface
             ini_set('display_errors', '0');
         }
 
+        $container = (new ContainerBuilder())
+            ->addDefinitions($this->application_path . '/src/dependencies')
+            ->build();
+
         $application = new Application('Shade', $this->application_version);
 
-        foreach (new DirectoryIterator($this->commands_path) as $file) {
+        foreach (new DirectoryIterator($this->application_path . '/src/Command') as $file) {
             if ($file->isFile()) {
                 $class_name = ('\\ActiveCollab\\Shade\\Command\\' . $file->getBasename('.php'));
 
                 if (!(new ReflectionClass($class_name))->isAbstract()) {
-                    $application->add(new $class_name);
+                    $application->add(new $class_name($container));
                 }
             }
         }

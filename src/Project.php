@@ -8,7 +8,6 @@
 
 namespace ActiveCollab\Shade;
 
-use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Element\Release;
@@ -16,29 +15,17 @@ use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
 
 class Project implements ProjectInterface
 {
     use ElementFileParser;
 
-    /**
-     * @var string
-     */
     private $path;
-
-    /**
-     * @var array
-     */
     private $configuration = [];
 
-    /**
-     * Create a new project instance.
-     *
-     * @param  string                                       $path
-     * @throws |ActiveCollab\Narrative\Error\ParseJsonError
-     */
-    function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
 
@@ -56,6 +43,11 @@ class Project implements ProjectInterface
 
             $this->load();
         }
+    }
+
+    public function getTransformator(): TransformatorInterface
+    {
+        return null;
     }
 
     /**

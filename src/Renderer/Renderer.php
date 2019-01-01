@@ -15,7 +15,7 @@ use ActiveCollab\Shade\Element\ElementInterface;
 use ActiveCollab\Shade\ProjectInterface;
 use ActiveCollab\Shade\SmartyHelpers;
 
-class Renderer
+class Renderer implements RendererInterface
 {
     public function renderProjectBody(ProjectInterface $project)
     {

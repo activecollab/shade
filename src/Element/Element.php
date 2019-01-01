@@ -11,6 +11,7 @@ namespace ActiveCollab\Shade\Element;
 use ActiveCollab\Shade\ElementFileParser;
 use ActiveCollab\Shade\Project;
 use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
 abstract class Element implements ElementInterface
 {
@@ -26,6 +27,11 @@ abstract class Element implements ElementInterface
         if ($load) {
             $this->load();
         }
+    }
+
+    public function getTransformator(): TransformatorInterface
+    {
+        return null;
     }
 
     /**

@@ -8,16 +8,15 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
-use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\ProjectFactory\ProjectFactoryInterface;
 use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\SmartyHelpers;
-use ActiveCollab\Shade\Theme;
 use ActiveCollab\Shade\ThemeInterface;
 use Exception;
 use Smarty;
@@ -51,7 +50,7 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getContainer()->get(ProjectFactoryInterface::class)->createProject(getcwd());
 
         if ($project->isValid()) {
             $target_path = $this->getBuildTarget($input, $project);
@@ -500,14 +499,7 @@ class BuildCommand extends Command
         return null;
     }
 
-    /**
-     * Return build target path.
-     *
-     * @param  InputInterface $input
-     * @param  Project        $project
-     * @return string
-     */
-    private function getBuildTarget(InputInterface $input, Project &$project)
+    private function getBuildTarget(InputInterface $input, ProjectInterface &$project): string
     {
         $target = $input->getOption('target');
 
@@ -518,24 +510,12 @@ class BuildCommand extends Command
         return (string) $target;
     }
 
-    /**
-     * Return true if target path is valid.
-     *
-     * @param  string $target_path
-     * @return bool
-     */
-    private function isValidTargetPath($target_path)
+    private function isValidTargetPath(string $target_path): bool
     {
         return $target_path && is_dir($target_path);
     }
 
-    /**
-     * @param  InputInterface                 $input
-     * @param  Project                        $project
-     * @return Theme
-     * @throws Shade\Error\ThemeNotFoundError
-     */
-    private function getTheme(InputInterface $input, Project &$project)
+    private function getTheme(InputInterface $input, ProjectInterface &$project): ThemeInterface
     {
         return $project->getBuildTheme($input->getOption('theme'));
     }
