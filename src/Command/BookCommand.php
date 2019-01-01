@@ -9,7 +9,6 @@
 namespace ActiveCollab\Shade\Command;
 
 use ActiveCollab\Shade\Element\Book;
-use ActiveCollab\Shade\Project;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

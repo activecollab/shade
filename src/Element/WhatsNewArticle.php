@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\Shade\Element;
 
+use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
 
 /**
@@ -27,16 +29,17 @@ class WhatsNewArticle extends Element
     /**
      * Construct and load help element.
      *
-     * @param string $module
-     * @param string $version_number
-     * @param string $path
-     * @param bool   $load
+     * @param ProjectInterface  $project
+     * @param RendererInterface $renderer
+     * @param string            $version_number
+     * @param string            $path
+     * @param bool              $load
      */
-    public function __construct($module, $version_number, $path, $load = true)
+    public function __construct(ProjectInterface $project, RendererInterface $renderer, $version_number, $path, $load = true)
     {
         $this->version_number = $version_number;
 
-        parent::__construct($module, $path, $load);
+        parent::__construct($project, $renderer, $path, $load);
     }
 
     /**

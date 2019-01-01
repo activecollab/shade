@@ -11,9 +11,6 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Transformator;
 
 use ActiveCollab\Shade\Shade;
-use ActiveCollab\Shade\Element\ElementInterface;
-use ActiveCollab\Shade\ProjectInterface;
-use ActiveCollab\Shade\ThemeInterface;
 
 class Transformator implements TransformatorInterface
 {

@@ -8,7 +8,8 @@
 
 namespace ActiveCollab\Shade;
 
-use ActiveCollab\Shade\Shade, ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle;
+use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Renderer\RendererInterface;
+use ActiveCollab\Shade\Shade;
 use DirectoryIterator, Exception;
 
 /**
@@ -22,18 +23,18 @@ class ElementFinder
      * @var Project
      */
     protected $project;
+    private $renderer;
 
     /**
      * @var callable[]
      */
     protected $finders = [];
 
-    /**
-     * @param Project $project
-     */
-    function __construct(Project &$project)
+
+    function __construct(ProjectInterface &$project, RendererInterface $renderer)
     {
         $this->project = $project;
+        $this->renderer = $renderer;
 
         $this->finders = [
 
@@ -206,7 +207,7 @@ class ElementFinder
         $result = [];
 
         foreach ($dirs as $dir) {
-            $book = new Book($this->project, $dir);
+            $book = new Book($this->project, $this->renderer, $dir);
 
             if ($book->isLoaded()) {
                 $result[$book->getShortName()] = $book;
@@ -245,8 +246,8 @@ class ElementFinder
     }
 
     /**
-     * @param  Book            $book
-     * @return BookPage[]|null
+     * @param  Book                      $book
+     * @return NamedList|BookPage[]|null
      */
     function getBookPages(Book $book)
     {
@@ -255,7 +256,7 @@ class ElementFinder
         $result = new NamedList();
 
         foreach ($files as $file) {
-            $page = new BookPage($this->project, $book, $file, true);
+            $page = new BookPage($this->project, $this->renderer, $book, $file, true);
 
             if ($page->isLoaded()) {
                 $result->add($page->getShortName(), $page);
@@ -297,7 +298,7 @@ class ElementFinder
             $this->videos = new NamedList();
 
             foreach ($files as $file) {
-                $video = new Video($this->project, $file);
+                $video = new Video($this->project, $this->renderer, $file);
 
                 if ($video->isLoaded()) {
                     $this->videos->add($video->getShortName(), $video);
@@ -353,7 +354,7 @@ class ElementFinder
 
         foreach ($files as $version_num => $version_files) {
             foreach ($version_files as $file) {
-                $article = new WhatsNewArticle($this->project, $version_num, $file);
+                $article = new WhatsNewArticle($this->project, $this->renderer, $version_num, $file);
 
                 if ($article->isLoaded()) {
                     $result->add($article->getShortName(), $article);
@@ -406,7 +407,7 @@ class ElementFinder
         $result = [];
 
         foreach ($files as $version_number => $file) {
-            $release = new Release($this->project, $version_number, $file, true);
+            $release = new Release($this->project, $this->renderer, $version_number, $file, true);
 
             if ($release->isLoaded()) {
                 $result[$release->getVersionNumber()] = $release;

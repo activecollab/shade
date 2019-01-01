@@ -8,13 +8,10 @@
 
 namespace ActiveCollab\Shade;
 
-use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Element\Element;
 use ActiveCollab\Shade\Error\ElementFileNotFoundError;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use Exception;
-use voku\helper\HtmlDomParser;
-use voku\helper\SimpleHtmlDom;
 
 trait ElementFileParser
 {

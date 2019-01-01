@@ -12,7 +12,6 @@ namespace ActiveCollab\Shade\Command;
 
 use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactoryInterface;
 use ActiveCollab\Shade\ProjectInterface;
-use ActiveCollab\Shade\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputOption;

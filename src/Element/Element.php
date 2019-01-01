@@ -9,8 +9,8 @@
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\ElementFileParser;
-use ActiveCollab\Shade\Project;
 use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
@@ -19,10 +19,12 @@ abstract class Element implements ElementInterface
     use ElementFileParser;
 
     private $project;
+    private $renderer;
 
-    public function __construct(ProjectInterface $project, string $path, bool $load = true)
+    public function __construct(ProjectInterface $project, RendererInterface $renderer, string $path, bool $load = true)
     {
         $this->project = $project;
+        $this->renderer = $renderer;
         $this->path = $path;
 
         if ($load) {
