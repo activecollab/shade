@@ -6,9 +6,12 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 use ActiveCollab\Shade\Bootstrap\BootstrapApplication;
 
 date_default_timezone_set('UTC');
+ini_set('date.timezone', 'UTC');
 
 define('SHADE_ROOT_PATH', dirname(__DIR__));
 
