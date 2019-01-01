@@ -18,6 +18,7 @@ use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\ElementFileParser;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\NamedList;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
@@ -32,12 +33,14 @@ class Project implements ProjectInterface
     use ElementFileParser;
 
     private $path;
+    private $loader;
     private $renderer;
     private $configuration = [];
 
-    public function __construct(string $path, RendererInterface $renderer)
+    public function __construct(string $path, LoaderInterface $loader, RendererInterface $renderer)
     {
         $this->path = $path;
+        $this->loader = $loader;
         $this->renderer = $renderer;
 
         $this->loadConfiguration();
@@ -465,7 +468,7 @@ class Project implements ProjectInterface
     function &getFinder(): ElementFinderInterface
     {
         if (empty($this->finder)) {
-            $this->finder = new ElementFinder($this, $this->renderer);
+            $this->finder = new ElementFinder($this, $this->loader, $this->renderer);
 
             if (is_file($this->getPath() . '/finders.php')) {
                 $finders = require $this->getPath() . '/finders.php';
