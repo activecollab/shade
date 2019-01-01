@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Active Collab project.
+ * This file is part of the Shade project.
  *
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
@@ -31,7 +31,6 @@ return (new PhpCsFixer\Config('psr2'))
         'no_blank_lines_after_phpdoc' => true,
         'phpdoc_scalar' => true,
         'phpdoc_summary' => true,
-        'self_accessor' => true,
         'no_trailing_comma_in_singleline_array' => true,
         'single_blank_line_before_namespace' => true,
         'space_after_semicolon' => true,
