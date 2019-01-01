@@ -16,4 +16,5 @@ interface LoadableInterface
 
     public function getIndexFilePath(): string;
     public function getProperty(string $name, string $default = null): ?string;
+    public function isLoaded(): bool;
 }

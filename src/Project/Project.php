@@ -15,10 +15,10 @@ use ActiveCollab\Shade\Element\Finder\ElementFinderInterface;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
-use ActiveCollab\Shade\ElementFileParser;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
 use ActiveCollab\Shade\Loader\LoaderInterface;
+use ActiveCollab\Shade\Loader\Result\LoaderResultInterface;
 use ActiveCollab\Shade\NamedList;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
@@ -30,12 +30,15 @@ use ActiveCollab\Shade\VideoPlayer\WistiaVideoPlayer;
 
 class Project implements ProjectInterface
 {
-    use ElementFileParser;
-
     private $path;
     private $loader;
     private $renderer;
     private $configuration = [];
+
+    /**
+     * @var LoaderResultInterface|null
+     */
+    private $loadResult;
 
     public function __construct(string $path, LoaderInterface $loader, RendererInterface $renderer)
     {
@@ -65,13 +68,44 @@ class Project implements ProjectInterface
                 $this->configuration = [];
             }
 
-            $this->load();
+            $this->loadResult = $this->loader->load($this);
         }
     }
 
     public function renderBody(): string
     {
         return $this->renderer->renderProjectBody($this);
+    }
+
+    /**
+     * @var string
+     */
+    private $index_file_path;
+
+    /**
+     * Get index file path.
+     *
+     * @return string
+     */
+    public function getIndexFilePath(): string
+    {
+        if (empty($this->index_file_path)) {
+            $this->index_file_path = is_dir($this->getPath()) ? $this->getPath() . '/index.md' : $this->getPath();
+        }
+
+        return $this->index_file_path;
+    }
+
+    public function isLoaded(): bool
+    {
+        return !empty($this->loadResult);
+    }
+
+    public function getProperty(string $name, string $default = null): ?string
+    {
+        return $this->loadResult instanceof LoaderResultInterface
+            ? $this->loadResult->getProperty($name, $default)
+            : $default;
     }
 
     /**
