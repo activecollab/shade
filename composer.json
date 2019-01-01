@@ -12,14 +12,16 @@
         "razielanarki/hyperlight": "~0.1",
         "smarty/smarty": "^3.1",
         "jbroadway/urlify": "~1.0",
-        "phine/phar": "~1.0"
+        "phine/phar": "~1.0",
+        "voku/simple_html_dom": "~4.2",
+        "php-di/php-di": "^6.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0"
     },
     "autoload": {
-        "psr-0": {
-            "ActiveCollab\\Shade": "src"
+        "psr-4": {
+            "ActiveCollab\\Shade\\": "src"
         }
     }
 }
