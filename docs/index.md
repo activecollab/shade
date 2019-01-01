@@ -4,7 +4,7 @@ Shade builds help portals from Markdown files. Write a couple of Markdown files,
 
 Are you on a Unix type of an operating system? Mac or Linux? Than it's easy opening a terminal and doing this:
 
-<{code}>curl -O https://www.activecollab.com/labs/shade/downloads/shade-latest.phar
+<{code highlight=shell}>curl -O https://www.activecollab.com/labs/shade/downloads/shade-latest.phar
 chmod +x shade-latest.phar
 sudo mv shade-latest.phar /usr/local/bin/shade<{/code}>
 
@@ -47,11 +47,11 @@ project.md<{/code}>
 
 To create a project, navigate to a folder where you want to set up a project structure and execute:
 
-<{code inline=false}>shade project<{/code}>
+<{code inline=false highlight=shell}>shade project<{/code}>
 
 This will create a single language project. Creating a multilingual project is not complicated either. Just run:
 
-<{code inline=false}>shade project --default-locale=en<{/code}>
+<{code inline=false highlight=shell}>shade project --default-locale=en<{/code}>
 
 There are more options available for <{term}>project<{/term}> command and you can find them in <{page name="commands" section="project" book="shade"}>this article<{/page}>.
 
@@ -77,7 +77,7 @@ Notice the interesting thing - documentation is in the same repository where the
 
 Now that you have wrote your documentation, you can simply run:
 
-<{code inline=false}>shade build<{/code}>
+<{code inline=false  highlight=shell}>shade build<{/code}>
 
 to have the system build a static website from the help elements. <{page name="commands" book="shade" section="build"}>This page<{/page}> goes into details about <{code}>build<{/code}> command.
 
