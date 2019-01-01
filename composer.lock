@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f63dd54ab8446a696efadc12dc8bc308",
+    "content-hash": "fd5b852b51bb139ecfc1047b606abeed",
     "packages": [
         {
             "name": "herrera-io/json",
@@ -1857,7 +1857,9 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2"
+        "php": ">=7.2",
+        "ext-gettext": "*",
+        "ext-json": "*"
     },
     "platform-dev": []
 }

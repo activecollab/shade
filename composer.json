@@ -4,6 +4,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2",
+        "ext-gettext": "*",
+        "ext-json": "*",
         "symfony/console": "^4.0",
         "herrera-io/phar-update": "~1.0",
         "michelf/php-markdown": "~1.8",
