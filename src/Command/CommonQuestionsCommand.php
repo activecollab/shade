@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Project\Project;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

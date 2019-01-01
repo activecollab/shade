@@ -6,7 +6,7 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\Shade;
+namespace ActiveCollab\Shade\Project;
 
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
@@ -15,9 +15,14 @@ use ActiveCollab\Shade\Element\Finder\ElementFinderInterface;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
+use ActiveCollab\Shade\ElementFileParser;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\NamedList;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
+use ActiveCollab\Shade\Shade;
+use ActiveCollab\Shade\Theme;
 use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;

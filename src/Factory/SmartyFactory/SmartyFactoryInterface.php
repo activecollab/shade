@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Factory\SmartyFactory;
 
 use ActiveCollab\Shade\Plugin\PluginInterface;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\ThemeInterface;
 use Smarty;
 

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Factory\ProjectFactory;
 
-use ActiveCollab\Shade\Project;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\Project;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 
 class ProjectFactory implements ProjectFactoryInterface

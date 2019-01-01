@@ -9,7 +9,7 @@
 namespace ActiveCollab\Shade\Plugin;
 
 use ActiveCollab\Shade\Element\Element;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 
 /**
  * Abstract plugin.

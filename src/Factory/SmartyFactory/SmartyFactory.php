@@ -12,7 +12,7 @@ namespace ActiveCollab\Shade\Factory\SmartyFactory;
 
 use ActiveCollab\Shade\Error\TempNotFoundError;
 use ActiveCollab\Shade\Plugin\PluginInterface;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\SmartyHelpers;
 use ActiveCollab\Shade\ThemeInterface;
 use ReflectionClass;

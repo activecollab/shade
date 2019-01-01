@@ -16,6 +16,8 @@ use ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin;
 use ActiveCollab\Shade\Plugin\GoogleTagManagerPlugin;
 use ActiveCollab\Shade\Plugin\LiveChatPlugin;
 use ActiveCollab\Shade\Plugin\Plugin;
+use ActiveCollab\Shade\Project\Project;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use Exception;
 use Highlight\Highlighter;
 use Michelf\MarkdownExtra;

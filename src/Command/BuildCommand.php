@@ -13,7 +13,7 @@ use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\SmartyHelpers;
 use ActiveCollab\Shade\ThemeInterface;

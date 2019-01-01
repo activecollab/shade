@@ -153,7 +153,7 @@ trait ElementFileParser
     // ---------------------------------------------------
 
     /**
-     * @return \ActiveCollab\Shade\Project
+     * @return \ActiveCollab\Shade\Project\Project
      */
     abstract function &getProject();
 

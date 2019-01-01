@@ -17,6 +17,8 @@ use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ParamRequiredError;
+use ActiveCollab\Shade\Project\Project;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use Exception;
 use Smarty;
 

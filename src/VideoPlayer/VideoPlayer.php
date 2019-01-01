@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\Shade\VideoPlayer;
 
-use ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Project\Project;
 
 /**
  * Abstract video player renderer.
@@ -23,7 +23,7 @@ abstract class VideoPlayer
     protected $project;
 
     /**
-     * @param Project $project
+     * @param \ActiveCollab\Shade\Project\Project $project
      */
     function __construct(Project &$project)
     {

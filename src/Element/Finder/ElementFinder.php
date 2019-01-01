@@ -8,12 +8,17 @@
 
 namespace ActiveCollab\Shade\Element\Finder;
 
-use ActiveCollab\Shade\Element\Book, ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Element\Video, ActiveCollab\Shade\Element\WhatsNewArticle, ActiveCollab\Shade\Renderer\RendererInterface;
+use ActiveCollab\Shade\Element\Book;
+use ActiveCollab\Shade\Element\BookPage;
+use ActiveCollab\Shade\Element\Release;
+use ActiveCollab\Shade\Element\Video;
+use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\NamedList;
-use ActiveCollab\Shade\Project;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
+use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
-use DirectoryIterator, Exception;
+use DirectoryIterator;
+use Exception;
 
 class ElementFinder implements ElementFinderInterface
 {

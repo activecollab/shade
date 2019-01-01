@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\Shade\Element;
 
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
 

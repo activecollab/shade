@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Factory\ProjectFactory;
 
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 
 interface ProjectFactoryInterface
 {

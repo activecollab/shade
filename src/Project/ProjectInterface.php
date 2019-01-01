@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\Shade;
+namespace ActiveCollab\Shade\Project;
 
 use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\Ability\LoadableInterface;
@@ -20,6 +20,8 @@ use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\NamedList;
+use ActiveCollab\Shade\Theme;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
 
 interface ProjectInterface extends BuildableInterface, LoadableInterface, RenderableInterface

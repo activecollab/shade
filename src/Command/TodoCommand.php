@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Project\Project;
 use ActiveCollab\Shade\Shade;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -71,8 +71,8 @@ class TodoCommand extends Command
     }
 
     /**
-     * @param Project     $project
-     * @param string|null $locale
+     * @param \ActiveCollab\Shade\Project\Project $project
+     * @param string|null                         $locale
      */
     private function renderEverything(Project &$project, $locale)
     {

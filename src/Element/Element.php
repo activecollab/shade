@@ -9,7 +9,7 @@
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\ElementFileParser;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;

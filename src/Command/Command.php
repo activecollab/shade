@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Command;
 
 use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactoryInterface;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputOption;

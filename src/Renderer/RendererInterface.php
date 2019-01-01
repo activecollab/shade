@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Renderer;
 
 use ActiveCollab\Shade\Element\ElementInterface;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 
 interface RendererInterface
 {

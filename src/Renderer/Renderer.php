@@ -14,7 +14,7 @@ use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\Element\ElementInterface;
 use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactoryInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
-use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\SmartyHelpers;
 

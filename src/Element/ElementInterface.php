@@ -13,7 +13,7 @@ namespace ActiveCollab\Shade\Element;
 use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\Ability\LoadableInterface;
 use ActiveCollab\Shade\Ability\RenderableInterface;
-use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Project\Project;
 
 interface ElementInterface extends BuildableInterface, LoadableInterface, RenderableInterface
 {
@@ -30,7 +30,7 @@ interface ElementInterface extends BuildableInterface, LoadableInterface, Render
     public function getFolderName();
 
     /**
-     * @return Project
+     * @return \ActiveCollab\Shade\Project\Project
      */
     public function getProject();
 
