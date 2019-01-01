@@ -9,20 +9,18 @@
 namespace ActiveCollab\Shade;
 
 use ActiveCollab\Shade\Element\Element;
-use ActiveCollab\Shade\Error\TempNotFoundError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactory;
 use ActiveCollab\Shade\Plugin\DisqusPlugin;
 use ActiveCollab\Shade\Plugin\GoogleAnalyticsPlugin;
 use ActiveCollab\Shade\Plugin\GoogleTagManagerPlugin;
 use ActiveCollab\Shade\Plugin\LiveChatPlugin;
 use ActiveCollab\Shade\Plugin\Plugin;
 use Exception;
-use Hyperlight\Hyperlight;
+use Highlight\Highlighter;
 use Michelf\MarkdownExtra;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use ReflectionClass;
-use ReflectionMethod;
 use Smarty;
 use URLify;
 
@@ -52,56 +50,15 @@ final class Shade
      */
     private static $smarty = false;
 
-    /**
-     * Initialize Smarty.
-     *
-     * @param  Project           $project
-     * @param  Theme             $theme
-     * @return Smarty
-     * @throws TempNotFoundError
-     * @throws \SmartyException
-     */
-    public static function &initSmarty(Project &$project, Theme $theme)
+    public static function &initSmarty(ProjectInterface &$project, ThemeInterface $theme): Smarty
     {
         if (self::$smarty === false) {
-            self::$smarty = new Smarty();
-
-            $temp_path = $project->getTempPath();
-
-            if (is_dir($temp_path)) {
-                self::$smarty->setCompileDir($temp_path);
-            } else {
-                throw new TempNotFoundError($temp_path);
-            }
-
-            self::$smarty->setTemplateDir($theme->getPath() . '/templates');
-            self::$smarty->compile_check = true;
-            self::$smarty->left_delimiter = '<{';
-            self::$smarty->right_delimiter = '}>';
-            self::$smarty->registerFilter('variable', '\ActiveCollab\Shade::clean'); // {$foo nofilter}
-
-            $helper_class = new ReflectionClass('\ActiveCollab\Shade\SmartyHelpers');
-
-            foreach ($helper_class->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC) as $method) {
-                $method_name = $method->getName();
-
-                if (substr($method_name, 0, 6) === 'block_') {
-                    self::$smarty->registerPlugin('block', substr($method_name, 6), ['\ActiveCollab\Shade\SmartyHelpers', $method_name]);
-                } elseif (substr($method_name, 0, 9) === 'function_') {
-                    self::$smarty->registerPlugin('function', substr($method_name, 9), ['\ActiveCollab\Shade\SmartyHelpers', $method_name]);
-                };
-            }
-
-            SmartyHelpers::setDefaultLocale($project->getDefaultLocale());
-
-            self::$smarty->assign([
-                'project' => $project,
-                'default_locale' => $project->getDefaultLocale(),
-                'copyright' => $project->getConfigurationOption('copyright', '--UNKNOWN--'),
-                'copyright_since' => $project->getConfigurationOption('copyright_since'),
-                'page_level' => 0,
-                'plugins' => self::getPlugins($project),
-            ]);
+            self::$smarty = (new SmartyFactory())
+                ->createSmarty(
+                    $project,
+                    $theme,
+                    ...self::getPlugins($project)
+                );
         }
 
         return self::$smarty;
@@ -120,10 +77,10 @@ final class Shade
     /**
      * Return available plugins.
      *
-     * @param  Project  $project
+     * @param  ProjectInterface $project
      * @return Plugin[]
      */
-    public static function getPlugins(Project &$project)
+    public static function getPlugins(ProjectInterface &$project): array
     {
         return [
             new DisqusPlugin($project),
@@ -335,9 +292,10 @@ final class Shade
     {
         $content = trim($content);
 
+
+
         if ($syntax) {
-            $hyperlight = new Hyperlight(strtolower($syntax));
-            $content = $hyperlight->render($content);
+            $content = (new Highlighter())->highlight($syntax, $content)->value;
         } else {
             $content = self::clean($content);
         }

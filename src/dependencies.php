@@ -8,8 +8,8 @@
 
 declare(strict_types=1);
 
-use ActiveCollab\Shade\ProjectFactory\ProjectFactory;
-use ActiveCollab\Shade\ProjectFactory\ProjectFactoryInterface;
+use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactory;
+use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactoryInterface;
 use ActiveCollab\Shade\Renderer\Renderer;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 

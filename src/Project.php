@@ -15,8 +15,10 @@ use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
+use ActiveCollab\Shade\VideoPlayer\WistiaVideoPlayer;
 
 class Project implements ProjectInterface
 {
@@ -47,7 +49,7 @@ class Project implements ProjectInterface
 
     public function getTransformator(): TransformatorInterface
     {
-        return null;
+        return new Transformator();
     }
 
     /**
@@ -476,7 +478,7 @@ class Project implements ProjectInterface
     public function getVideoPlayer()
     {
         if (empty($this->video_player)) {
-            $this->video_player = new Shade\VideoPlayer\WistiaVideoPlayer($this);
+            $this->video_player = new WistiaVideoPlayer($this);
         }
 
         return $this->video_player;

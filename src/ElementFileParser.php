@@ -105,7 +105,7 @@ trait ElementFileParser
             $content = trim(substr($content, $separator_pos + strlen($this->properties_separator)));
         }
 
-        return $this->getTransformator()->transform($this, $content);
+        return $this->getTransformator()->transform($content);
     }
 
     /**

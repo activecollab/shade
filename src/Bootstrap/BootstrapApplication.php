@@ -12,6 +12,7 @@ namespace ActiveCollab\Shade\Bootstrap;
 
 use DI\ContainerBuilder;
 use DirectoryIterator;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Application;
 
@@ -41,11 +42,8 @@ class BootstrapApplication implements BootstrapApplicationInterface
             ini_set('display_errors', '0');
         }
 
-        $container = (new ContainerBuilder())
-            ->addDefinitions($this->application_path . '/src/dependencies')
-            ->build();
-
-        $application = new Application('Shade', $this->application_version);
+        $container = $this->getContainer();
+        $application = $this->getApplication();
 
         foreach (new DirectoryIterator($this->application_path . '/src/Command') as $file) {
             if ($file->isFile()) {
@@ -58,5 +56,17 @@ class BootstrapApplication implements BootstrapApplicationInterface
         }
 
         return $application;
+    }
+
+    private function getContainer(): ContainerInterface
+    {
+        return (new ContainerBuilder())
+            ->addDefinitions($this->application_path . '/src/dependencies.php')
+            ->build();
+    }
+
+    private function getApplication(): Application
+    {
+        return new Application('Shade', $this->application_version);
     }
 }

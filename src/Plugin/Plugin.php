@@ -8,24 +8,19 @@
 
 namespace ActiveCollab\Shade\Plugin;
 
-use ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade\ProjectInterface;
 
 /**
  * Abstract plugin.
  *
  * @package ActiveCollab\Shade\Shade\Plugin
  */
-abstract class Plugin
+abstract class Plugin implements PluginInterface
 {
-    /**
-     * @var Project
-     */
     protected $project;
 
-    /**
-     * @param Project $project
-     */
-    function __construct(Project &$project)
+    function __construct(ProjectInterface &$project)
     {
         $this->project = $project;
     }
@@ -53,6 +48,7 @@ abstract class Plugin
      */
     function renderHead()
     {
+        return '';
     }
 
     /**
@@ -60,15 +56,18 @@ abstract class Plugin
      */
     function renderBody()
     {
+        return '';
     }
 
     /**
      * Render in comments section.
      *
-     * @param Element $element
+     * @param  Element $element
+     * @return string
      */
     function renderComments(Element $element)
     {
+        return '';
     }
 
     /**
@@ -78,5 +77,6 @@ abstract class Plugin
      */
     function renderFoot()
     {
+        return '';
     }
 }

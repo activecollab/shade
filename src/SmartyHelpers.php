@@ -655,16 +655,8 @@ class SmartyHelpers
         } else {
             $highlight = isset($params['highlight']) && $params['highlight'] ? $params['highlight'] : null;
 
-            if ($highlight === 'php') {
-                $highlight = 'iphp';
-            }
-
             if ($highlight === 'html' || $highlight === 'xhtml') {
                 $highlight = 'xml';
-            }
-
-            if ($highlight === 'json') {
-                $highlight = 'javascript';
             }
 
             return Shade::highlightCode($content, $highlight);
@@ -914,7 +906,7 @@ class SmartyHelpers
     public static function function_shade_version()
     {
         if (self::$shade_version === false) {
-            self::$shade_version = trim(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/VERSION'));
+            self::$shade_version = trim(file_get_contents(dirname(__DIR__) . '/VERSION'));
         }
 
         return self::$shade_version;

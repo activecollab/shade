@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\Shade\ProjectFactory;
+namespace ActiveCollab\Shade\Factory\ProjectFactory;
 
 use ActiveCollab\Shade\ProjectInterface;
 

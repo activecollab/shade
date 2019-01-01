@@ -8,7 +8,9 @@
 
 namespace ActiveCollab\Shade\Plugin;
 
-use ActiveCollab\Shade\Element\BookPage, ActiveCollab\Shade\Element\Element, ActiveCollab\Shade\Element\Release, ActiveCollab\Shade\Element\WhatsNewArticle;
+use ActiveCollab\Shade\Element\BookPage;
+use ActiveCollab\Shade\Element\Element;
+use ActiveCollab\Shade\Element\WhatsNewArticle;
 
 /**
  * Add Disqus comments to the generated pages.

@@ -8,8 +8,8 @@
 
 namespace ActiveCollab\Shade\Command;
 
-use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\Shade;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,7 +52,12 @@ class TodoCommand extends Command
 
             if (count($todo_notes)) {
                 $table = new Table($output);
-                $table->setHeaders(['Message', 'File']);
+                $table->setHeaders(
+                    [
+                        'Message',
+                        'File',
+                    ]
+                );
 
                 $path_len = strlen(rtrim($project->getPath(), '/'));
 
