@@ -14,11 +14,6 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Show book details.
- *
- * @package ActiveCollab\Shade\Shade\Command
- */
 class PluginsCommand extends Command
 {
     protected function configure()
@@ -30,14 +25,9 @@ class PluginsCommand extends Command
             ->setDescription('Show project plugin settings');
     }
 
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $table = new Table($output);

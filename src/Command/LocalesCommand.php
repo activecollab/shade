@@ -13,11 +13,6 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Show book details.
- *
- * @package ActiveCollab\Shade\Shade\Command
- */
 class LocalesCommand extends Command
 {
     protected function configure()
@@ -28,15 +23,9 @@ class LocalesCommand extends Command
             ->setName('locales')
             ->setDescription('List project locales');
     }
-
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $default_locale = $project->getDefaultLocale();

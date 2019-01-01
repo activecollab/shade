@@ -14,11 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * List what's new articles from this project.
- *
- * @package ActiveCollab\Shade\Shade\Command
- */
 class WhatsNewArticlesCommand extends Command
 {
     protected function configure()
@@ -31,14 +26,9 @@ class WhatsNewArticlesCommand extends Command
             ->setDescription("List what's new articles from a project");
     }
 
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $articles = $project->getWhatsNewArticles($input->getOption('locale'));

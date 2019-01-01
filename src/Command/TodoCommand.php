@@ -15,11 +15,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * List to-do notes.
- *
- * @package ActiveCollab\Shade\Shade\Command
- */
 class TodoCommand extends Command
 {
     protected function configure()
@@ -32,16 +27,9 @@ class TodoCommand extends Command
             ->setDescription('Find and show to-do notes from project elements');
     }
 
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        ini_set('date.timezone', 'UTC');
-
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             Shade::initSmarty($project, Shade::getBuildTheme($project->getDefaultBuildTheme()));

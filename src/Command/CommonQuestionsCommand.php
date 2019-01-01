@@ -38,7 +38,7 @@ class CommonQuestionsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $common_questions = $project->getCommonQuestions($input->getOption('locale'));

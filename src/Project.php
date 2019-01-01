@@ -15,6 +15,7 @@ use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
@@ -25,12 +26,24 @@ class Project implements ProjectInterface
     use ElementFileParser;
 
     private $path;
+    private $renderer;
     private $configuration = [];
 
-    public function __construct(string $path)
+    public function __construct(string $path, RendererInterface $renderer)
     {
         $this->path = $path;
+        $this->renderer = $renderer;
 
+        $this->loadConfiguration();
+    }
+
+    public function getTransformator(): TransformatorInterface
+    {
+        return new Transformator();
+    }
+
+    private function loadConfiguration(): void
+    {
         if ($this->isValid()) {
             $configuration_json = file_get_contents($this->path . '/project.json');
             $this->configuration = json_decode($configuration_json, true);
@@ -47,9 +60,9 @@ class Project implements ProjectInterface
         }
     }
 
-    public function getTransformator(): TransformatorInterface
+    public function renderBody()
     {
-        return new Transformator();
+        return $this->renderer->renderProjectBody($this);
     }
 
     /**

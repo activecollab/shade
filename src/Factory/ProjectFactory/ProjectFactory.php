@@ -12,11 +12,19 @@ namespace ActiveCollab\Shade\Factory\ProjectFactory;
 
 use ActiveCollab\Shade\Project;
 use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Renderer\RendererInterface;
 
 class ProjectFactory implements ProjectFactoryInterface
 {
+    private $renderer;
+
+    public function __construct(RendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
     public function createProject(string $project_path): ProjectInterface
     {
-        return new Project($project_path);
+        return new Project($project_path, $this->renderer);
     }
 }

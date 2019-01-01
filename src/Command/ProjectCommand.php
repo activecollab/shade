@@ -14,11 +14,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Create a new project.
- *
- * @package ActiveCollab\Shade\Shade\Command
- */
 class ProjectCommand extends Command
 {
     function configure()
@@ -36,14 +31,9 @@ class ProjectCommand extends Command
             ->setDescription('Create a new project');
     }
 
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $output->writeln('Project already initialized');
@@ -107,12 +97,7 @@ class ProjectCommand extends Command
         }
     }
 
-    /**
-     * Return content of the proejct index.md file.
-     *
-     * @return string
-     */
-    private function getProjectIndexMd()
+    private function getProjectIndexMd(): string
     {
         $options = [
             'title' => 'Full Project Name',

@@ -38,7 +38,7 @@ class BooksCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $books = $project->getBooks($input->getOption('locale'));

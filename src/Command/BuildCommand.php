@@ -50,7 +50,7 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = $this->getContainer()->get(ProjectFactoryInterface::class)->createProject(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $target_path = $this->getBuildTarget($input, $project);

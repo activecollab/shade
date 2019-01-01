@@ -14,12 +14,13 @@ use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactory;
 use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactoryInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtml;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
+use ActiveCollab\Shade\Renderer\Renderer;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use function DI\get;
 
 return [
-    RendererInterface::class => get(RendererInterface::class),
-    ProjectFactoryInterface::class => get(ProjectFactory::class),
-    SmartyFactoryInterface::class => get(SmartyFactory::class),
     MarkdownToHtmlInterface::class => get(MarkdownToHtml::class),
+    ProjectFactoryInterface::class => get(ProjectFactory::class),
+    RendererInterface::class => get(Renderer::class),
+    SmartyFactoryInterface::class => get(SmartyFactory::class),
 ];

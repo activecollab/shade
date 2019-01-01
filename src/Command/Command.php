@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Command;
 
+use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactoryInterface;
+use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,5 +43,11 @@ abstract class Command extends BaseCommand
     protected function getContainer(): ContainerInterface
     {
         return $this->container;
+    }
+
+    protected function getProject(string $project_path = null): ProjectInterface
+    {
+        return $this->getContainer()->get(ProjectFactoryInterface::class)
+            ->createProject($project_path ?? getcwd());
     }
 }

@@ -40,7 +40,7 @@ class BookCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $book = $project->getBook($input->getArgument('name'), $input->getOption('locale'));

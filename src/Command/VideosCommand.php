@@ -14,11 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * List project videos.
- *
- * @package ActiveCollab\Shade\Shade\Command
- */
 class VideosCommand extends Command
 {
     protected function configure()
@@ -31,14 +26,9 @@ class VideosCommand extends Command
             ->setDescription('List videos from a project');
     }
 
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $project = new Project(getcwd());
+        $project = $this->getProject();
 
         if ($project->isValid()) {
             $videos = $project->getVideos($input->getOption('locale'));
