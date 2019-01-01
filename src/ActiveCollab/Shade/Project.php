@@ -23,7 +23,7 @@ use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
  *
  * @package Narrative
  */
-final class Project
+final class Project implements ProjectInterface
 {
     use ElementFileParser;
 
