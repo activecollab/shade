@@ -42,13 +42,7 @@ class SmartyHelpers
         return self::$current_project;
     }
 
-    /**
-     * Set current element.
-     *
-     * @param  Project            $project
-     * @throws ParamRequiredError
-     */
-    public static function setCurrentProject(Project $project)
+    public static function setCurrentProject(ProjectInterface $project)
     {
         if ($project instanceof Project) {
             self::$current_project = $project;

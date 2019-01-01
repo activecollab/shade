@@ -16,11 +16,6 @@ use Exception;
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDom;
 
-/**
- * Parse element definition file.
- *
- * @package ActiveCollab\Shade\Shade
- */
 trait ElementFileParser
 {
     /**
@@ -35,11 +30,6 @@ trait ElementFileParser
      */
     protected $is_loaded = false;
 
-    /**
-     * List of properties.
-     *
-     * @var string
-     */
     protected $properties = [];
 
     /**
@@ -180,7 +170,12 @@ trait ElementFileParser
      */
     private function loadProperty($name, $value)
     {
-        $this->properties[Shade::underscore(str_replace(' ', '', $name))] = $value;
+        $this->properties[$this->normalizePropertyName($name)] = $value;
+    }
+
+    private function normalizePropertyName(string $property_name): string
+    {
+        return Shade::underscore(str_replace(' ', '', $property_name));
     }
 
     /**
@@ -193,7 +188,7 @@ trait ElementFileParser
      *
      * @return string
      */
-    public function getIndexFilePath()
+    public function getIndexFilePath(): string
     {
         if (empty($this->index_file_path)) {
             $this->index_file_path = is_dir($this->getPath()) ? $this->getPath() . '/index.md' : $this->getPath();

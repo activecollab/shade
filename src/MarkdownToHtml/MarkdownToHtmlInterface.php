@@ -8,10 +8,9 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\Shade;
+namespace ActiveCollab\Shade\MarkdownToHtml;
 
-interface BuildableInterface
+interface MarkdownToHtmlInterface
 {
-    public function getPageLevel(): int;
-    public function getIndexFilePath(): string;
+    public function markdownToHtml(string $markdown): string;
 }
