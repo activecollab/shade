@@ -15,18 +15,16 @@ use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Project;
+use ActiveCollab\Shade\ProjectInterface;
+use ActiveCollab\Shade\SmartyHelpers;
 use ActiveCollab\Shade\Theme;
+use ActiveCollab\Shade\ThemeInterface;
 use Exception;
 use Smarty;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Build help.
- *
- * @package ActiveCollab\Shade\Command
- */
 class BuildCommand extends Command
 {
     protected function configure()
@@ -53,8 +51,6 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        ini_set('date.timezone', 'UTC');
-
         $project = new Project(getcwd());
 
         if ($project->isValid()) {
@@ -67,7 +63,7 @@ class BuildCommand extends Command
                 return;
             }
 
-            if (!($theme instanceof Theme)) {
+            if (!$theme instanceof ThemeInterface) {
                 $output->writeln('Theme not found');
 
                 return;
@@ -78,7 +74,7 @@ class BuildCommand extends Command
             $this->prepareTargetPath($input, $output, $project, $target_path, $theme);
 
             foreach ($project->getLocales() as $locale => $locale_name) {
-                Shade\SmartyHelpers::setCurrentLocale($locale);
+                SmartyHelpers::setCurrentLocale($locale);
 
                 $this->smarty->assign('current_locale', $locale);
 
@@ -100,15 +96,7 @@ class BuildCommand extends Command
         }
     }
 
-    /**
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @param  Project         $project
-     * @param                  $target_path
-     * @param  Theme           $theme
-     * @return bool
-     */
-    public function prepareTargetPath(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme)
+    public function prepareTargetPath(InputInterface $input, OutputInterface $output, ProjectInterface $project, $target_path, ThemeInterface $theme)
     {
         Shade::clearDir($target_path, function ($path) use (&$output) {
             $output->writeln("$path deleted");
@@ -121,20 +109,7 @@ class BuildCommand extends Command
         return true;
     }
 
-    /**
-     * Build index.html page.
-     *
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
-     * @param  Project          $project
-     * @param  string           $target_path
-     * @param  Theme            $theme
-     * @param  string           $locale
-     * @return bool
-     * @throws Exception
-     * @throws \SmartyException
-     */
-    public function buildLandingPage(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
+    public function buildLandingPage(InputInterface $input, OutputInterface $output, ProjectInterface $project, $target_path, ThemeInterface $theme, $locale)
     {
         if ($locale === $project->getDefaultLocale()) {
             $index_path = "$target_path/index.html";
@@ -163,20 +138,7 @@ class BuildCommand extends Command
         return true;
     }
 
-    /**
-     * Build what's new section of the project.
-     *
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
-     * @param  Project          $project
-     * @param  string           $target_path
-     * @param  Theme            $theme
-     * @param  string           $locale
-     * @return bool
-     * @throws Exception
-     * @throws \SmartyException
-     */
-    public function buildWhatsNew(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
+    public function buildWhatsNew(InputInterface $input, OutputInterface $output, ProjectInterface $project, $target_path, ThemeInterface $theme, $locale)
     {
         $whats_new_path = $locale === $project->getDefaultLocale() ? "$target_path/whats-new" : "$target_path/$locale/whats-new";
         $whats_new_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/whats-new" : "$target_path/assets/images/$locale/whats-new";
@@ -224,14 +186,7 @@ class BuildCommand extends Command
         return true;
     }
 
-    /**
-     * @param Project         $project
-     * @param WhatsNewArticle $article
-     * @param string          $target_path
-     * @param string          $locale
-     * @param OutputInterface $output
-     */
-    private function copyVersionImages(Project $project, WhatsNewArticle $article, $target_path, $locale, OutputInterface $output)
+    private function copyVersionImages(ProjectInterface $project, WhatsNewArticle $article, $target_path, $locale, OutputInterface $output)
     {
         $version_num = $article->getVersionNumber();
 
@@ -250,12 +205,6 @@ class BuildCommand extends Command
         }
     }
 
-    /**
-     * Return what's new articles sorted by version.
-     *
-     * @param  WhatsNewArticle[] $whats_new_articles
-     * @return array
-     */
     private function getWhatsNewArticlesByVersion($whats_new_articles)
     {
         $whats_new_articles_by_version = [];
@@ -275,12 +224,6 @@ class BuildCommand extends Command
         return $whats_new_articles_by_version;
     }
 
-    /**
-     * Get first article from the list of sorter articles.
-     *
-     * @param  array           $whats_new_articles_by_version
-     * @return WhatsNewArticle
-     */
     private function getCurrentArticleFromSortedArticles($whats_new_articles_by_version)
     {
         foreach ($whats_new_articles_by_version as $v => $articles) {
@@ -292,20 +235,7 @@ class BuildCommand extends Command
         return null;
     }
 
-    /**
-     * Build release notes.
-     *
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
-     * @param  Project          $project
-     * @param  string           $target_path
-     * @param  Theme            $theme
-     * @param  string           $locale
-     * @return bool
-     * @throws Exception
-     * @throws \SmartyException
-     */
-    public function buildReleaseNotes(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
+    public function buildReleaseNotes(InputInterface $input, OutputInterface $output, ProjectInterface $project, $target_path, ThemeInterface $theme, $locale)
     {
         $release_notes_path = $locale === $project->getDefaultLocale() ? "$target_path/release-notes" : "$target_path/$locale/release-notes";
 
@@ -384,20 +314,7 @@ class BuildCommand extends Command
         return null;
     }
 
-    /**
-     * Build books and book pages.
-     *
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
-     * @param  Project          $project
-     * @param  string           $target_path
-     * @param  Theme            $theme
-     * @param  string           $locale
-     * @return bool
-     * @throws Exception
-     * @throws \SmartyException
-     */
-    public function buildBooks(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
+    public function buildBooks(InputInterface $input, OutputInterface $output, ProjectInterface $project, $target_path, ThemeInterface $theme, $locale)
     {
         $books_path = $locale === $project->getDefaultLocale() ? "$target_path/books" : "$target_path/$locale/books";
         $books_images_path = $locale === $project->getDefaultLocale() ? "$target_path/assets/images/books" : "$target_path/assets/images/$locale/books";
@@ -478,14 +395,7 @@ class BuildCommand extends Command
         }
     }
 
-    /**
-     * @param Project         $project
-     * @param Book            $book
-     * @param string          $target_path
-     * @param string          $locale
-     * @param OutputInterface $output
-     */
-    private function copyBookImages(Project $project, Book $book, $target_path, $locale, OutputInterface $output)
+    private function copyBookImages(ProjectInterface $project, Book $book, $target_path, $locale, OutputInterface $output)
     {
         $book_path = $book->getPath();
         $book_name = $book->getShortName();
@@ -512,20 +422,7 @@ class BuildCommand extends Command
         return null;
     }
 
-    /**
-     * Build videos.
-     *
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
-     * @param  Project          $project
-     * @param  string           $target_path
-     * @param  Theme            $theme
-     * @param  string           $locale
-     * @return bool
-     * @throws Exception
-     * @throws \SmartyException
-     */
-    public function buildVideos(InputInterface $input, OutputInterface $output, Project $project, $target_path, Theme $theme, $locale)
+    public function buildVideos(InputInterface $input, OutputInterface $output, ProjectInterface $project, $target_path, ThemeInterface $theme, $locale)
     {
         $videos_path = $locale === $project->getDefaultLocale() ? "$target_path/videos" : "$target_path/$locale/videos";
 
@@ -580,6 +477,7 @@ class BuildCommand extends Command
     }
 
     /**
+     * @param  string[]   $video_groups
      * @param  Video[]    $videos
      * @return Video|null
      */
