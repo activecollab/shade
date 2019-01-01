@@ -19,7 +19,6 @@ use ActiveCollab\Shade\ElementFileParser;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
 use ActiveCollab\Shade\NamedList;
-use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Theme;
@@ -217,11 +216,11 @@ class Project implements ProjectInterface
     function getBuildTheme($name = null)
     {
         if ($name) {
-            $theme_path = __DIR__ . "/Themes/$name"; // Input
+            $theme_path = dirname(__DIR__) . "/Themes/$name"; // Input
         } elseif (is_dir($this->getPath() . '/theme')) {
             $theme_path = $this->getPath() . '/theme'; // Project specific theme
         } else {
-            $theme_path = __DIR__ . '/Themes/' . $this->getDefaultBuildTheme(); // Default built in theme
+            $theme_path = dirname(__DIR__) . '/Themes/' . $this->getDefaultBuildTheme(); // Default built in theme
         }
 
         if ($theme_path && is_dir($theme_path)) {

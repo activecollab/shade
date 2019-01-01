@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Ability;
 
-interface BuildableInterface
+interface BuildableInterface extends LoadableInterface, RenderableInterface
 {
     public function getPageLevel(): int;
-    public function getIndexFilePath(): string;
 }

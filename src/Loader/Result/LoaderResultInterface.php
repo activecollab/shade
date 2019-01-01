@@ -8,12 +8,12 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\Shade\Ability;
+namespace ActiveCollab\Shade\Loader\Result;
 
-interface LoadableInterface
+interface LoaderResultInterface
 {
-    const PROPERTIES_SEPARATOR = '================================================================';
-
     public function getIndexFilePath(): string;
+    public function getProperties(): array;
     public function getProperty(string $name, string $default = null): ?string;
+    public function getBody(): string;
 }

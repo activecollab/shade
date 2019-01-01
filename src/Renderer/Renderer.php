@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Renderer;
 
 use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Ability\LoadableInterface;
 use ActiveCollab\Shade\Element\ElementInterface;
 use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactoryInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
@@ -27,7 +28,7 @@ class Renderer implements RendererInterface
     public function __construct(
         SmartyFactoryInterface $smartyFactory,
         MarkdownToHtmlInterface $markdownToHtml,
-        string $propertiesSeparator = '================================================================'
+        string $propertiesSeparator = LoadableInterface::PROPERTIES_SEPARATOR
     )
     {
         $this->smartyFactory = $smartyFactory;

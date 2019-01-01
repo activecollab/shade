@@ -11,8 +11,6 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Project;
 
 use ActiveCollab\Shade\Ability\BuildableInterface;
-use ActiveCollab\Shade\Ability\LoadableInterface;
-use ActiveCollab\Shade\Ability\RenderableInterface;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Element\Finder\ElementFinder;
@@ -24,7 +22,7 @@ use ActiveCollab\Shade\NamedList;
 use ActiveCollab\Shade\Theme;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
 
-interface ProjectInterface extends BuildableInterface, LoadableInterface, RenderableInterface
+interface ProjectInterface extends BuildableInterface
 {
     /**
      * Return project name.
