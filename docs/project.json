@@ -2,7 +2,6 @@
   "name": "Shade",
   "is_multilingual": true,
   "default_locale": "en",
-  "default_build_target" : "/Users/ilija/Temp/ShadeTarget",
   "default_build_theme" : "bootstrap",
   "copyright" : "A51 doo",
   "copyright_since" : 2007,
