@@ -3,20 +3,18 @@
     "description": "Build help portals with ease",
     "license": "MIT",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "symfony/console": "^4.0",
         "herrera-io/phar-update": "~1.0",
-        "michelf/php-markdown": "1.4.*@dev",
-        "razielanarki/hyperlight": "0.1.2",
-        "smarty/smarty": "^3.1.0",
-        "jbroadway/urlify": "1.0.*@dev",
+        "michelf/php-markdown": "~1.8",
+        "razielanarki/hyperlight": "~0.1",
+        "smarty/smarty": "^3.1",
+        "jbroadway/urlify": "~1.0",
         "phine/phar": "~1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "autoload": {
         "psr-0": {
             "ActiveCollab\\Shade": "src"
