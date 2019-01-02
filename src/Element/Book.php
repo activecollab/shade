@@ -8,9 +8,11 @@
 
 namespace ActiveCollab\Shade\Element;
 
+use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Ability\DescribableInterface;
 use ActiveCollab\Shade\NamedList;
 
-class Book extends Element
+class Book extends Element implements DescribableInterface
 {
     public function getTitle(): string
     {
@@ -94,4 +96,12 @@ class Book extends Element
         }
     }
 
+    public function getUrl(BuildableInterface $relativeTo, string $locale = null): string
+    {
+        return $this->getLinker()->getUrl(
+            'books/' . $this->getShortName() . '/index.html',
+            $relativeTo,
+            $locale
+        );
+    }
 }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Transformator\Dom\Link;
 
 use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Ability\DescribableInterface;
 use ActiveCollab\Shade\Element\Book;
 use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Error\ParamRequiredError;
@@ -37,12 +38,15 @@ class LinkTransformation extends DomTransformation implements LinkTransformation
         $resolution = $this->resolveTarget($project, $buildableElement, $simpleHtmlDom);
 
         if ($resolution->isFound()) {
-            $params['href'] = $resolution->getTarget()->getUrl($buildableElement) . $this->resolveSection($simpleHtmlDom);
+            $target = $resolution->getTarget();
 
-            if (empty($params['class'])) {
-                $params['class'] = 'link_to_book_page';
-            } else {
-                $params['class'] .= ' link_to_book_page';
+            $params = [
+                'href' => $target->getUrl($buildableElement) . $this->resolveSection($simpleHtmlDom),
+                'class' => $this->resolveLinkClass($buildableElement),
+            ];
+
+            if ($target instanceof DescribableInterface) {
+                $params['title'] = $target->getDescription();
             }
 
             $simpleHtmlDom->outerHtml = Shade::htmlTag('a', $params, $simpleHtmlDom->innerHtml);
@@ -65,6 +69,8 @@ class LinkTransformation extends DomTransformation implements LinkTransformation
         $target = $simpleHtmlDom->getAttribute('data-target');
 
         switch ($target) {
+            case 'book':
+                return $this->resolveBook($project, $buildableElement, $simpleHtmlDom);
             case 'page':
                 return $this->resolvePage($project, $buildableElement, $simpleHtmlDom);
             default:
@@ -75,24 +81,53 @@ class LinkTransformation extends DomTransformation implements LinkTransformation
         }
     }
 
+    private function resolveBook(
+        ProjectInterface $project,
+        BuildableInterface $buildableElement,
+        SimpleHtmlDom $simpleHtmlDom
+    ): LinkResolutionInterface
+    {
+        $book_name = $simpleHtmlDom->getAttribute('data-book-name');
+
+        if (empty($book_name)) {
+            if ($buildableElement instanceof Book) {
+                return new LinkResolution($buildableElement);
+            } elseif ($buildableElement instanceof BookPage) {
+                $book = $project->getBook($buildableElement->getBookName());
+
+                if ($book instanceof Book) {
+                    return new LinkResolution($book);
+                }
+            }
+
+            throw new ParamRequiredError('data-book-name');
+        } else {
+            $book = $project->getBook($book_name);
+
+            if ($book instanceof Book) {
+                return new LinkResolution($book);
+            } else {
+                return new LinkResolution(
+                    null,
+                    sprintf('Book "%s" not found', $book_name)
+                );
+            }
+        }
+    }
+
     private function resolvePage(
         ProjectInterface $project,
         BuildableInterface $buildableElement,
         SimpleHtmlDom $simpleHtmlDom
     ): LinkResolutionInterface
     {
-        $name = $simpleHtmlDom->getAttribute('data-page-name');
+        $page_name = $simpleHtmlDom->getAttribute('data-page-name');
 
-        if (empty($name)) {
+        if (empty($page_name)) {
             throw new ParamRequiredError('data-page-name');
         }
 
         $book_name = $simpleHtmlDom->getAttribute('data-book-name');
-        $section = $simpleHtmlDom->getAttribute('data-section');
-
-        if (!empty($section)) {
-            $section = '#s-' . Shade::slug($section);
-        }
 
         if (empty($book_name)) {
             if ($buildableElement instanceof Book) {
@@ -105,14 +140,14 @@ class LinkTransformation extends DomTransformation implements LinkTransformation
         $book = $book_name ? $project->getBook($book_name) : null;
 
         if ($book instanceof Book) {
-            $page = $book->getPage($name);
+            $page = $book->getPage($page_name);
 
             if ($page instanceof BookPage) {
                 return new LinkResolution($page);
             } else {
                 return new LinkResolution(
                     null,
-                    sprintf('Page "%s" not found in "%s" book', $name, $book->getTitle())
+                    sprintf('Page "%s" not found in "%s" book', $page_name, $book->getTitle())
                 );
             }
         } else {
@@ -129,5 +164,16 @@ class LinkTransformation extends DomTransformation implements LinkTransformation
         }
 
         return $section;
+    }
+
+    private function resolveLinkClass(BuildableInterface $buildableElement): ?string
+    {
+        if ($buildableElement instanceof Book) {
+            return 'link_to_book';
+        } elseif ($buildableElement instanceof BookPage) {
+            return 'link_to_book_page';
+        }
+
+        return null;
     }
 }

@@ -8,7 +8,9 @@
 
 namespace ActiveCollab\Shade\Element;
 
-class Video extends Element
+use ActiveCollab\Shade\Ability\DescribableInterface;
+
+class Video extends Element implements DescribableInterface
 {
     const GETTING_STARTED = 'getting-started';
 

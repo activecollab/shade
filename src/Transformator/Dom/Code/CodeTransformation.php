@@ -32,9 +32,9 @@ class CodeTransformation extends DomTransformation implements CodeTransformation
         $is_inline = $this->resolveIsInline($simpleHtmlDom);
 
         if (!$is_inline) {
-            $simpleHtmlDom->outerHtml = Shade::highlightCode(
-                $simpleHtmlDom->innerHtml,
-                $simpleHtmlDom->getAttribute('data-highlight')
+            $simpleHtmlDom->outerText = sprintf(
+                '<pre>%s</pre>',
+                Shade::clean($simpleHtmlDom->innerText)
             );
         }
     }
