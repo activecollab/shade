@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\Loader\LoaderInterface;
@@ -51,16 +53,8 @@ abstract class Element implements ElementInterface
         return $this->renderer->renderElementBody($this);
     }
 
-    /**
-     * @var string
-     */
     private $index_file_path;
 
-    /**
-     * Get index file path.
-     *
-     * @return string
-     */
     public function getIndexFilePath(): string
     {
         if (empty($this->index_file_path)) {
