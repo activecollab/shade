@@ -13,8 +13,10 @@ namespace ActiveCollab\Shade\Transformator;
 use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
+use ActiveCollab\Shade\Transformator\Dom\Code\CodeTransformation;
 use ActiveCollab\Shade\Transformator\Dom\DomTransformationInterface;
 use ActiveCollab\Shade\Transformator\Dom\Link\LinkTransformation;
+use ActiveCollab\Shade\Transformator\Dom\Subtitle\SubtitleTransformation;
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDomNode;
 
@@ -31,12 +33,19 @@ class Transformator implements TransformatorInterface
     {
         $this->markdownToHtml = $markdownToHtml;
 
-        $this->addDomTransformations(new LinkTransformation());
+        $this->addDomTransformations(
+            new CodeTransformation(),
+            new LinkTransformation(),
+            new SubtitleTransformation()
+        );
     }
 
     public function addDomTransformations(DomTransformationInterface ...$domTransformations)
     {
-        $this->domTransformations = array_merge($this->domTransformations, $domTransformations);
+        $this->domTransformations = array_merge(
+            $this->domTransformations,
+            $domTransformations
+        );
     }
 
     public function transform(
@@ -48,9 +57,9 @@ class Transformator implements TransformatorInterface
         $html = $this->markdownToHtml->markdownToHtml($markdownContent);
 
         if (!empty($this->domTransformations)) {
-            $dom = HtmlDomParser::str_get_html($html);
-
             foreach ($this->domTransformations as $dom_transformation) {
+                $dom = HtmlDomParser::str_get_html($html);
+
                 /** @var SimpleHtmlDomNode $elements */
                 $elements = $dom->find($dom_transformation->getSelector());
 
@@ -59,9 +68,9 @@ class Transformator implements TransformatorInterface
                         $dom_transformation->transform($project, $buildableElement, $element);
                     }
                 }
-            }
 
-            $html = $dom->html();
+                $html = $dom->html();
+            }
         }
 
         return $html;

@@ -294,10 +294,8 @@ final class Shade
     {
         $content = trim($content);
 
-
-
         if ($syntax) {
-            $content = (new Highlighter())->highlight($syntax, $content)->value;
+            $content = self::clean((new Highlighter())->highlight($syntax, $content)->value);
         } else {
             $content = self::clean($content);
         }
