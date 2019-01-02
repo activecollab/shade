@@ -21,6 +21,7 @@ abstract class Element implements ElementInterface
     private $project;
     private $loader;
     private $renderer;
+    private $path;
 
     /**
      * @var LoaderResultInterface|null
@@ -86,30 +87,17 @@ abstract class Element implements ElementInterface
         return new Transformator();
     }
 
-    /**
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * Get folder name.
-     *
-     * @return string
-     */
-    public function getFolderName()
+    protected function getFolderName(): string
     {
         return basename($this->path);
     }
 
-    public function &getProject()
+    public function getProject(): ProjectInterface
     {
         return $this->project;
     }
@@ -150,7 +138,7 @@ abstract class Element implements ElementInterface
             $title = $this->getProperty('title');
 
             if (empty($title)) {
-                $basename = basename($this->path);
+                $basename = $this->getFolderName();
 
                 $first_dot = strpos($basename, '.');
                 $second_dot = strpos($basename, '.', $first_dot + 1);

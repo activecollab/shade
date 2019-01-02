@@ -221,9 +221,4 @@ interface ProjectInterface extends BuildableInterface
      * @return string
      */
     public function getTempPath();
-
-    /**
-     * @return Project
-     */
-    public function getProject();
 }

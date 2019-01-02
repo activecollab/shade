@@ -547,14 +547,6 @@ class Project implements ProjectInterface
         return $this->path . '/temp';
     }
 
-    /**
-     * @return Project
-     */
-    public function &getProject()
-    {
-        return $this;
-    }
-
     public function getPageLevel(): int
     {
         return 0;

@@ -11,25 +11,12 @@ declare(strict_types=1);
 namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 
 interface ElementInterface extends BuildableInterface
 {
-    /**
-     * @return string
-     */
-    public function getPath();
-
-    /**
-     * Get folder name.
-     *
-     * @return string
-     */
-    public function getFolderName();
-
-    /**
-     * @return \ActiveCollab\Shade\Project\Project
-     */
-    public function getProject();
+    public function getProject(): ProjectInterface;
+    public function getPath(): string;
     public function getShortName(): string;
     public function getSlug(): string;
     public function getTitle(): string;
