@@ -10,7 +10,14 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Transformator;
 
+use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
+
 interface TransformatorInterface
 {
-    public function transform(string $markdown_content): string;
+    public function transform(
+        ProjectInterface $project,
+        BuildableInterface $buildableElement,
+        string $markdownContent
+    ): string;
 }

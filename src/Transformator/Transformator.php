@@ -10,21 +10,34 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Transformator;
 
-use ActiveCollab\Shade\Shade;
+use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
+use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Transformator\Dom\DomTransformationInterface;
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDomNode;
 
 class Transformator implements TransformatorInterface
 {
+    private $markdownToHtml;
+
     /**
      * @var DomTransformationInterface[]
      */
     private $domTransformators = [];
 
-    public function transform(string $markdown_content): string
+    public function __construct(MarkdownToHtmlInterface $markdownToHtml)
     {
-        $html = Shade::markdownToHtml($markdown_content);
+        $this->markdownToHtml = $markdownToHtml;
+    }
+
+    public function transform(
+        ProjectInterface $project,
+        BuildableInterface $buildableElement,
+        string $markdownContent
+    ): string
+    {
+        $html = $this->markdownToHtml->markdownToHtml($markdownContent);
 
         if (!empty($this->domTransformators)) {
             $dom = HtmlDomParser::str_get_html($html);

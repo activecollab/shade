@@ -18,21 +18,28 @@ use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\SmartyHelpers;
+use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
 class Renderer implements RendererInterface
 {
     private $smartyFactory;
     private $markdownToHtml;
     private $propertiesSeparator;
+    /**
+     * @var TransformatorInterface
+     */
+    private $transformator;
 
     public function __construct(
         SmartyFactoryInterface $smartyFactory,
         MarkdownToHtmlInterface $markdownToHtml,
+        TransformatorInterface $transformator,
         string $propertiesSeparator = LoadableInterface::PROPERTIES_SEPARATOR
     )
     {
         $this->smartyFactory = $smartyFactory;
         $this->propertiesSeparator = $propertiesSeparator;
+        $this->transformator = $transformator;
         $this->markdownToHtml = $markdownToHtml;
     }
 
@@ -60,7 +67,7 @@ class Renderer implements RendererInterface
             $content = trim(substr($content, $separator_pos + strlen($this->propertiesSeparator)));
         }
 
-        return $this->markdownToHtml->markdownToHtml($content);
+        return $this->transformator->transform($project, $buildableElement, $content);
     }
 
     private function renderBuildableElementIndex(
