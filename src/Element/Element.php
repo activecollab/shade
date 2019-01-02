@@ -12,6 +12,7 @@ use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\Loader\Result\LoaderResultInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
+use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
@@ -124,12 +125,44 @@ abstract class Element implements ElementInterface
         return $this->short_name;
     }
 
-    /**
-     * Return element title.
-     *
-     * @return string
-     */
-    abstract public function getTitle();
+    private $slug;
+
+    public function getSlug(): string
+    {
+        if ($this->slug === null) {
+            $slug = $this->getProperty('slug');
+
+            if (empty($slug)) {
+                $this->slug = Shade::slug($this->getTitle());
+            } else {
+                $this->slug = $slug;
+            }
+        }
+
+        return $this->slug;
+    }
+
+    private $title;
+
+    public function getTitle(): string
+    {
+        if ($this->title === null) {
+            $title = $this->getProperty('title');
+
+            if (empty($title)) {
+                $basename = basename($this->path);
+
+                $first_dot = strpos($basename, '.');
+                $second_dot = strpos($basename, '.', $first_dot + 1);
+
+                $this->title = trim(substr($basename, $first_dot + 1, $second_dot - $first_dot - 1));
+            } else {
+                $this->title = $title;
+            }
+        }
+
+        return $this->title;
+    }
 
     public function getPageLevel(): int
     {

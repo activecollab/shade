@@ -10,19 +10,9 @@ namespace ActiveCollab\Shade\Element;
 
 use ActiveCollab\Shade\NamedList;
 
-/**
- * Framework level help book implementation.
- *
- * @package Shade
- */
 class Book extends Element
 {
-    /**
-     * Return book title.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getProperty('title', 'Book');
     }

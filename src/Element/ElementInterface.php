@@ -31,11 +31,6 @@ interface ElementInterface extends BuildableInterface
      */
     public function getProject();
     public function getShortName(): string;
-
-    /**
-     * Return element title.
-     *
-     * @return string
-     */
-    public function getTitle();
+    public function getSlug(): string;
+    public function getTitle(): string;
 }

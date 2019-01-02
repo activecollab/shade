@@ -13,61 +13,35 @@ use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use DateTime;
 
-/**
- * Release element (for release notes).
- *
- * @package ActiveCollab\Shade\Shade\Element
- */
 class Release extends Element
 {
-    /**
-     * Application version number.
-     *
-     * @var string
-     */
     private $version_number;
 
-    /**
-     * Construct and load help element.
-     *
-     * @param ProjectInterface  $project
-     * @param LoaderInterface   $loader
-     * @param RendererInterface $renderer
-     * @param string            $version_number
-     * @param string            $path
-     * @param bool              $load
-     */
-    public function __construct(ProjectInterface $project, LoaderInterface $loader, RendererInterface $renderer, $version_number, $path, $load = true)
+    public function __construct(
+        ProjectInterface $project,
+        LoaderInterface $loader,
+        RendererInterface $renderer,
+        string $version_number,
+        string $path,
+        bool $load = true
+    )
     {
         $this->version_number = $version_number;
 
         parent::__construct($project, $loader, $renderer, $path, $load);
     }
 
-    /**
-     * @return string
-     */
-    function getTitle()
+    public function getTitle(): string
     {
         return $this->getVersionNumber();
     }
 
-    /**
-     * Return in which version change was introduced.
-     *
-     * @return string
-     */
-    public function getVersionNumber()
+    public function getVersionNumber(): string
     {
         return $this->version_number;
     }
 
-    /**
-     * Return page slug.
-     *
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return str_replace('.', '-', $this->version_number);
     }
