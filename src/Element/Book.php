@@ -17,14 +17,9 @@ class Book extends Element
         return $this->getProperty('title', 'Book');
     }
 
-    /**
-     * Return property description.
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return $this->getProperty('description');
+        return $this->getProperty('description', '');
     }
 
     /**

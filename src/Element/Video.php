@@ -8,8 +8,6 @@
 
 namespace ActiveCollab\Shade\Element;
 
-use ActiveCollab\Shade\Shade;
-
 /**
  * Framework level help video class.
  *
@@ -49,14 +47,9 @@ class Video extends Element
         return $this->group_name;
     }
 
-    /**
-     * Return property description.
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return $this->getProperty('description');
+        return $this->getProperty('description', '');
     }
 
     /**
