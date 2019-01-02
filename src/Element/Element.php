@@ -23,6 +23,7 @@ abstract class Element implements ElementInterface
     private $project;
     private $loader;
     private $renderer;
+    private $transformator;
     private $path;
 
     /**
@@ -34,6 +35,7 @@ abstract class Element implements ElementInterface
         ProjectInterface $project,
         LoaderInterface $loader,
         RendererInterface $renderer,
+        TransformatorInterface $transformator,
         string $path,
         bool $load = true
     )
@@ -41,6 +43,7 @@ abstract class Element implements ElementInterface
         $this->project = $project;
         $this->loader = $loader;
         $this->renderer = $renderer;
+        $this->transformator = $transformator;
         $this->path = $path;
 
         if ($load) {

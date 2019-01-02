@@ -11,37 +11,25 @@ namespace ActiveCollab\Shade\Element;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
-use ActiveCollab\Shade\Shade;
+use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
-/**
- * Framework level help book page class.
- *
- * @package Shade
- */
 class BookPage extends Element
 {
-    /**
-     * Parent book name.
-     *
-     * @var string
-     */
     private $book_name;
 
-    /**
-     * Construct and load help element.
-     *
-     * @param ProjectInterface  $project
-     * @param LoaderInterface   $loader
-     * @param RendererInterface $renderer
-     * @param Book|string       $book
-     * @param string            $path
-     * @param bool              $load
-     */
-    public function __construct(ProjectInterface $project, LoaderInterface $loader, RendererInterface $renderer, $book, $path, $load = true)
+    public function __construct(
+        ProjectInterface $project,
+        LoaderInterface $loader,
+        RendererInterface $renderer,
+        TransformatorInterface $transformator,
+        string $book_name,
+        string $path,
+        bool $load = true
+    )
     {
-        $this->book_name = $book instanceof Book ? $book->getShortName() : $book;
+        parent::__construct($project, $loader, $renderer, $transformator, $path, $load);
 
-        parent::__construct($project, $loader, $renderer, $path, $load);
+        $this->book_name = $book_name;
     }
 
     /**

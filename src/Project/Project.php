@@ -33,6 +33,7 @@ class Project implements ProjectInterface
     private $path;
     private $loader;
     private $renderer;
+    private $transformator;
     private $configuration = [];
 
     /**
@@ -40,18 +41,24 @@ class Project implements ProjectInterface
      */
     private $loadResult;
 
-    public function __construct(string $path, LoaderInterface $loader, RendererInterface $renderer)
+    public function __construct(
+        string $path,
+        LoaderInterface $loader,
+        RendererInterface $renderer,
+        TransformatorInterface $transformator
+    )
     {
         $this->path = $path;
         $this->loader = $loader;
         $this->renderer = $renderer;
+        $this->transformator = $transformator;
 
         $this->loadConfiguration();
     }
 
     public function getTransformator(): TransformatorInterface
     {
-        return new Transformator();
+        return $this->transformator;
     }
 
     private function loadConfiguration(): void
@@ -502,7 +509,7 @@ class Project implements ProjectInterface
     function &getFinder(): ElementFinderInterface
     {
         if (empty($this->finder)) {
-            $this->finder = new ElementFinder($this, $this->loader, $this->renderer);
+            $this->finder = new ElementFinder($this, $this->loader, $this->renderer, $this->transformator);
 
             if (is_file($this->getPath() . '/finders.php')) {
                 $finders = require $this->getPath() . '/finders.php';
