@@ -30,13 +30,7 @@ interface ElementInterface extends BuildableInterface
      * @return \ActiveCollab\Shade\Project\Project
      */
     public function getProject();
-
-    /**
-     * Return book's short name.
-     *
-     * @return string
-     */
-    public function getShortName();
+    public function getShortName(): string;
 
     /**
      * Return element title.

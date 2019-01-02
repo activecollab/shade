@@ -113,22 +113,12 @@ abstract class Element implements ElementInterface
         return $this->project;
     }
 
-    /**
-     * Book's short name.
-     *
-     * @var string
-     */
     protected $short_name;
 
-    /**
-     * Return book's short name.
-     *
-     * @return string
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         if ($this->short_name === null) {
-            $this->short_name = str_replace('_', '-', basename($this->path));
+            $this->short_name = str_replace('_', '-', $this->getFolderName());
         }
 
         return $this->short_name;

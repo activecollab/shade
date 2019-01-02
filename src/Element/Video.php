@@ -19,12 +19,7 @@ class Video extends Element
 {
     const GETTING_STARTED = 'getting-started';
 
-    /**
-     * Return book's short name.
-     *
-     * @return string
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->getSlug();
     }
