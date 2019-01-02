@@ -13,12 +13,12 @@ use ActiveCollab\Shade\Element\BookPage;
 use ActiveCollab\Shade\Element\Release;
 use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
+use ActiveCollab\Shade\Linker\LinkerInterface;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\NamedList;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
-use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use DirectoryIterator;
 use Exception;
 
@@ -27,7 +27,7 @@ class ElementFinder implements ElementFinderInterface
     private $project;
     private $loader;
     private $renderer;
-    private $transformator;
+    private $linker;
 
     /**
      * @var callable[]
@@ -38,13 +38,13 @@ class ElementFinder implements ElementFinderInterface
         ProjectInterface $project,
         LoaderInterface $loader,
         RendererInterface $renderer,
-        TransformatorInterface $transformator
+        LinkerInterface $linker
     )
     {
         $this->project = $project;
         $this->loader = $loader;
         $this->renderer = $renderer;
-        $this->transformator = $transformator;
+        $this->linker = $linker;
 
         $this->finders = [
 
@@ -217,7 +217,7 @@ class ElementFinder implements ElementFinderInterface
         $result = [];
 
         foreach ($dirs as $dir) {
-            $book = new Book($this->project, $this->loader, $this->renderer, $this->transformator, $dir);
+            $book = new Book($this->project, $this->loader, $this->renderer, $this->linker, $dir);
 
             if ($book->isLoaded()) {
                 $result[$book->getShortName()] = $book;
@@ -270,7 +270,7 @@ class ElementFinder implements ElementFinderInterface
                 $this->project,
                 $this->loader,
                 $this->renderer,
-                $this->transformator,
+                $this->linker,
                 $book->getShortName(),
                 $file,
                 true
@@ -316,7 +316,7 @@ class ElementFinder implements ElementFinderInterface
             $this->videos = new NamedList();
 
             foreach ($files as $file) {
-                $video = new Video($this->project, $this->loader, $this->renderer, $this->transformator, $file);
+                $video = new Video($this->project, $this->loader, $this->renderer, $this->linker, $file);
 
                 if ($video->isLoaded()) {
                     $this->videos->add($video->getShortName(), $video);
@@ -376,7 +376,7 @@ class ElementFinder implements ElementFinderInterface
                     $this->project,
                     $this->loader,
                     $this->renderer,
-                    $this->transformator,
+                    $this->linker,
                     $version_num,
                     $file
                 );
@@ -436,7 +436,7 @@ class ElementFinder implements ElementFinderInterface
                 $this->project,
                 $this->loader,
                 $this->renderer,
-                $this->transformator,
+                $this->linker,
                 $version_number,
                 $file,
                 true

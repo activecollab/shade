@@ -8,10 +8,10 @@
 
 namespace ActiveCollab\Shade\Element;
 
+use ActiveCollab\Shade\Linker\LinkerInterface;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
-use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use DateTime;
 
 class Release extends Element
@@ -22,7 +22,7 @@ class Release extends Element
         ProjectInterface $project,
         LoaderInterface $loader,
         RendererInterface $renderer,
-        TransformatorInterface $transformator,
+        LinkerInterface $linker,
         string $version_number,
         string $path,
         bool $load = true
@@ -30,7 +30,7 @@ class Release extends Element
     {
         $this->version_number = $version_number;
 
-        parent::__construct($project, $loader, $renderer, $transformator, $path, $load);
+        parent::__construct($project, $loader, $renderer, $linker, $path, $load);
     }
 
     public function getTitle(): string

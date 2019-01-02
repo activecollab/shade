@@ -10,20 +10,19 @@ declare(strict_types=1);
 
 namespace ActiveCollab\Shade\Element;
 
+use ActiveCollab\Shade\Linker\LinkerInterface;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\Loader\Result\LoaderResultInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
-use ActiveCollab\Shade\Transformator\Transformator;
-use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
 abstract class Element implements ElementInterface
 {
     private $project;
     private $loader;
     private $renderer;
-    private $transformator;
+    private $linker;
     private $path;
 
     /**
@@ -35,7 +34,7 @@ abstract class Element implements ElementInterface
         ProjectInterface $project,
         LoaderInterface $loader,
         RendererInterface $renderer,
-        TransformatorInterface $transformator,
+        LinkerInterface $linker,
         string $path,
         bool $load = true
     )
@@ -43,7 +42,7 @@ abstract class Element implements ElementInterface
         $this->project = $project;
         $this->loader = $loader;
         $this->renderer = $renderer;
-        $this->transformator = $transformator;
+        $this->linker = $linker;
         $this->path = $path;
 
         if ($load) {
@@ -54,6 +53,11 @@ abstract class Element implements ElementInterface
     public function renderBody(): string
     {
         return $this->renderer->renderElementBody($this);
+    }
+
+    protected function getLinker(): LinkerInterface
+    {
+        return $this->linker;
     }
 
     private $index_file_path;
@@ -77,11 +81,6 @@ abstract class Element implements ElementInterface
         return $this->loadResult instanceof LoaderResultInterface
             ? $this->loadResult->getProperty($name, $default)
             : $default;
-    }
-
-    public function getTransformator(): TransformatorInterface
-    {
-        return new Transformator();
     }
 
     public function getPath(): string

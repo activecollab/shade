@@ -235,11 +235,11 @@ final class Shade
      * Open HTML tag.
      *
      * @param  string               $name
-     * @param  array                $attributes
+     * @param  array|null           $attributes
      * @param  callable|string|null $content
      * @return string
      */
-    public static function htmlTag($name, $attributes = null, $content = null)
+    public static function htmlTag(string $name, array $attributes = null, $content = null)
     {
         if ($attributes) {
             $result = "<$name";

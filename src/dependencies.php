@@ -12,6 +12,8 @@ use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactory;
 use ActiveCollab\Shade\Factory\ProjectFactory\ProjectFactoryInterface;
 use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactory;
 use ActiveCollab\Shade\Factory\SmartyFactory\SmartyFactoryInterface;
+use ActiveCollab\Shade\Linker\Linker;
+use ActiveCollab\Shade\Linker\LinkerInterface;
 use ActiveCollab\Shade\Loader\Loader;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtml;
@@ -23,6 +25,7 @@ use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use function DI\get;
 
 return [
+    LinkerInterface::class => get(Linker::class),
     LoaderInterface::class => get(Loader::class),
     MarkdownToHtmlInterface::class => get(MarkdownToHtml::class),
     ProjectFactoryInterface::class => get(ProjectFactory::class),

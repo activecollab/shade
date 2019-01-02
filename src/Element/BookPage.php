@@ -6,12 +6,15 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\Shade\Element;
 
+use ActiveCollab\Shade\Ability\BuildableInterface;
+use ActiveCollab\Shade\Linker\LinkerInterface;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
 use ActiveCollab\Shade\Renderer\RendererInterface;
-use ActiveCollab\Shade\Transformator\TransformatorInterface;
 
 class BookPage extends Element
 {
@@ -21,23 +24,18 @@ class BookPage extends Element
         ProjectInterface $project,
         LoaderInterface $loader,
         RendererInterface $renderer,
-        TransformatorInterface $transformator,
+        LinkerInterface $linker,
         string $book_name,
         string $path,
         bool $load = true
     )
     {
-        parent::__construct($project, $loader, $renderer, $transformator, $path, $load);
+        parent::__construct($project, $loader, $renderer, $linker, $path, $load);
 
         $this->book_name = $book_name;
     }
 
-    /**
-     * Return book name.
-     *
-     * @return string
-     */
-    public function getBookName()
+    public function getBookName(): string
     {
         return $this->book_name;
     }
@@ -50,5 +48,14 @@ class BookPage extends Element
     public function getPageLevel(): int
     {
         return 2;
+    }
+
+    public function getUrl(BuildableInterface $relativeTo, string $locale = null): string
+    {
+        return $this->getLinker()->getUrl(
+            'books/' . $this->getBookName() . '/' . $this->getSlug(). '.html',
+            $relativeTo,
+            $locale
+        );
     }
 }

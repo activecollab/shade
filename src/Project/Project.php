@@ -17,13 +17,13 @@ use ActiveCollab\Shade\Element\Video;
 use ActiveCollab\Shade\Element\WhatsNewArticle;
 use ActiveCollab\Shade\Error\ParseJsonError;
 use ActiveCollab\Shade\Error\ThemeNotFoundError;
+use ActiveCollab\Shade\Linker\LinkerInterface;
 use ActiveCollab\Shade\Loader\LoaderInterface;
 use ActiveCollab\Shade\Loader\Result\LoaderResultInterface;
 use ActiveCollab\Shade\NamedList;
 use ActiveCollab\Shade\Renderer\RendererInterface;
 use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Theme;
-use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
 use ActiveCollab\Shade\VideoPlayer\VideoPlayer;
 use ActiveCollab\Shade\VideoPlayer\WistiaVideoPlayer;
@@ -34,6 +34,7 @@ class Project implements ProjectInterface
     private $loader;
     private $renderer;
     private $transformator;
+    private $linker;
     private $configuration = [];
 
     /**
@@ -45,13 +46,15 @@ class Project implements ProjectInterface
         string $path,
         LoaderInterface $loader,
         RendererInterface $renderer,
-        TransformatorInterface $transformator
+        TransformatorInterface $transformator,
+        LinkerInterface $linker
     )
     {
         $this->path = $path;
         $this->loader = $loader;
         $this->renderer = $renderer;
         $this->transformator = $transformator;
+        $this->linker = $linker;
 
         $this->loadConfiguration();
     }
@@ -413,13 +416,6 @@ class Project implements ProjectInterface
         return $this->getFinder()->getWhatsNewArticles($locale);
     }
 
-    /**
-     * Return what's new article.
-     *
-     * @param  string               $name
-     * @param  string|null          $locale
-     * @return WhatsNewArticle|null
-     */
     function getWhatsNewArticle($name, $locale = null)
     {
         return $this->getFinder()->getWhatsNewArticle($name, $locale);
@@ -509,7 +505,7 @@ class Project implements ProjectInterface
     function &getFinder(): ElementFinderInterface
     {
         if (empty($this->finder)) {
-            $this->finder = new ElementFinder($this, $this->loader, $this->renderer, $this->transformator);
+            $this->finder = new ElementFinder($this, $this->loader, $this->renderer, $this->linker);
 
             if (is_file($this->getPath() . '/finders.php')) {
                 $finders = require $this->getPath() . '/finders.php';

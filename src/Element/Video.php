@@ -8,11 +8,6 @@
 
 namespace ActiveCollab\Shade\Element;
 
-/**
- * Framework level help video class.
- *
- * @package Shade
- */
 class Video extends Element
 {
     const GETTING_STARTED = 'getting-started';
