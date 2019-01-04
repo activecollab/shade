@@ -23,7 +23,8 @@ class CodeTransformationTest extends TestCase
 {
     public function testWillTransformOnlyFirstLevel()
     {
-        $html = '<p>Here we have some code:</p><pre data-level="first"><pre data-level="second">Code within code</pre></pre>';
+        $html = '<p>Here we have some code:</p>'
+            . '<pre data-level="first"><pre data-level="second">Code within code</pre></pre>';
 
         $dom = HtmlDomParser::str_get_html($html);
 

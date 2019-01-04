@@ -22,7 +22,9 @@ class SubtitleTransformationTest extends TestCase
 {
     public function testWillTransformOnlyFirstLevel()
     {
-        $html = '<p>Some text</p><h2 data-level="first">Subtitle</h2><code><h2 data-level="second">This is an example</h2></code>';
+        $html = '<p>Some text</p>'
+            . '<h2 data-level="first">Subtitle</h2>'
+            . '<code><h2 data-level="second">This is an example</h2></code>';
 
         $dom = HtmlDomParser::str_get_html($html);
 
