@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\Shade\Test;
+namespace ActiveCollab\Shade\Test\DomTransformation;
 
 use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtml;
@@ -33,9 +33,9 @@ class SubtitleTransformationTest extends TestCase
         $this->assertSame('first', $nodes[0]->getAttribute('data-level'));
     }
 
-    public function testWillTransformSubtitlesFromMarkdown()
+    public function testWillTransformCodeFromMarkdown()
     {
-        $markdown = file_get_contents(dirname(__DIR__) . '/fixtures/mulit-level-h2-issue.md');
+        $markdown = file_get_contents(dirname(__DIR__, 2) . '/fixtures/multi-level-h2-issue.md');
 
         $transformator = new Transformator(new MarkdownToHtml());
 

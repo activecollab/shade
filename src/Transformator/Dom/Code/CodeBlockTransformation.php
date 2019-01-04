@@ -16,7 +16,7 @@ use ActiveCollab\Shade\Shade;
 use ActiveCollab\Shade\Transformator\Dom\DomTransformation;
 use voku\helper\SimpleHtmlDom;
 
-class CodeTransformation extends DomTransformation implements CodeTransformationInterface
+class CodeBlockTransformation extends DomTransformation implements CodeTransformationInterface
 {
     public function getSelector(): string
     {
@@ -29,9 +29,9 @@ class CodeTransformation extends DomTransformation implements CodeTransformation
         SimpleHtmlDom $simpleHtmlDom
     )
     {
-        $simpleHtmlDom->outerText = sprintf(
+        $simpleHtmlDom->outerHtml = sprintf(
             '<pre>%s</pre>',
-            Shade::clean($simpleHtmlDom->innerText)
+            Shade::clean($simpleHtmlDom->innerHtml)
         );
     }
 }
