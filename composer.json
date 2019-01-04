@@ -1,6 +1,7 @@
 {
     "name": "activecollab/shade",
     "description": "Build help portals with ease",
+    "type": "library",
     "license": "MIT",
     "require": {
         "php": ">=7.2",
