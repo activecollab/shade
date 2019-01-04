@@ -17,11 +17,17 @@
         "scrivo/highlight.php": "^9.13"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.0"
+        "friendsofphp/php-cs-fixer": "^2.0",
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "psr-4": {
             "ActiveCollab\\Shade\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ActiveCollab\\Shade\\Test\\": "test/src"
         }
     }
 }

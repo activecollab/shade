@@ -1,0 +1,33 @@
+<phpunit
+        bootstrap="./test/bootstrap.php"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        stopOnError="false"
+        stopOnFailure="false"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+        processIsolation="false"
+        colors="true">
+    <php>
+        <ini name="memory_limit" value="-1"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Shade">
+            <directory>./test/src</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="junit" target="./test/log/junit.xml"/>
+    </logging>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

@@ -20,7 +20,7 @@ class SubtitleTransformation extends DomTransformation
 {
     public function getSelector(): string
     {
-        return 'h2';
+        return 'body>h2';
     }
 
     public function transform(
@@ -39,7 +39,7 @@ class SubtitleTransformation extends DomTransformation
             $clean_slug = Shade::clean('s-' . $slug);
 
             $simpleHtmlDom->outerHtml = sprintf(
-                '<h2 id="%s" class="sub_header">%s <a href="#%s" title="%s" class="sub_permalink">#</a></h2>',
+                '<h2 id="%s" class="subtitle">%s <a href="#%s" title="%s" class="subtitle-permalink">#</a></h2>',
                 $clean_slug,
                 Shade::clean($simpleHtmlDom->innerHtml),
                 $clean_slug,

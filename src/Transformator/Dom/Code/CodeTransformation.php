@@ -20,7 +20,7 @@ class CodeTransformation extends DomTransformation implements CodeTransformation
 {
     public function getSelector(): string
     {
-        return 'code';
+        return 'body>pre';
     }
 
     public function transform(
@@ -29,22 +29,9 @@ class CodeTransformation extends DomTransformation implements CodeTransformation
         SimpleHtmlDom $simpleHtmlDom
     )
     {
-        $is_inline = $this->resolveIsInline($simpleHtmlDom);
-
-        if (!$is_inline) {
-            $simpleHtmlDom->outerText = sprintf(
-                '<pre>%s</pre>',
-                Shade::clean($simpleHtmlDom->innerText)
-            );
-        }
-    }
-
-    private function resolveIsInline(SimpleHtmlDom $simpleHtmlDom): bool
-    {
-        if ($simpleHtmlDom->hasAttribute('data-display')) {
-            return $simpleHtmlDom->getAttribute('data-display') === 'inline';
-        } else {
-            return strpos($simpleHtmlDom->innerHtml(), "\n") === false;
-        }
+        $simpleHtmlDom->outerText = sprintf(
+            '<pre>%s</pre>',
+            Shade::clean($simpleHtmlDom->innerText)
+        );
     }
 }
