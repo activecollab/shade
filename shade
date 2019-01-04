@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of the Shade project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
+declare(strict_types=1);
+
+use ActiveCollab\Shade\Bootstrap\BootstrapApplication;
+
+if (version_compare('7.2.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'This version of Shade is supported on PHP 7.2 and newer.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+    die(1);
+}
+
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
+
+define('SHADE_ROOT_PATH', __DIR__);
+
+$autoloader_included = false;
+$autoloader_file_paths = [
+    __DIR__ . '/vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+];
+
+foreach ($autoloader_file_paths as $autoloader_file_path) {
+    if (file_exists($autoloader_file_path)) {
+        require_once $autoloader_file_path;
+
+        $autoloader_included = true;
+
+        break;
+    }
+}
+
+if (empty($autoloader_included)) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+    die(1);
+}
+
+unset($autoloader_file_paths);
+unset($autoloader_file_path);
+unset($autoloader_included);
+
+(new BootstrapApplication(
+    trim(file_get_contents(SHADE_ROOT_PATH . '/VERSION')),
+    SHADE_ROOT_PATH
+))
+    ->bootstrapApp()
+    ->run();

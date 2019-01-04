@@ -31,6 +31,9 @@
             "ActiveCollab\\Shade\\Test\\": "test/src"
         }
     },
+    "bin": [
+        "shade"
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "3.0-dev"
