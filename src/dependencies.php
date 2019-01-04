@@ -20,8 +20,13 @@ use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtml;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
 use ActiveCollab\Shade\Renderer\Renderer;
 use ActiveCollab\Shade\Renderer\RendererInterface;
+use ActiveCollab\Shade\Transformator\Dom\Code\CodeBlockTransformation;
+use ActiveCollab\Shade\Transformator\Dom\Code\InlineCodeTransformation;
+use ActiveCollab\Shade\Transformator\Dom\Link\LinkTransformation;
+use ActiveCollab\Shade\Transformator\Dom\Subtitle\SubtitleTransformation;
 use ActiveCollab\Shade\Transformator\Transformator;
 use ActiveCollab\Shade\Transformator\TransformatorInterface;
+use Psr\Container\ContainerInterface;
 use function DI\get;
 
 return [
@@ -31,5 +36,13 @@ return [
     ProjectFactoryInterface::class => get(ProjectFactory::class),
     RendererInterface::class => get(Renderer::class),
     SmartyFactoryInterface::class => get(SmartyFactory::class),
-    TransformatorInterface::class => get(Transformator::class),
+    TransformatorInterface::class => function (ContainerInterface $container) {
+        return new Transformator(
+            $container->get(MarkdownToHtmlInterface::class),
+            new CodeBlockTransformation(),
+            new InlineCodeTransformation(),
+            new LinkTransformation(),
+            new SubtitleTransformation()
+        );
+    },
 ];

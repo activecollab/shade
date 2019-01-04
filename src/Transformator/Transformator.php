@@ -13,11 +13,7 @@ namespace ActiveCollab\Shade\Transformator;
 use ActiveCollab\Shade\Ability\BuildableInterface;
 use ActiveCollab\Shade\MarkdownToHtml\MarkdownToHtmlInterface;
 use ActiveCollab\Shade\Project\ProjectInterface;
-use ActiveCollab\Shade\Transformator\Dom\Code\CodeBlockTransformation;
-use ActiveCollab\Shade\Transformator\Dom\Code\InlineCodeTransformation;
 use ActiveCollab\Shade\Transformator\Dom\DomTransformationInterface;
-use ActiveCollab\Shade\Transformator\Dom\Link\LinkTransformation;
-use ActiveCollab\Shade\Transformator\Dom\Subtitle\SubtitleTransformation;
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDomNode;
 
@@ -30,16 +26,14 @@ class Transformator implements TransformatorInterface
      */
     private $domTransformations = [];
 
-    public function __construct(MarkdownToHtmlInterface $markdownToHtml)
+    public function __construct(
+        MarkdownToHtmlInterface $markdownToHtml,
+        DomTransformationInterface ...$domTransformations
+    )
     {
         $this->markdownToHtml = $markdownToHtml;
 
-        $this->addDomTransformations(
-            new CodeBlockTransformation(),
-            new InlineCodeTransformation(),
-            new LinkTransformation(),
-            new SubtitleTransformation()
-        );
+        $this->addDomTransformations(...$domTransformations);
     }
 
     public function addDomTransformations(DomTransformationInterface ...$domTransformations)

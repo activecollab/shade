@@ -64,7 +64,11 @@ class CodeTransformationTest extends TestCase
     {
         $markdown = file_get_contents(dirname(__DIR__, 2) . '/fixtures/inline-and-block-code.md');
 
-        $transformator = new Transformator(new MarkdownToHtml());
+        $transformator = new Transformator(
+            new MarkdownToHtml(),
+            new CodeBlockTransformation(),
+            new InlineCodeTransformation()
+        );
 
         /** @var ProjectInterface $project */
         $project = $this->createMock(ProjectInterface::class);

@@ -37,7 +37,7 @@ class SubtitleTransformationTest extends TestCase
     {
         $markdown = file_get_contents(dirname(__DIR__, 2) . '/fixtures/multi-level-h2-issue.md');
 
-        $transformator = new Transformator(new MarkdownToHtml());
+        $transformator = new Transformator(new MarkdownToHtml(), new SubtitleTransformation());
 
         /** @var ProjectInterface $project */
         $project = $this->createMock(ProjectInterface::class);
