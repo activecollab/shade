@@ -19,7 +19,7 @@ require SHADE_ROOT_PATH . '/vendor/autoload.php';
 
 (new BootstrapApplication(
     trim(file_get_contents(SHADE_ROOT_PATH . '/VERSION')),
-    SHADE_ROOT_PATH . '/src/ActiveCollab/Shade/Command'
+    SHADE_ROOT_PATH
 ))
     ->bootstrapApp()
         ->run();
