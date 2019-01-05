@@ -1,6 +1,6 @@
 <div class="container" id="footer">
     <div class="footer_space"></div>
-    <div class="rights"><p>&copy; <{if $copyright_since && $copyright_since != date('Y')}><{$copyright_since}>-<{/if}><{'Y'|date}> &middot; <{$copyright}>, All rights reserved. Built with <a href="https://www.activecollab.com/labs/shade" title="Shade builds help portals from Markdown files">Shade v<{shade_version}></a>.</p></div>
+    <div class="rights"><p>&copy;<{if $copyright_since && $copyright_since != date('Y')}><{$copyright_since}>-<{/if}><{'Y'|date}> <{$copyright}>, All rights reserved. Built with <a href="https://www.activecollab.com/labs/shade" title="Shade builds help portals from Markdown files">Shade v<{shade_version}></a>.</p></div>
     <{if !empty($project->getSocialLinks())}>
     <div class="social">
         <p>Stay up to date with all new features:</p>
